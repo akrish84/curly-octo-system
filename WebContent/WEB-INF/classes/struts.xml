@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<package name="website-default" extends="struts-default,json-default">
+		<result-types>
+			<result-type name="json" default="true"
+				class="org.apache.struts2.json.JSONResult">
+				<param name="excludeNullProperties">true</param>
+				<param name="defaultEncoding">UTF-8</param>
+			</result-type>
+			<result-type name="stream"
+				class="org.apache.struts2.dispatcher.StreamResult">
+				<param name="contentType">application/json</param>
+				<param name="contentCharSet">UTF-8</param>
+				<param name="contentDisposition">attachment;filename=test.txt</param>
+			</result-type>
+		</result-types>
+
+		<action name="home" class="com.akhi.site.Home" method="printHome">
+			<result type="dispatcher">/jsp/home.jsp</result>
+		</action>
+
+		<action name="msg" class="com.akhi.site.Home" method="getMsg">
+			<result type="json" />
+		</action>
+	</package>
+
+</struts>

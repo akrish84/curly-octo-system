@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign Up | Company Name</title>
+
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/custom.css">
+
+
+    <!-- CSS only -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+</head>
+<body>
+    <header class="bootstrap-iso"></header>
+    <div id="page-container">
+        <div id="content-wrap">
+            <!-- Content -->
+            <div class="main pt-5 container-fluid">
+                <!-- Log in  Form -->
+                <div class="row">
+                    <!-- <div class="col-6"></div> -->
+                    <div class="col-12">
+                        <section class="signup">
+                            <div class="container">
+                                <div class="signup-content">
+                                    <div class="signup-form">
+                                        <h2 class="form-title">Sign up</h2>
+                                        <form class="register-form" id="register-form">
+                                            <div class="form-group">
+                                                <label class="ml-1" for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                                <input type="text" name="name" id="name" placeholder="First Name" required/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="ml-1" for="last_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                                <input type="text" name="last_name" id="last_name" placeholder="Last Name" required/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="ml-1" for="email"><i class="zmdi zmdi-email"></i></label>
+                                                <input type="email" name="email" id="email" placeholder="Email" required/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="ml-1" for="pass"><i class="zmdi zmdi-lock"></i></label>
+                                                <input type="password" onfocus="showPasswordProgress()" onblur="hidePasswordProgress()" name="pass" id="pass" placeholder="Password" required/>
+                                                <div class="progress mt-1" style="height: 10px !important; display: none;" id="password-progress">
+                                                    <div class="progress-bar"></div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="ml-1" for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                                                <input type="password" name="re_pass" id="re_pass" placeholder="Re-enter password" required/>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
+                                                <label for="remember-me" class="label-agree-term"><span><span></span></span>Agree to <a href="#" class="">Terms of service</a></label>
+                                            </div>                                    
+                                            <div class="form-group form-button text-center">
+                                                <input type="button" name="signup" id="signup" class="form-submit disabled" value="Register"/>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="signup-image">
+                                        <figure><img src="images/signup-image.jpg" alt="sing up image"></figure>
+                                        <div>
+                                            Have an account ? <a href="login" class="">Login here</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer -->
+        <footer class="footer page-footer font-small blue"></footer>
+    </div>
+    
+
+    <!-- JS -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/common.js"></script>
+
+    <!-- JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+    <script>
+        fetch("header")
+            .then(response => {
+                return response.text()
+            })
+            .then(data => {
+                document.querySelector("header").innerHTML = data;
+        });
+        fetch("footer")
+            .then(response => {
+                return response.text()
+            })
+            .then(data => {
+                document.querySelector("footer").innerHTML = data;
+        });
+        $('#signup').on('click', function () {
+
+            var registerVariables = {};
+            registerVariables['firstName'] = $("#name").val();
+            registerVariables['lastName'] = $("#last_name").val();
+            registerVariables['email'] = $("#email").val();
+            registerVariables['password'] = $("#pass").val();
+            //registerVariables['re_password'] = $("#re_pass").val();
+            //registerVariables['agree'] = $("#agree-term").val();
+            console.log(registerVariables);
+            var url = makeURL("signupAction", registerVariables);
+            sendAjaxRequest(url, function(resp){
+            	console.log(resp);
+            	
+            });
+            // Make an AJAX
+        });
+        function showPasswordProgress()
+        {            
+            document.getElementById('password-progress').style.display = 'block';
+        }
+        function hidePasswordProgress()
+        {            
+            document.getElementById('password-progress').style.display = 'none';
+        }
+    </script>
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</html>

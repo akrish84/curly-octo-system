@@ -11,8 +11,12 @@ public class UserManagementAction {
 	private String password;
 	private String response;
 	
-	
+	public String pageDispatcher() {
+		return Action.SUCCESS;
+	}
+
 	public String signup() {
+		System.out.println("Adding user " + firstName + " " + lastName);
 		User user = new User();
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
@@ -25,6 +29,7 @@ public class UserManagementAction {
 			e.printStackTrace();
 			response = Response.getErrorMessage("Failed to sign up, please try again later");
 		}
+		System.out.println(response);
 		return Action.SUCCESS;
 	}
 	
@@ -60,7 +65,6 @@ public class UserManagementAction {
 	public void setResponse(String response) {
 		this.response = response;
 	}
-	
 	
 
 }

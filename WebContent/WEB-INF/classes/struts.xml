@@ -26,8 +26,24 @@
 			<result type="json" />
 		</action>
 		
-		<action name="signup" class="main.usermanagement.UserManagementAction" method="signup">
+		<action name="signupAction" class="main.usermanagement.UserManagementAction" method="signup">
 			<result type="json" />
+		</action>
+		
+		<action name="login" class="main.usermanagement.UserManagementAction" method="pageDispatcher">
+			<result type="dispatcher">/jsp/login.html</result>
+		</action>
+		
+		<action name="header" class="main.usermanagement.UserManagementAction" method="pageDispatcher">
+			<result type="dispatcher">/jsp/header.html</result>
+		</action>
+		
+		<action name="footer" class="main.usermanagement.UserManagementAction" method="pageDispatcher">
+			<result type="dispatcher">/jsp/footer.html</result>
+		</action>
+		
+		<action name="signup" class="main.usermanagement.UserManagementAction" method="pageDispatcher">
+			<result type="dispatcher">/jsp/sign-up.html</result>
 		</action>
 		
 	</package>

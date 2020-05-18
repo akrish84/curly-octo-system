@@ -20,6 +20,7 @@ public class ConfigurationProperties {
 		//Uncomment below  two lines to test using java directly.
 		//String currentDirectory = System.getProperty("user.dir");
 		//File propertyFile = new File(currentDirectory + "/WebContent/WEB-INF/config/" + PROPERTY_FILE);
+
 		configurations = new HashMap<>();
 		try (InputStream input = new FileInputStream(propertyFile)) {
 			Properties prop = new Properties();

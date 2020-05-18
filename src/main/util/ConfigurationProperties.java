@@ -15,11 +15,11 @@ public class ConfigurationProperties {
 	
 	public static void init() throws Exception {
 		//Uncomment below line while running project in webserver
-		//File propertyFile = Util.getFileFromResources(PROPERTY_FILE);
+		File propertyFile = Utils.getFileFromResources(PROPERTY_FILE);
 		
 		//Uncomment below  two lines to test using java directly.
-		String currentDirectory = System.getProperty("user.dir");
-		File propertyFile = new File(currentDirectory + "/WebContent/WEB-INF/config/" + PROPERTY_FILE);
+		//String currentDirectory = System.getProperty("user.dir");
+		//File propertyFile = new File(currentDirectory + "/WebContent/WEB-INF/config/" + PROPERTY_FILE);
 		configurations = new HashMap<>();
 		try (InputStream input = new FileInputStream(propertyFile)) {
 			Properties prop = new Properties();

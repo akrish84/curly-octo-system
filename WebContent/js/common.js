@@ -20,3 +20,13 @@ function checkAndAlertError(message) {
 		alert(message);
 	}
 }
+
+function makeURL(url, params) {
+	var paramsAsURL = url + "?";
+	var separator = ""
+	for(var key in params) {
+		paramsAsURL = paramsAsURL + separator + key + "=" + params[key];
+		separator = "&";
+	}
+	return paramsAsURL;
+}

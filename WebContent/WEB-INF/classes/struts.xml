@@ -25,6 +25,11 @@
 		<action name="msg" class="com.akhi.site.Home" method="getMsg">
 			<result type="json" />
 		</action>
+		
+		<action name="signup" class="main.usermanagement.UserManagementAction" method="signup">
+			<result type="json" />
+		</action>
+		
 	</package>
 
 </struts>

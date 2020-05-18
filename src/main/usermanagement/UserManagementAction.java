@@ -1,5 +1,9 @@
 package main.usermanagement;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.opensymphony.xwork2.Action;
 
 import main.util.Response;
@@ -11,12 +15,18 @@ public class UserManagementAction {
 	private String password;
 	private String response;
 	
+	private static Logger LOGGER = Logger.getLogger(UserManagementAction.class.getName());
+	
 	public String pageDispatcher() {
 		return Action.SUCCESS;
 	}
 
 	public String signup() {
-		System.out.println("Adding user " + firstName + " " + lastName);
+		if(firstName == null || lastName == null || email == null || password == null) {
+			response = Response.getErrorMessage("Invalid Input");
+			return Action.SUCCESS;
+		}
+		LOGGER.log(Level.INFO, "Signing up user - email: " + email);
 		User user = new User();
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
@@ -25,11 +35,20 @@ public class UserManagementAction {
 		try {
 			UserManagementHandler.signup(user);
 			response = Response.getSuccessMessage("Successfully Signed up");
-		} catch(Exception e) {
+		} catch(SQLIntegrityConstraintViolationException e ) {
+			if(e.getMessage().contains("email")) {
+				response = Response.getErrorMessage("Email ID already exists");
+			} else {
+				response = Response.getErrorMessage("Failed to sign up, please try again later");
+			}
+			LOGGER.log(Level.SEVERE, response);
+		}
+		catch(Exception e) {
 			e.printStackTrace();
 			response = Response.getErrorMessage("Failed to sign up, please try again later");
+			LOGGER.log(Level.SEVERE, response);
 		}
-		System.out.println(response);
+		LOGGER.log(Level.INFO, "User " + email + " Successfully signed up");
 		return Action.SUCCESS;
 	}
 	

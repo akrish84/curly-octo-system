@@ -35,11 +35,6 @@ public class UserManagementAction {
 			LOGGER.log(Level.SEVERE, response);
 			return Action.SUCCESS;
 		}
-		if(Utils.isValidEmailID(email)) {
-			response = Response.getErrorMessage("Invalid Email: " + email);
-			LOGGER.log(Level.SEVERE, response);
-			return Action.SUCCESS;
-		}
 		if(password == null || password.isEmpty()) {
 			response = Response.getErrorMessage("Password cannot be empty");
 			LOGGER.log(Level.SEVERE, response);
@@ -49,7 +44,7 @@ public class UserManagementAction {
 			response = Response.getErrorMessage("Invalid Email Address " + email);
 			return Action.SUCCESS;
 		}
-		LOGGER.log(Level.INFO, "Signing up user - email: " + email);
+		LOGGER.log(Level.INFO, "Action: SignUp. User email: " + email);
 		User user = new User();
 		user.setFirstName(firstName);
 		user.setLastName(lastName);

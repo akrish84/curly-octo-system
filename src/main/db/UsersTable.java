@@ -20,7 +20,6 @@ public class UsersTable implements SqlStatements{
 	        statement.setString(2, user.getPassword());
 	        statement.setString(3, user.getFirstName());
 	        statement.setString(4, user.getLastName());
-	        System.out.println(statement.toString());
 	        int rowsInserted = statement.executeUpdate();
         		if(rowsInserted > 0){
 	            resultSet = statement.getGeneratedKeys();

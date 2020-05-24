@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import com.opensymphony.xwork2.Action;
 
 import main.util.Response;
+import main.util.Validator;
 
 public class UserManagementAction {
 	private String firstName;
@@ -26,6 +27,10 @@ public class UserManagementAction {
 			response = Response.getErrorMessage("Invalid Input");
 			return Action.SUCCESS;
 		}
+		if(!Validator.isValidEmailAddress(email)) {
+			response = Response.getErrorMessage("Invalid Email Address " + email);
+			return Action.SUCCESS;
+		}
 		LOGGER.log(Level.INFO, "Signing up user - email: " + email);
 		User user = new User();
 		user.setFirstName(firstName);
@@ -34,21 +39,20 @@ public class UserManagementAction {
 		user.setPassword(password);
 		try {
 			UserManagementHandler.signup(user);
-			response = Response.getSuccessMessage("Successfully Signed up");
+			response = Response.getSuccessMessage("User " + email + " Successfully signed up");
 		} catch(SQLIntegrityConstraintViolationException e ) {
 			if(e.getMessage().contains("email")) {
 				response = Response.getErrorMessage("Email ID already exists");
 			} else {
 				response = Response.getErrorMessage("Failed to sign up, please try again later");
 			}
-			LOGGER.log(Level.SEVERE, response);
+			LOGGER.log(Level.INFO, response);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 			response = Response.getErrorMessage("Failed to sign up, please try again later");
 			LOGGER.log(Level.SEVERE, response);
 		}
-		LOGGER.log(Level.INFO, "User " + email + " Successfully signed up");
 		return Action.SUCCESS;
 	}
 	

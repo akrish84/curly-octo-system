@@ -8,6 +8,8 @@ import com.opensymphony.xwork2.Action;
 
 import main.util.Response;
 import main.util.Validator;
+import main.util.Utils;
+
 
 public class UserManagementAction {
 	private String firstName;
@@ -23,8 +25,24 @@ public class UserManagementAction {
 	}
 
 	public String signup() {
-		if(firstName == null || lastName == null || email == null || password == null) {
-			response = Response.getErrorMessage("Invalid Input");
+		if(firstName == null || lastName == null || firstName.isEmpty() || lastName.isEmpty()) {
+			response = Response.getErrorMessage("First Name and Last Name cannot be empty");
+			LOGGER.log(Level.SEVERE, response);
+			return Action.SUCCESS;
+		}
+		if(email == null || email.isEmpty()) {
+			response = Response.getErrorMessage("Email cannot be empty");
+			LOGGER.log(Level.SEVERE, response);
+			return Action.SUCCESS;
+		}
+		if(Utils.isValidEmailID(email)) {
+			response = Response.getErrorMessage("Invalid Email: " + email);
+			LOGGER.log(Level.SEVERE, response);
+			return Action.SUCCESS;
+		}
+		if(password == null || password.isEmpty()) {
+			response = Response.getErrorMessage("Password cannot be empty");
+			LOGGER.log(Level.SEVERE, response);
 			return Action.SUCCESS;
 		}
 		if(!Validator.isValidEmailAddress(email)) {

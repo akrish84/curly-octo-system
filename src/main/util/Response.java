@@ -1,13 +1,28 @@
 package main.util;
 
 public class Response {
-	
-	public static String getErrorMessage(String message) {
-		return "Error: " + message;
-	}
-	
-	public static String getSuccessMessage(String message) {
-		return "Success: " + message;
+	private boolean status;
+	private String message;
+
+	public boolean getStatus() {
+		return status;
 	}
 
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+	
+	public String getMessage() {
+		return message;
+	}
+
+	public void setError(String message) {
+		this.status = false;
+		this.message = message;
+	}
+	
+	public void setSuccess(String message) {
+		this.status = true;
+		this.message = message;
+	}
 }

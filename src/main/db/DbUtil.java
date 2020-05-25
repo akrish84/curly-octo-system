@@ -8,4 +8,7 @@ public class DbUtil {
 		UsersTable.add(user);
 	}
 
+	public static String getUserPassword(String email) throws Exception {
+		return UsersTable.getUserPassword(email);
+	}
 }

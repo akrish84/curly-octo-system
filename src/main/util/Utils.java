@@ -14,5 +14,13 @@ public class Utils {
             return new File(resource.getFile());
         }
 	}
+	
+	public static String getErrorMessage(String message) {
+		return "Error: " + message;
+	}
+	
+	public static String getSuccessMessage(String message) {
+		return "Success: " + message;
+	}
 
 }

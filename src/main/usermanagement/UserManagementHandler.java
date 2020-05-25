@@ -2,6 +2,7 @@ package main.usermanagement;
 
 import main.db.DbUtil;
 import main.util.PasswordManager;
+import main.util.Response;
 
 public class UserManagementHandler {
 	
@@ -10,4 +11,9 @@ public class UserManagementHandler {
 		user.setPassword(passwordHash);
 		DbUtil.addUser(user);
 	}
+	
+	public static Response login(String email, String password) throws Exception {
+		return PasswordManager.verifyPassword(email, password);
+	}
+	
 }

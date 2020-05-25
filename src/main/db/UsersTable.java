@@ -7,9 +7,9 @@ import java.sql.Statement;
 
 import main.usermanagement.User;
 
-public class UsersTable implements SqlStatements{
+public class UsersTable implements UsersTableQueries{
 	
-	public static Long add(User user) throws Exception {
+	static Long add(User user) throws Exception {
 		Connection connection = DataSourceConnector.getConnection();
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -34,5 +34,26 @@ public class UsersTable implements SqlStatements{
         }
         return lastInsertId;
 	}
-
+	
+	static String getUserPassword(String email) throws Exception {
+		Connection connection = DataSourceConnector.getConnection();
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        String password = "";
+        try {
+	        statement = connection.prepareStatement(SELECT_USER_PASSWORD);
+	        statement.setString(1, email);
+	        resultSet = statement.executeQuery();
+	        while(resultSet.next()){
+	            password = resultSet.getString(1);
+	        }
+	        
+        } finally {
+        		if(resultSet != null) {
+        			resultSet.close();
+        		}
+        		statement.close();
+        }
+        return password;
+	}
 }

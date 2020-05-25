@@ -7,8 +7,8 @@ import java.util.logging.Logger;
 import com.opensymphony.xwork2.Action;
 
 import main.util.Response;
-import main.util.Validator;
 import main.util.Utils;
+import main.util.Validator;
 
 
 public class UserManagementAction {
@@ -16,7 +16,7 @@ public class UserManagementAction {
 	private String lastName;
 	private String email;
 	private String password;
-	private String response;
+	private String responseMessage;
 	
 	private static Logger LOGGER = Logger.getLogger(UserManagementAction.class.getName());
 	
@@ -26,47 +26,82 @@ public class UserManagementAction {
 
 	public String signup() {
 		if(firstName == null || lastName == null || firstName.isEmpty() || lastName.isEmpty()) {
-			response = Response.getErrorMessage("First Name and Last Name cannot be empty");
-			LOGGER.log(Level.SEVERE, response);
+			responseMessage = Utils.getErrorMessage("First Name and Last Name cannot be empty");
+			LOGGER.log(Level.SEVERE, responseMessage);
 			return Action.SUCCESS;
 		}
 		if(email == null || email.isEmpty()) {
-			response = Response.getErrorMessage("Email cannot be empty");
-			LOGGER.log(Level.SEVERE, response);
+			responseMessage = Utils.getErrorMessage("Email cannot be empty");
+			LOGGER.log(Level.SEVERE, responseMessage);
 			return Action.SUCCESS;
 		}
 		if(password == null || password.isEmpty()) {
-			response = Response.getErrorMessage("Password cannot be empty");
-			LOGGER.log(Level.SEVERE, response);
+			responseMessage = Utils.getErrorMessage("Password cannot be empty");
+			LOGGER.log(Level.SEVERE, responseMessage);
 			return Action.SUCCESS;
 		}
 		if(!Validator.isValidEmailAddress(email)) {
-			response = Response.getErrorMessage("Invalid Email Address " + email);
+			responseMessage = Utils.getErrorMessage("Invalid Email Address " + email);
 			return Action.SUCCESS;
 		}
 		LOGGER.log(Level.INFO, "Action: SignUp. User email: " + email);
-		User user = new User();
-		user.setFirstName(firstName);
-		user.setLastName(lastName);
-		user.setEmail(email);
-		user.setPassword(password);
 		try {
+			User user = new User();
+			user.setFirstName(firstName);
+			user.setLastName(lastName);
+			user.setEmail(email);
+			user.setPassword(password);
 			UserManagementHandler.signup(user);
-			response = Response.getSuccessMessage("User " + email + " Successfully signed up");
+			responseMessage = Utils.getSuccessMessage("User " + email + " Successfully signed up");
 		} catch(SQLIntegrityConstraintViolationException e ) {
 			if(e.getMessage().contains("email")) {
-				response = Response.getErrorMessage("Email ID already exists");
+				responseMessage = Utils.getErrorMessage("Email ID already exists");
 			} else {
-				response = Response.getErrorMessage("Failed to sign up, please try again later");
+				responseMessage = Utils.getErrorMessage("Failed to sign up, please try again later");
 			}
-			LOGGER.log(Level.INFO, response);
+			LOGGER.log(Level.INFO, responseMessage);
 		}
 		catch(Exception e) {
-			e.printStackTrace();
-			response = Response.getErrorMessage("Failed to sign up, please try again later");
-			LOGGER.log(Level.SEVERE, response);
+			responseMessage = Utils.getErrorMessage("Failed to sign up, please try again later");
+			LOGGER.log(Level.SEVERE, responseMessage, e);
 		}
 		return Action.SUCCESS;
+	}
+
+	public String login() {
+		if(email == null || email.isEmpty()) {
+			responseMessage = Utils.getErrorMessage("Email cannot be empty");
+			LOGGER.log(Level.SEVERE, responseMessage);
+			return Action.SUCCESS;
+		}
+		if(password == null || password.isEmpty()) {
+			responseMessage = Utils.getErrorMessage("Password cannot be empty");
+			LOGGER.log(Level.SEVERE, responseMessage);
+			return Action.SUCCESS;
+		}
+		if(!Validator.isValidEmailAddress(email)) {
+			responseMessage = Utils.getErrorMessage("Invalid Email Address " + email);
+			return Action.SUCCESS;
+		}
+		LOGGER.log(Level.INFO, "Action: Login. User email: " + email);
+		try {
+			Response response = UserManagementHandler.login(email, password);
+			if(response.getStatus()) {
+				responseMessage = Utils.getSuccessMessage(response.getMessage());
+			} else {
+				responseMessage = Utils.getErrorMessage(response.getMessage());
+			}
+			
+		} catch(Exception e) {
+			responseMessage = Utils.getErrorMessage("Action Login: Failed. User Email: " + email);
+			LOGGER.log(Level.SEVERE, responseMessage, e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public static void main(String[] args) {
+		String email = "rrrr@rrrr.com";
+		String password = "";
 	}
 	
 	public String getFirstName() {
@@ -94,13 +129,12 @@ public class UserManagementAction {
 		this.password = password;
 	}
 
-	public String getResponse() {
-		return response;
+	public String getResponseMessage() {
+		return responseMessage;
 	}
 
-	public void setResponse(String response) {
-		this.response = response;
+	public void setResponseMessage(String responseMessage) {
+		this.responseMessage = responseMessage;
 	}
-	
 
 }

@@ -69,6 +69,7 @@ public class UserManagementAction {
 	}
 
 	public String login() {
+		
 		if(email == null || email.isEmpty()) {
 			responseMessage = Utils.getErrorMessage("Email cannot be empty");
 			LOGGER.log(Level.SEVERE, responseMessage);
@@ -81,6 +82,7 @@ public class UserManagementAction {
 		}
 		if(!Validator.isValidEmailAddress(email)) {
 			responseMessage = Utils.getErrorMessage("Invalid Email Address " + email);
+			LOGGER.log(Level.SEVERE, responseMessage);
 			return Action.SUCCESS;
 		}
 		LOGGER.log(Level.INFO, "Action: Login. User email: " + email);
@@ -100,8 +102,7 @@ public class UserManagementAction {
 	}
 	
 	public static void main(String[] args) {
-		String email = "rrrr@rrrr.com";
-		String password = "";
+		
 	}
 	
 	public String getFirstName() {

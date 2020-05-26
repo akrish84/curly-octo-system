@@ -31,3 +31,8 @@ input::placeholder
 {
   color: #888888 !important;
 }
+
+.customDisabled {
+  background-color: #bbbbbb !important;
+  cursor: no-drop !important;
+}

@@ -33,36 +33,38 @@
                                 <div class="signup-content">
                                     <div class="signup-form">
                                         <h2 class="form-title">Sign up</h2>
+                                        <div class="alert alert-danger" role="alert" id="errorMessage" style="display: none;"></div>
+                                        <div class="alert alert-success" role="alert" id="successMessage" style="display: none;"></div>
                                         <form class="register-form" id="register-form">
                                             <div class="form-group">
                                                 <label class="ml-1" for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                                <input type="text" name="name" id="name" placeholder="First Name" required/>
+                                                <input oninput="buttonActivator()" type="text" name="name" id="name" placeholder="First Name" required/>
                                             </div>
                                             <div class="form-group">
                                                 <label class="ml-1" for="last_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                                <input type="text" name="last_name" id="last_name" placeholder="Last Name" required/>
+                                                <input oninput="buttonActivator()" type="text" name="last_name" id="last_name" placeholder="Last Name" required/>
                                             </div>
                                             <div class="form-group">
                                                 <label class="ml-1" for="email"><i class="zmdi zmdi-email"></i></label>
-                                                <input type="email" name="email" id="email" placeholder="Email" required/>
+                                                <input oninput="buttonActivator()" type="email" name="email" id="email" placeholder="Email" required/>
                                             </div>
                                             <div class="form-group">
                                                 <label class="ml-1" for="pass"><i class="zmdi zmdi-lock"></i></label>
-                                                <input type="password" onfocus="showPasswordProgress()" onblur="hidePasswordProgress()" name="pass" id="pass" placeholder="Password" required/>
+                                                <input oninput="buttonActivator()" type="password" onfocus="showPasswordProgress()" onblur="hidePasswordProgress()" name="pass" id="pass" placeholder="Password" required/>
                                                 <div class="progress mt-1" style="height: 10px !important; display: none;" id="password-progress">
                                                     <div class="progress-bar"></div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label class="ml-1" for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
-                                                <input type="password" name="re_pass" id="re_pass" placeholder="Re-enter password" required/>
+                                                <input oninput="buttonActivator()" type="password" name="re_pass" id="re_pass" placeholder="Re-enter password" required/>                                                
                                             </div>
                                             <div class="form-group">
-                                                <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
-                                                <label for="remember-me" class="label-agree-term"><span><span></span></span>Agree to <a href="#" class="">Terms of service</a></label>
+                                                <input disabled onclick="submitActivator()" type="checkbox" name="agree-term" id="agree-term" class="agree-term customDisabled" />
+                                                <label for="agree-term" class="label-agree-term"><span><span></span></span>Agree to <a href="#" class="">Terms of service</a></label>
                                             </div>                                    
                                             <div class="form-group form-button text-center">
-                                                <input type="button" name="signup" id="signup" class="form-submit disabled" value="Register"/>
+                                                <input disabled type="button" name="signup" id="signup" class="form-submit customDisabled" value="Register"/>
                                             </div>
                                         </form>
                                     </div>
@@ -110,8 +112,85 @@
             .then(data => {
                 document.querySelector("footer").innerHTML = data;
         });
+        function buttonActivator() { 
+            var passMatch = false;
+            $('#errorMessage')[0].style.display = 'none';
+            document.getElementById('agree-term').checked = false;
+            $('#signup').prop('disabled', 'true');
+            $('#agree-term').prop('disabled', 'true');
+            // console.log('Key Pressed');
+            // console.log($("#pass").val().length , $("#re_pass").val().length);
+            if($("#pass").val().length && $("#re_pass").val().length){
+                if ($("#pass").val() === $("#re_pass").val())
+                {
+                    $('#re_pass')[0].classList.add('alert-success'); 
+                    $('#pass')[0].classList.add('alert-success');
+                    $('#re_pass')[0].classList.remove('alert-danger');
+                    $('#pass')[0].classList.remove('alert-danger');
+                    passMatch = true;
+                }
+                else
+                {
+                    $('#re_pass')[0].classList.remove('alert-success')
+                    $('#pass')[0].classList.remove('alert-success');
+                    $('#re_pass')[0].classList.add('alert-danger')
+                    $('#pass')[0].classList.add('alert-danger');                
+                }
+            }
+            else
+            {
+                $('#re_pass')[0].classList.remove('alert-danger')
+                $('#pass')[0].classList.remove('alert-danger');
+                $('#re_pass')[0].classList.remove('alert-success')
+                $('#pass')[0].classList.remove('alert-success');
+            }
+            if ($("#name").val().length && $("#last_name").val().length && $("#email").val().length && $("#pass").val().length && $("#re_pass").val().length && passMatch)
+            {
+                $('#agree-term').removeAttr('disabled');
+                $('#agree-term')[0].classList.remove('customDisabled');
+            }
+            else
+            {
+                document.getElementById('agree-term').checked = false;
+                $('#signup').prop('disabled', 'true');
+                $('#agree-term').prop('disabled', 'true');
+                $('#agree-term')[0].classList.add('customDisabled');
+            }
+        }
+        function submitActivator() {
+            if(document.getElementById('agree-term').checked)
+            {
+                $('#signup').removeAttr('disabled');               
+                $('#signup')[0].classList.remove('customDisabled');
+                $('#successMessage')[0].style.display = 'none';
+                $('#errorMessage')[0].style.display = 'none';
+            }
+            else
+            {
+                $('#signup').prop('disabled', 'true');
+                $('#signup')[0].classList.add('customDisabled');
+            }
+        }
+        function ValidateEmail(mail) 
+        {
+            if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
+            {
+                return (true)
+            }
+            // alert("You have entered an invalid email address!")
+            return (false)
+        }
+        function ValidateName(name) 
+        {
+            if (/^([a-zA-Z ]){1,15}$/.test(name))
+            {
+                return (true)
+            }
+            // alert("You have entered an invalid name!")
+            return (false)
+        }
         $('#signup').on('click', function () {
-
+            
             var registerVariables = {};
             registerVariables['firstName'] = $("#name").val();
             registerVariables['lastName'] = $("#last_name").val();
@@ -120,12 +199,34 @@
             //registerVariables['re_password'] = $("#re_pass").val();
             //registerVariables['agree'] = $("#agree-term").val();
             console.log(registerVariables);
-            var url = makeURL("signupAction", registerVariables);
-            sendAjaxRequest(url, function(resp){
-            	console.log(resp);
-            	
-            });
-            // Make an AJAX
+
+            if (ValidateEmail(registerVariables['email']) && ValidateName(registerVariables['firstName']) && ValidateName(registerVariables['lastName']))
+            {
+                // Make an AJAX
+                var url = makeURL("signupAction", registerVariables);
+                sendAjaxRequest(url, function(resp){
+                    console.log(resp);            	
+                    if (resp['responseMessage'].includes('Error'))
+                    {
+                        // Error
+                        // console.log($('#errorMessage'));
+                        $('#errorMessage')[0].style.display = 'block';
+                        $('#errorMessage')[0].innerHTML = resp['responseMessage'];
+                    }
+                    else
+                    {
+                        // Successfull Registration
+                        $('#successMessage')[0].style.display = 'block';
+                        $('#successMessage')[0].innerHTML = resp['responseMessage'];
+                        setTimeout(function(){ window.location.href = "login"; }, 500);                        
+                    }
+                });            
+            }
+            else
+            {
+                $('#errorMessage')[0].style.display = 'block';
+                $('#errorMessage')[0].innerHTML = 'Please enter valid Information';
+            }
         });
         function showPasswordProgress()
         {            
@@ -136,5 +237,5 @@
             document.getElementById('password-progress').style.display = 'none';
         }
     </script>
-</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</body>
 </html>

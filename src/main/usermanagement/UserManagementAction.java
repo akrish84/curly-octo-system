@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 import com.opensymphony.xwork2.Action;
 
+import main.authentication.AuthenticationUtil;
 import main.util.Response;
 import main.util.Utils;
 import main.util.Validator;
@@ -89,11 +90,12 @@ public class UserManagementAction {
 		try {
 			Response response = UserManagementHandler.login(email, password);
 			if(response.getStatus()) {
+				AuthenticationUtil.createSessionForUser(email);
 				responseMessage = Utils.getSuccessMessage(response.getMessage());
 			} else {
 				responseMessage = Utils.getErrorMessage(response.getMessage());
 			}
-			
+			System.out.println(responseMessage);
 		} catch(Exception e) {
 			responseMessage = Utils.getErrorMessage("Action Login: Failed. User Email: " + email);
 			LOGGER.log(Level.SEVERE, responseMessage, e);
@@ -102,7 +104,10 @@ public class UserManagementAction {
 	}
 	
 	public static void main(String[] args) {
-		
+		UserManagementAction action = new UserManagementAction();
+		action.setEmail("test@test1.com");
+		action.setPassword("test");
+		action.login();
 	}
 	
 	public String getFirstName() {

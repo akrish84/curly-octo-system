@@ -18,15 +18,11 @@
 			</result-type>
 		</result-types>
 
-		<action name="home" class="com.akhi.site.Home" method="printHome">
-			<result type="dispatcher">/jsp/home.jsp</result>
-		</action>
-
-		<action name="msg" class="com.akhi.site.Home" method="getMsg">
+		<action name="signupAction" class="main.usermanagement.UserManagementAction" method="signup">
 			<result type="json" />
 		</action>
 		
-		<action name="signupAction" class="main.usermanagement.UserManagementAction" method="signup">
+		<action name="loginAction" class="main.usermanagement.UserManagementAction" method="login">
 			<result type="json" />
 		</action>
 		

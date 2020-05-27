@@ -4,6 +4,7 @@
 <struts>
 
 	<package name="website-default" extends="struts-default,json-default">
+
 		<result-types>
 			<result-type name="json" default="true"
 				class="org.apache.struts2.json.JSONResult">
@@ -17,14 +18,25 @@
 				<param name="contentDisposition">attachment;filename=test.txt</param>
 			</result-type>
 		</result-types>
+		
+		<interceptors>
+      		<interceptor name="authentication" class="main.authentication.AuthenticationInterceptor"/>
+	  		<interceptor-stack name="authStack">
+				<interceptor-ref name="authentication"></interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+	
+		<default-interceptor-ref name="authStack"></default-interceptor-ref>
+		
+		<global-results>
+    		<result name="auth_error" type="redirectAction">login</result>
+    	</global-results>
 
 		<action name="signupAction" class="main.usermanagement.UserManagementAction" method="signup">
 			<result type="json" />
 		</action>
 
-		<action name="signinAction" class="main.usermanagement.UserManagementAction" method="login">
-			<result type="json" />
-		</action>
 		
 		<action name="loginAction" class="main.usermanagement.UserManagementAction" method="login">
 			<result type="json" />
@@ -47,7 +59,8 @@
 		</action>
 		
 		<action name="dashboard" class="main.usermanagement.UserManagementAction" method="pageDispatcher">
-			<result type="dispatcher">/jsp/dashboard.html</result>
+			<interceptor-ref name="authStack"/>
+			<result name="success" type="dispatcher">/jsp/dashboard.html</result>
 		</action>
 		
 	</package>

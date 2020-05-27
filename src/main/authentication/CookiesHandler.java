@@ -21,9 +21,11 @@ public class CookiesHandler {
 
 	public static String getSessionID(HttpServletRequest request) {
 		Cookie[] cookies = request.getCookies();
-		for(Cookie cookie : cookies) {
-			if(cookie.getName().contentEquals(AuthenticationConstants.COOKIE_NAME_SESSION_ID)) {
-				return decodeValue(cookie.getValue());
+		if(cookies != null) {
+			for(Cookie cookie : cookies) {
+				if(cookie.getName().contentEquals(AuthenticationConstants.COOKIE_NAME_SESSION_ID)) {
+					return decodeValue(cookie.getValue());
+				}
 			}
 		}
 		return null;

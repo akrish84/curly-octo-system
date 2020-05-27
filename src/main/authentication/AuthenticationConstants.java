@@ -25,6 +25,11 @@ public class AuthenticationConstants {
 	public static final String COOKIE_FLAG_HTTP_ONLY = "HttpOnly";
 	
 	
+	// AuthenticationInterceptor
+	
+	public static final String ACTION_AUTH_ERROR = "auth_error";
+	
+	
 	// Authentication Filter
 	static {
 		EXCLUDED_URLS = new ArrayList<>();
@@ -32,6 +37,10 @@ public class AuthenticationConstants {
 		EXCLUDED_URLS.add("css");
 		EXCLUDED_URLS.add("js");
 		EXCLUDED_URLS.add("html");
+		EXCLUDED_URLS.add("signup");
+		EXCLUDED_URLS.add("login");
+		EXCLUDED_URLS.add("header");
+		EXCLUDED_URLS.add("footer");
 	}
 
 }

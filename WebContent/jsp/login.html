@@ -20,7 +20,7 @@
 </head>
 <body>
     <header class="bootstrap-iso"></header>
-    <div id="page-container">    
+    <main id="page-container">    
         <div id="content-wrap">
             <div class="main pt-5 container-fluid">
         <!-- Log in  Form -->
@@ -39,25 +39,27 @@
 
                             <div class="signin-form">
                                 <h2 class="form-title">Log In</h2>
+                                <div class="alert alert-danger" role="alert" id="errorMessage" style="display: none;"></div>
+                                <div class="alert alert-success" role="alert" id="successMessage" style="display: none;"></div>
                                 <form class="register-form" id="login-form">
                                     <div class="form-group">
                                         <label for="your_email"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                        <input type="text" name="your_email" id="your_email" placeholder="Email" required/>
+                                        <input oninput="buttonActivator()" type="text" name="your_email" id="your_email" placeholder="Email" required/>
                                     </div>
                                     <div class="form-group">
                                         <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
-                                        <input type="password" name="your_pass" id="your_pass" placeholder="Password" required/>
+                                        <input oninput="buttonActivator()" type="password" name="your_pass" id="your_pass" placeholder="Password" required/>
                                     </div>
                                     <div class="form-group">
-                                        <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
-                                        <label for="remember-me" class="label-agree-term"><span><span></span></span>Remember me</label>
+                                        <input oninput="buttonActivator()" type="checkbox" name="remember-me" id="remember-me" class="remember-me" />
+                                        <label for="remember-me" class="label-remember-me"><span><span></span></span>Remember me</label>
                                     </div>
                                     <div class="form-group form-button">                                        
                                         <div class="mb-2">
                                             <a href="#">Forgot Passowrd</a>
                                         </div>            
                                         <!-- <br> -->
-                                        <input type="button" name="signin" id="signin" class="form-submit" value="Log in"/>                                        
+                                        <input type="button" name="signin" id="signin" class="form-submit customDisabled" value="Log in"/>                                        
                                     </div>
                                 </form>
                                 <div class="social-login">
@@ -75,19 +77,20 @@
             </div>
         </div>
             </div>
-        </div>
-        <!-- Footer -->
-        <footer class="footer page-footer font-small blue"></footer>
-    </div>
+        </div>                
+    </main>
+    <!-- Footer -->
+    <footer class="footer page-footer font-small blue"></footer>
 
     
 
     <!-- JS -->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/common.js"></script>
 
     <!-- JS, Popper.js, and jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 
@@ -106,14 +109,47 @@
             .then(data => {
                 document.querySelector("footer").innerHTML = data;
         });
+        function buttonActivator()
+        {
+            $('#errorMessage')[0].style.display = 'none';
+            if($("#your_email").val().length && $("#your_pass").val().length && ValidateEmail($("#your_email").val()))
+            {
+                console.log('Activate Login Button')
+                $('#signin')[0].classList.remove('customDisabled');
+            }
+
+        }
         $('#signin').on('click', function () {
             var login_variables = {};
             login_variables['email'] = $("#your_email").val();
             login_variables['password'] = $("#your_pass").val();            
-            login_variables['agree'] = $("#remember-me").val();
+            // login_variables['agree'] = $("#remember-me").val();
             console.log(login_variables);
             
             // Make an AJAX Call
+            if (ValidateEmail(login_variables['email']))
+            {
+                // Make an AJAX
+                var url = makeURL("signinAction", login_variables);
+                console.log(url);
+                sendAjaxRequest(url, function(resp){
+                    console.log(resp);            	
+                    if (resp['responseMessage'].includes('Error'))
+                    {
+                        // Error
+                        // console.log($('#errorMessage'));
+                        $('#errorMessage')[0].style.display = 'block';
+                        $('#errorMessage')[0].innerHTML = resp['responseMessage'];
+                    }
+                    else
+                    {
+                        // Successfull Login
+                        $('#successMessage')[0].style.display = 'block';
+                        $('#successMessage')[0].innerHTML = resp['responseMessage'];
+                        setTimeout(function(){ window.location.href = "dashboard"; }, 500);                       
+                    }
+                });
+            }
         })
     </script>
 </body>

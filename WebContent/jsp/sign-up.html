@@ -19,8 +19,8 @@
 
 </head>
 <body>
-    <header class="bootstrap-iso"></header>
-    <div id="page-container">
+    <header class=""></header>
+    <main id="page-container">
         <div id="content-wrap">
             <!-- Content -->
             <div class="main pt-5 container-fluid">
@@ -81,10 +81,10 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- Footer -->
-        <footer class="footer page-footer font-small blue"></footer>
-    </div>
+        </div>        
+    </main>
+    <!-- Footer -->
+    <footer class="footer"></footer>
     
 
     <!-- JS -->
@@ -111,7 +111,7 @@
             })
             .then(data => {
                 document.querySelector("footer").innerHTML = data;
-        });
+        });        
         function buttonActivator() { 
             var passMatch = false;
             $('#errorMessage')[0].style.display = 'none';
@@ -170,25 +170,7 @@
                 $('#signup').prop('disabled', 'true');
                 $('#signup')[0].classList.add('customDisabled');
             }
-        }
-        function ValidateEmail(mail) 
-        {
-            if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
-            {
-                return (true)
-            }
-            // alert("You have entered an invalid email address!")
-            return (false)
-        }
-        function ValidateName(name) 
-        {
-            if (/^([a-zA-Z ]){1,15}$/.test(name))
-            {
-                return (true)
-            }
-            // alert("You have entered an invalid name!")
-            return (false)
-        }
+        }        
         $('#signup').on('click', function () {
             
             var registerVariables = {};

@@ -265,7 +265,7 @@ body {
   margin: 0 55px; }
 
 .form-title {
-  margin-bottom: 33px; }
+  margin-bottom: 20px; }
 
 .signup-image {
   margin-top: 45px; }
@@ -455,8 +455,8 @@ label.valid {
   font-size: 18px; }
 
 .signin-content {
-  padding-top: 67px;
-  padding-bottom: 87px; }
+  padding-top: 30px;
+  padding-bottom: 30px; }
 
 .social-login {
   align-items: center;

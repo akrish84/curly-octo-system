@@ -26,6 +26,10 @@
 			<result type="json" />
 		</action>
 		
+		<action name="loginAction" class="main.usermanagement.UserManagementAction" method="login">
+			<result type="json" />
+		</action>
+		
 		<action name="login" class="main.usermanagement.UserManagementAction" method="pageDispatcher">
 			<result type="dispatcher">/jsp/login.html</result>
 		</action>

@@ -54,6 +54,7 @@ public class UserManagementAction {
 			user.setPassword(password);
 			UserManagementHandler.signup(user);
 			responseMessage = Utils.getSuccessMessage("User " + email + " Successfully signed up");
+			LOGGER.log(Level.INFO, responseMessage);
 		} catch(SQLIntegrityConstraintViolationException e ) {
 			if(e.getMessage().contains("email")) {
 				responseMessage = Utils.getErrorMessage("Email ID already exists");

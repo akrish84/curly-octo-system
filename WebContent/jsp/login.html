@@ -130,7 +130,7 @@
             if (ValidateEmail(login_variables['email']))
             {
                 // Make an AJAX
-                var url = makeURL("signinAction", login_variables);
+                var url = makeURL("loginAction", login_variables);
                 console.log(url);
                 sendAjaxRequest(url, function(resp){
                     console.log(resp);            	

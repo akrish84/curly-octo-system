@@ -1,0 +1,42 @@
+<?xml version="1.0" ?> 
+<project name="CurlyOcto" default="war">
+ 
+	<property name="build.home" value="build" />
+	<property name="build.classes" value="${build.home}/classes" />
+	<property name="build.war" value="${build.home}/war" />
+	<property name="war.file" value="${build.war}/ROOT.war" />
+	<property name="webcontent.dir" value="WebContent" />
+	<property name="lib.dir" value="${webcontent.dir}/WEB-INF/lib" />
+	
+    <path id="compile.classpath">
+        <fileset dir="WebContent/WEB-INF/lib">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+     
+    <target name="init">
+        <mkdir dir="${build.home}"/>
+        <mkdir dir="${build.war}" />
+    </target>
+     
+    <target name="compile" depends="init" >
+    	<echo>Compiling ${src.tests.dir} files ...</echo>
+        <javac destdir="${build.classes}" debug="true" srcdir="src">
+            <classpath refid="compile.classpath"/>
+        </javac>
+    	<echo>Java files compiled successfully </echo>
+    </target>
+     
+    <target name="war" depends="compile">
+        <war destfile="${war.file}" webxml="WebContent/WEB-INF/web.xml">
+            <fileset dir="${webcontent.dir}"/>
+            <lib dir="${lib.dir}"/>
+            <classes dir="${build.classes}"/>
+        </war>
+    </target>
+     
+    <target name="clean">
+        <delete dir="${build.home}" />
+    </target>
+     
+</project> 

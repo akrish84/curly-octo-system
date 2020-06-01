@@ -1,7 +1,7 @@
-* {
+/* * {
 	margin: 0;
 	padding: 0;
-}
+} */
 
 .navbar-toggler {
     border-color: rgba(0,0,0,.0) !important;
@@ -52,4 +52,33 @@ input::placeholder
 .customDisabled {
   background-color: #bbbbbb !important;
   cursor: no-drop !important;
+}
+
+.content-wrap .container-fluid {
+	overflow-x: hidden !important; 
+}
+
+.boards {
+	overflow-x: scroll !important; 
+	padding: 0.5rem 0.5rem;
+	padding-bottom: 30px !important;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.boards::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE and Edge */
+.boards {
+  -ms-overflow-style: none;
+}
+
+.dashboard-container {
+	
+}
+
+.row {
+	padding-left: 15px;
+	padding-right: 15px;
 }

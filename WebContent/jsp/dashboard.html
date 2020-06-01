@@ -12,7 +12,9 @@
     <!-- Main css -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/custom.css">
-
+    
+    <!-- Kanban CSS -->
+	<link rel="stylesheet" href="css/jkanban.css">
 
     <!-- CSS only -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
@@ -23,11 +25,21 @@
     <main id="page-container">    
         <div id="content-wrap">
             <div class="main pt-5 container-fluid">
+            	<div class='boards' id='boards'>
+            		<div class="kdiv" id="kdiv"></div>
+            	</div>           
+            	<div class="dashboard-container">            	
+            		<div class='row'>
+	            		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque et magna at augue laoreet placerat vel et eros. Nunc efficitur, neque nec suscipit pulvinar, magna ex porttitor ipsum, at mollis nibh sapien et turpis. Fusce turpis mauris, lacinia a pharetra vel, tempus sagittis massa. Pellentesque vulputate ac tellus eu convallis. Donec nec elit risus. Fusce vel pulvinar lorem. Nullam tellus metus, sagittis eget volutpat et, viverra non lectus.</p>
+						<p>Phasellus id ex quam. Praesent sapien metus, ullamcorper ut ligula a, semper maximus ligula. Ut imperdiet finibus efficitur. Aliquam vitae nibh in odio sollicitudin semper. Donec velit magna, auctor vitae metus ut, lacinia tristique ipsum. In nec sem at erat auctor sagittis. Pellentesque semper pretium massa. Sed ex tortor, aliquam finibus lorem id, eleifend tincidunt magna. Etiam volutpat nunc eu neque facilisis tempor. Vivamus et sollicitudin est.</p>						
+						<p>Vivamus luctus quam urna, id euismod nisl auctor ut. Sed sed facilisis magna. Nunc vel placerat lorem. Vestibulum fermentum libero neque, quis maximus enim eleifend ut. Aliquam ullamcorper dui ac est porttitor pulvinar. Vestibulum tincidunt pharetra venenatis. Pellentesque congue bibendum ante, at pulvinar risus gravida sed. Proin et ullamcorper sem, ut feugiat libero. Ut felis erat, sagittis ac sapien at, fermentum tincidunt tortor. Duis rhoncus odio vel lectus tincidunt, quis facilisis ipsum maximus.</p>
+	            	</div>
+            	</div>	            	
             </div>
         </div>                
     </main>
     <!-- Footer -->
-    <footer class="footer page-footer font-small blue"></footer>
+    <footer class="footer page-footer font-small blue" id='footer'></footer>
 
     
 
@@ -35,7 +47,10 @@
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="js/main.js"></script>
     <script src="js/common.js"></script>
-
+	
+	<!-- Kanban JS -->
+	<script src="js/jkanban.js"></script>
+	
     <!-- JS, Popper.js, and jQuery -->
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -54,8 +69,144 @@
                 return response.text()
             })
             .then(data => {
-                document.querySelector("footer").innerHTML = data;
-        });        
+                document.querySelector("#footer").innerHTML = data;
+        }); 
+        $(function() {
+            /* Document Ready */
+            
+            /* Initialize jKanban */
+            var kanban = new jKanban({
+			    element          : '#kdiv',                                      // selector of the kanban container
+			    gutter           : '15px',                                       // gutter of the board
+			    widthBoard       : '250px',                                      // width of the board
+			    responsivePercentage: false,                                     // if it is true I use percentage in the width of the boards and it is not necessary gutter and widthBoard
+			    dragItems        : true,                                         // if false, all items are not draggable
+			    boards           : [
+			    	
+			            {
+			                'id' : '_todo',
+			                'title'  : 'Try Drag me!',
+			                'item'  : [
+			                    {
+			                        'title':'You can drag me too',
+			                    },
+			                    {
+			                        'title':'Buy Milk',
+			                    }
+			                ]
+			            },
+			            {
+			                'id' : '_working',
+			                'title'  : 'Working',
+			                'item'  : [
+			                    {
+			                        'title':'Do Something!',
+			                    },
+			                    {
+			                        'title':'Run?',
+			                    }
+			                ]
+			            },
+			            {
+			                'id' : '_done',
+			                'title'  : 'Done',
+			                'item'  : [
+			                    {
+			                        'title':'All right',
+			                    },
+			                    {
+			                        'title':'Ok!',
+			                    }
+			                ]
+			            },
+			            {
+			                'id' : '_trial1',
+			                'title'  : 'Done',
+			                'item'  : [
+			                    {
+			                        'title':'All right',
+			                    },
+			                    {
+			                        'title':'Ok!',
+			                    }
+			                ]
+			            },
+			            {
+			                'id' : '_trial2',
+			                'title'  : 'Done',
+			                'item'  : [
+			                    {
+			                        'title':'All right',
+			                    },
+			                    {
+			                        'title':'Ok!',
+			                    }
+			                ]
+			            },
+			            {
+			                'id' : '_trial3',
+			                'title'  : 'Done',
+			                'item'  : [
+			                    {
+			                        'title':'All right',
+			                    },
+			                    {
+			                        'title':'Ok!',
+			                    }
+			                ]
+			            },
+			            {
+			                'id' : '_trial4',
+			                'title'  : 'Done',
+			                'item'  : [
+			                    {
+			                        'title':'All right',
+			                    },
+			                    {
+			                        'title':'Ok!',
+			                    }
+			                ]
+			            }
+			        
+			    ],                                           					  // json of boards
+			    dragBoards       : false,                                        // the boards are draggable, if false only item can be dragged
+			    addItemButton    : true,                                         // add a button to board for easy item creation
+			    buttonContent    : '+',                                          // text or html content of the board button
+			    itemHandleOptions: {
+			        enabled             : false,                                 // if board item handle is enabled or not
+			        handleClass         : "item_handle",                         // css class for your custom item handle
+			        customCssHandler    : "drag_handler",                        // when customHandler is undefined, jKanban will use this property to set main handler class
+			        customCssIconHandler: "drag_handler_icon",                   // when customHandler is undefined, jKanban will use this property to set main icon handler class. If you want, you can use font icon libraries here
+			        customHandler       : "<span class='item_handle'>+</span> %s"// your entirely customized handler. Use %s to position item title
+			    },
+			    click            : function (el) {click(el)},                             // callback when any board's item are clicked
+			    dragEl           : function (el, source) {},                     // callback when any board's item are dragged
+			    dragendEl        : function (el) {},                             // callback when any board's item stop drag
+			    dropEl           : function (el, target, source, sibling) {dropEl(el, target, source, sibling)},    // callback when any board's item drop in a board
+			    dragBoard        : function (el, source) {},                     // callback when any board stop drag
+			    dragendBoard     : function (el) {},                             // callback when any board stop drag
+			    buttonClick      : function(el, boardId) {}                      // callback when the board's button is clicked
+			});
+            function click(el){
+            	console.log('Item Clicked');
+            }
+            
+            function dropEl(el, target, source, sibling){
+            	console.log('Element: ',el);
+            	console.log('Source: ',source);
+            	console.log('Target: ',target);
+            	console.log('Sibling: ',sibling);
+            	
+            	if (source != target){
+            		/* Update Database */
+            		
+            	}
+            	else{
+            		/* Do Nothing */	
+            	}            		
+            	
+            }
+        });
     </script>
 </body>
 </html>

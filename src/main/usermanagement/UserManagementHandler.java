@@ -1,6 +1,6 @@
 package main.usermanagement;
 
-import main.db.DataSourceFacade;
+import main.db.DataManager;
 import main.util.PasswordManager;
 import main.util.Response;
 
@@ -22,7 +22,7 @@ public class UserManagementHandler {
 	public static void signup(User user) throws Exception{
 		String passwordHash = PasswordManager.getPasswordHash(user.getPassword());
 		user.setPassword(passwordHash);
-		DataSourceFacade.addUser(user);
+		DataManager.addUser(user);
 	}
 	
 	/**

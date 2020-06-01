@@ -1,0 +1,4 @@
+<queries>
+	<query key="main.db.tables.ApsSuggestionsTable.insertApsForSuggestion">insert into aps_suggestions(name) values (?)</query>
+	<query key="main.db.tables.ApsSuggestionsTable.getApsSuggestions">select name from aps_suggestions</query>
+</queries>

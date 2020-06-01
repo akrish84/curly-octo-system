@@ -57,9 +57,7 @@ public class AuthenticationInterceptor implements Interceptor {
 			if(isExcludedURL(request)) {
 				return action.invoke();
 			}
-			String sessionID = AuthenticationHandler.getSessionID(request);
-			if(!AuthenticationHandler.validateSession(sessionID)) {
-				// handle invalid session
+			if(!AuthenticationHandler.validateCurrentSession(request)) {
 				throw new Exception("Invalid Session");
 			}
 			LOGGER.log(Level.INFO, "Valid Session");

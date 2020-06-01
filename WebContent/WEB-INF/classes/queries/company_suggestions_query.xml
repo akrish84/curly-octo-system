@@ -1,0 +1,4 @@
+<queries>
+	<query key="main.db.tables.CompanySuggestions.insertCompanyForSuggestion">insert into company_suggestions(name) values (?)</query>
+	<query key="main.db.tables.CompanySuggestions.getCompanySuggestions">select name from company_suggestions</query>
+</queries>

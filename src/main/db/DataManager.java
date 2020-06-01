@@ -1,5 +1,6 @@
 package main.db;
 
+import main.db.tables.UsersTable;
 import main.usermanagement.User;
 
 /**
@@ -9,7 +10,7 @@ import main.usermanagement.User;
  * @author akhilesh
  *
  */
-public class DataSourceFacade {
+public class DataManager {
 	
 	/**
 	 * Forwards request to User Table to add user.

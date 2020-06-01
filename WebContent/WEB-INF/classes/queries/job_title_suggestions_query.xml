@@ -1,0 +1,4 @@
+<queries>
+	<query key="main.db.tables.JobTitleSuggestionsTable.insertJobTitleForSuggestion">insert into job_title_suggestions(name) values (?)</query>
+	<query key="main.db.tables.JobTitleSuggestionsTable.fetchJobTitleSuggestions">select job_title from job_title_suggestions</query>
+</queries>

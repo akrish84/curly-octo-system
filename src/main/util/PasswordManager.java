@@ -4,7 +4,7 @@ import java.security.MessageDigest;
 
 import javax.xml.bind.DatatypeConverter;
 
-import main.db.DataSourceFacade;
+import main.db.DataManager;
 
 public class PasswordManager {
 	
@@ -17,7 +17,7 @@ public class PasswordManager {
 	
 	public static Response verifyPassword(String email, String password) throws Exception {
 		Response response = new Response();
-		String passwordHashFromDB = DataSourceFacade.getUserPassword(email);
+		String passwordHashFromDB = DataManager.getUserPassword(email);
 		if(passwordHashFromDB == null || passwordHashFromDB.isEmpty()) {
 			response.setError("Email " + email + " does not exist");
 			return response;

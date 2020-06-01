@@ -2,6 +2,8 @@ package main.util;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,16 +17,14 @@ public class ConfigurationProperties {
 	/**
 	 * Loads config file and stores key:value paris in memory.
 	 * For testing purpose, uncomment second propertyFile initialization
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
 	 * 
 	 * @throws Exception
 	 */
-	public static void init() throws Exception {
-		//Uncomment below line while running project in webserver
+	public static void init() throws FileNotFoundException, IOException {
+
 		File propertyFile = Utils.getFileFromResources(PROPERTY_FILE);
-		
-		//Uncomment below  two lines to test using java directly.
-		//String currentDirectory = System.getProperty("user.dir");
-		//File propertyFile = new File(currentDirectory + "/WebContent/WEB-INF/classes/" + PROPERTY_FILE);
 
 		configurations = new HashMap<>();
 		try (InputStream input = new FileInputStream(propertyFile)) {

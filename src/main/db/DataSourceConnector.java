@@ -1,8 +1,6 @@
 package main.db;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.zaxxer.hikari.HikariDataSource;
@@ -31,7 +29,7 @@ public class DataSourceConnector {
 	 * Create a connection pool to a database with configurations specified in config.properties
 	 * @throws Exception
 	 */
-	private static void createConnectionPool() throws RuntimeException {
+	public static void createConnectionPool() throws RuntimeException {
 		try {
 			String driverClassName = ConfigurationProperties.getConfiguration(KEY_DRIVER_CLASS_NAME);
 			String url = ConfigurationProperties.getConfiguration(KEY_URL);
@@ -69,28 +67,28 @@ public class DataSourceConnector {
 		return source.getConnection();
 	}
 	
-	/**
-	 * Used to test connection
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		try {
-			createConnectionPool();
-			String sql = "insert into temp values ( 1)";
-			Connection connection = source.getConnection();
-	        PreparedStatement statement = null;
-	        ResultSet resultSet = null;
-	        try {
-		        statement = connection.prepareStatement(sql);
-		        int rowsInserted = statement.executeUpdate();
-	        } finally {
-	        		if(resultSet != null) {
-	        			resultSet.close();
-	        		}
-	        		statement.close();
-	        }
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	/**
+//	 * Used to test connection
+//	 * @param args
+//	 */
+//	public static void main(String[] args) {
+//		try {
+//			createConnectionPool();
+//			String sql = "insert into temp values ( 1)";
+//			Connection connection = source.getConnection();
+//	        PreparedStatement statement = null;
+//	        ResultSet resultSet = null;
+//	        try {
+//		        statement = connection.prepareStatement(sql);
+//		        int rowsInserted = statement.executeUpdate();
+//	        } finally {
+//	        		if(resultSet != null) {
+//	        			resultSet.close();
+//	        		}
+//	        		statement.close();
+//	        }
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 }

@@ -1,9 +1,5 @@
 package main.authentication;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,8 +44,7 @@ private static final Map<String, String> SESSION_ID_TO_USER = new HashMap<>();
 		String signedSessionID = sessionIDsignature.sign();
 		// Also store value in db
 		SESSION_ID_TO_USER.put(signedSessionID, email);
-		String urlEncodedSessionID = encodeValue(sessionID);
-		CookiesHandler.addSessionCookie(urlEncodedSessionID, ServletActionContext.getResponse());
+		CookiesHandler.addSessionCookie(signedSessionID, ServletActionContext.getResponse());
 	}
 	
 	/**
@@ -69,8 +64,18 @@ private static final Map<String, String> SESSION_ID_TO_USER = new HashMap<>();
 	 * @return
 	 */
 	public static String getSessionID(HttpServletRequest request) {
-		String encodedSessionID = CookiesHandler.getEncodedSessionFromCookie(request);
-		return decodeValue(encodedSessionID);
+		String sessionID = CookiesHandler.getEncodedSessionFromCookie(request);
+		return sessionID;
+	}
+	
+	/**
+	 * Validates current session 
+	 * @param request
+	 * @return true if current session is valid, false if current session is invalid
+	 */
+	public static boolean validateCurrentSession(HttpServletRequest request) {
+		String sessionID = getSessionID(request);
+		return validateSession(sessionID);
 	}
 	
 	/**
@@ -109,29 +114,29 @@ private static final Map<String, String> SESSION_ID_TO_USER = new HashMap<>();
 		return email;
 	}
 	
-	/**
-	 * URL Encodes the value
-	 * @param value
-	 * @return URL encoded value
-	 */
-	private static String encodeValue(String value) {
-		try {
-			return URLEncoder.encode(value, StandardCharsets.UTF_8.toString());
-		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException(e.getCause());
-		}
-	}
-
-	/**
-	 * Performs URL Decoding
-	 * @param value
-	 * @return URL Decoded value
-	 */
-	private static String decodeValue(String value) {
-		try {
-			return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
-		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException(e.getCause());
-		}
-	}
+//	/**
+//	 * URL Encodes the value
+//	 * @param value
+//	 * @return URL encoded value
+//	 */
+//	private static String encodeValue(String value) {
+//		try {
+//			return URLEncoder.encode(value, StandardCharsets.UTF_8.toString());
+//		} catch (UnsupportedEncodingException e) {
+//			throw new RuntimeException(e.getCause());
+//		}
+//	}
+//
+//	/**
+//	 * Performs URL Decoding
+//	 * @param value
+//	 * @return URL Decoded value
+//	 */
+//	private static String decodeValue(String value) {
+//		try {
+//			return URLDecoder.decode(value, StandardCharsets.UTF_8.toString());
+//		} catch (UnsupportedEncodingException e) {
+//			throw new RuntimeException(e.getCause());
+//		}
+//	}
 }

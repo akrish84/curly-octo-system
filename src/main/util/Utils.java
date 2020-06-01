@@ -11,6 +11,20 @@ import java.net.URL;
  *
  */
 public class Utils {
+	
+	private static boolean RUNNIN_ON_SERVER = false;
+	
+	
+	/**
+	 * Sets running on server flag.
+	 * Flag is used to read files from the right directory based on context.
+	 * 
+	 * @param flag
+	 */
+	public static void setRunningOnServer(boolean flag) {
+		RUNNIN_ON_SERVER = flag;
+	}
+	
 	/**
 	 * Returns file instance for files stored in classes folder in WEB-INF dir.
 	 * @param fileName
@@ -18,7 +32,16 @@ public class Utils {
 	 * @throws Exception IllegalArgumentException if FileNotFound
 	 */
 	
-	public static File getFileFromResources(String fileName) throws Exception{
+	public static File getFileFromResources(String fileName) throws IllegalArgumentException {
+		if(RUNNIN_ON_SERVER) {
+			return getFileFromServerContext(fileName);
+		} else {
+			return getFileFromUserDirContext(fileName);
+		}
+		
+	}
+	
+	private static File getFileFromServerContext(String fileName) throws IllegalArgumentException{
 		ClassLoader classLoader = new Utils().getClass().getClassLoader();
         URL resource = classLoader.getResource(fileName);
         if (resource == null) {
@@ -26,6 +49,11 @@ public class Utils {
         } else {
             return new File(resource.getFile());
         }
+	}
+	
+	private static File getFileFromUserDirContext(String fileName) {
+		String currentDirectory = System.getProperty("user.dir");
+		return new File(currentDirectory + "/WebContent/WEB-INF/classes/" + fileName);
 	}
 	
 	/**

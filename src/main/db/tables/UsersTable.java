@@ -1,4 +1,4 @@
-package main.db;
+package main.db.tables;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import main.db.DataSourceConnector;
+import main.db.QueryProvider;
 import main.usermanagement.User;
 
 /**
@@ -14,7 +16,16 @@ import main.usermanagement.User;
  * @author akhilesh
  *
  */
-public class UsersTable implements UsersTableQueries{
+public class UsersTable {
+	
+	
+	private static final String INSERT_USER = "main.db.tables.UsersTable.insertUser";
+	private static final String GET_USER_PASSWORD = "main.db.tables.UsersTabls.getUserPassword";
+	
+	
+	/***
+	 * INSERT FUNCTIONS
+	 */
 	
 	/**
 	 * adds user details to Users table.
@@ -22,13 +33,13 @@ public class UsersTable implements UsersTableQueries{
 	 * @return id of user.
 	 * @throws Exception
 	 */
-	static Long add(User user) throws SQLException {
+	public static Long add(User user) throws SQLException {
 		Connection connection = DataSourceConnector.getConnection();
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         Long lastInsertId = null;
         try {
-	        statement = connection.prepareStatement(INSERT_USER, Statement.RETURN_GENERATED_KEYS);
+	        statement = connection.prepareStatement(QueryProvider.getQuery(INSERT_USER), Statement.RETURN_GENERATED_KEYS);
 	        statement.setString(1, user.getEmail());
 	        statement.setString(2, user.getPassword());
 	        statement.setString(3, user.getFirstName());
@@ -48,19 +59,23 @@ public class UsersTable implements UsersTableQueries{
         return lastInsertId;
 	}
 	
+	/***
+	 * GET FUNCTIONS
+	 */
+	
 	/**
 	 * Fetches user's password from user's table
 	 * @param email
 	 * @return
 	 * @throws Exception
 	 */
-	static String getUserPassword(String email) throws SQLException {
+	public static String getUserPassword(String email) throws SQLException {
 		Connection connection = DataSourceConnector.getConnection();
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         String password = "";
         try {
-	        statement = connection.prepareStatement(SELECT_USER_PASSWORD);
+	        statement = connection.prepareStatement(QueryProvider.getQuery(GET_USER_PASSWORD));
 	        statement.setString(1, email);
 	        resultSet = statement.executeQuery();
 	        while(resultSet.next()){

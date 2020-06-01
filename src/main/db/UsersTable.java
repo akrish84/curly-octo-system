@@ -3,6 +3,7 @@ package main.db;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import main.usermanagement.User;
@@ -21,7 +22,7 @@ public class UsersTable implements UsersTableQueries{
 	 * @return id of user.
 	 * @throws Exception
 	 */
-	static Long add(User user) throws Exception {
+	static Long add(User user) throws SQLException {
 		Connection connection = DataSourceConnector.getConnection();
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -53,7 +54,7 @@ public class UsersTable implements UsersTableQueries{
 	 * @return
 	 * @throws Exception
 	 */
-	static String getUserPassword(String email) throws Exception {
+	static String getUserPassword(String email) throws SQLException {
 		Connection connection = DataSourceConnector.getConnection();
         PreparedStatement statement = null;
         ResultSet resultSet = null;

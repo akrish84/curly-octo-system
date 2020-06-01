@@ -3,6 +3,8 @@ package main.db;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import com.zaxxer.hikari.HikariDataSource;
 
 import main.util.ConfigurationProperties;
@@ -29,7 +31,7 @@ public class DataSourceConnector {
 	 * Create a connection pool to a database with configurations specified in config.properties
 	 * @throws Exception
 	 */
-	private static void createConnectionPool() throws Exception {
+	private static void createConnectionPool() throws RuntimeException {
 		try {
 			String driverClassName = ConfigurationProperties.getConfiguration(KEY_DRIVER_CLASS_NAME);
 			String url = ConfigurationProperties.getConfiguration(KEY_URL);
@@ -50,16 +52,17 @@ public class DataSourceConnector {
 			source.setMaximumPoolSize(poolSize);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new Exception("Internal Server Error");
+			throw new RuntimeException("Internal Server Error");
 		}
 	}
 	
 	/**
 	 * 
 	 * @return Instance of the DataSource connection created
+	 * @throws SQLException 
 	 * @throws Exception
 	 */
-	public static Connection getConnection() throws Exception {
+	public static Connection getConnection() throws SQLException {
 		if(source == null) {
 			createConnectionPool();
 		}

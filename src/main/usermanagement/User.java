@@ -1,5 +1,11 @@
 package main.usermanagement;
 
+/**
+ * Bean class to store user details
+ * 
+ * @author akhilesh
+ *
+ */
 public class User {
 	private String firstName;
 	private String lastName;

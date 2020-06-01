@@ -1,5 +1,11 @@
 package main.authentication;
 
+/**
+ * Generates a random 8 character session id
+ * 
+ * @author akhilesh
+ *
+ */
 public class SessionIDGenerator {
 	public static String generateID() {
 		int n = 8;

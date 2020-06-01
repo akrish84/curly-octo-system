@@ -1,5 +1,10 @@
 package main.db;
 
+/**
+ * Stores all queries for Users Table
+ * @author akhilesh
+ *
+ */
 public interface UsersTableQueries {
 	
 	// INSERT / UPDATE QUERIES

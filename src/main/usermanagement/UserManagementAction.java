@@ -6,12 +6,18 @@ import java.util.logging.Logger;
 
 import com.opensymphony.xwork2.Action;
 
-import main.authentication.AuthenticationUtil;
+import main.authentication.AuthenticationHandler;
 import main.util.Response;
 import main.util.Utils;
 import main.util.Validator;
 
-
+/**
+ * 
+ * Action class to handle all user management related endpoints
+ * 
+ * @author akhilesh
+ *
+ */
 public class UserManagementAction {
 	private String firstName;
 	private String lastName;
@@ -91,7 +97,7 @@ public class UserManagementAction {
 		try {
 			Response response = UserManagementHandler.login(email, password);
 			if(response.getStatus()) {
-				AuthenticationUtil.createSessionForUser(email);
+				AuthenticationHandler.createSessionForUser(email);
 				responseMessage = Utils.getSuccessMessage(response.getMessage());
 			} else {
 				responseMessage = Utils.getErrorMessage(response.getMessage());

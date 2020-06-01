@@ -7,8 +7,20 @@ import java.sql.Statement;
 
 import main.usermanagement.User;
 
+/**
+ * Executes Queries on Users table.
+ * 
+ * @author akhilesh
+ *
+ */
 public class UsersTable implements UsersTableQueries{
 	
+	/**
+	 * adds user details to Users table.
+	 * @param user
+	 * @return id of user.
+	 * @throws Exception
+	 */
 	static Long add(User user) throws Exception {
 		Connection connection = DataSourceConnector.getConnection();
         PreparedStatement statement = null;
@@ -35,6 +47,12 @@ public class UsersTable implements UsersTableQueries{
         return lastInsertId;
 	}
 	
+	/**
+	 * Fetches user's password from user's table
+	 * @param email
+	 * @return
+	 * @throws Exception
+	 */
 	static String getUserPassword(String email) throws Exception {
 		Connection connection = DataSourceConnector.getConnection();
         PreparedStatement statement = null;

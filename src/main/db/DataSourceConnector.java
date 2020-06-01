@@ -7,6 +7,12 @@ import com.zaxxer.hikari.HikariDataSource;
 
 import main.util.ConfigurationProperties;
 
+/**
+ * Creates a DataSource with connection pooling
+ * 
+ * @author akhilesh
+ *
+ */
 public class DataSourceConnector {
 	
 	private static HikariDataSource source = null;
@@ -19,6 +25,10 @@ public class DataSourceConnector {
 
 	
 
+	/**
+	 * Create a connection pool to a database with configurations specified in config.properties
+	 * @throws Exception
+	 */
 	private static void createConnectionPool() throws Exception {
 		try {
 			String driverClassName = ConfigurationProperties.getConfiguration(KEY_DRIVER_CLASS_NAME);
@@ -44,6 +54,11 @@ public class DataSourceConnector {
 		}
 	}
 	
+	/**
+	 * 
+	 * @return Instance of the DataSource connection created
+	 * @throws Exception
+	 */
 	public static Connection getConnection() throws Exception {
 		if(source == null) {
 			createConnectionPool();
@@ -51,6 +66,10 @@ public class DataSourceConnector {
 		return source.getConnection();
 	}
 	
+	/**
+	 * Used to test connection
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		try {
 			createConnectionPool();

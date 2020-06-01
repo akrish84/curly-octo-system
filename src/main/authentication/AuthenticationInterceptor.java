@@ -4,39 +4,48 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
 
-import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.Interceptor;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
+/**
+ * Struts interceptor to authenticate every requests.
+ * It excludes urls added to EXCLUDED_URLS list.
+ * It checks if the request has a valid session cookie set.
+ * 
+ * @author akhilesh
+ *
+ */
 public class AuthenticationInterceptor implements Interceptor {
 	
 	private static final long serialVersionUID = 1L;
 	private static Logger LOGGER = Logger.getLogger(AuthenticationInterceptor.class.getName());
 
+	/**
+	 * Chcecks if url should be excluded from authentication.
+	 * Links which don't need authentication are excluded (html/jsp/login_page/signup_page etc) 
+	 * @param request
+	 * @return
+	 */
 	private boolean isExcludedURL(HttpServletRequest request) {
 		String path = request.getRequestURI();
-		System.out.println("Path is " + path);
 		for(String excludedURL : AuthenticationConstants.EXCLUDED_URLS) {
 			if(path.contains(excludedURL)) {
-				System.out.println("Excluding");
+				LOGGER.log(Level.FINE, "Excluding url " + path);
 				return true;
 			}
 		}
-		System.out.println("Not excluding");
 		return false;
 	}
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void init() {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -48,8 +57,8 @@ public class AuthenticationInterceptor implements Interceptor {
 			if(isExcludedURL(request)) {
 				return action.invoke();
 			}
-			String sessionID = CookiesHandler.getSessionID(request);
-			if(!AuthenticationUtil.validateSession(sessionID)) {
+			String sessionID = AuthenticationHandler.getSessionID(request);
+			if(!AuthenticationHandler.validateSession(sessionID)) {
 				// handle invalid session
 				throw new Exception("Invalid Session");
 			}

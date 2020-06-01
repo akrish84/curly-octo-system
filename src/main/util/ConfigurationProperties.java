@@ -12,7 +12,12 @@ public class ConfigurationProperties {
 	private final static String PROPERTY_FILE = "config.properties";
 	private static Map<String, String> configurations;
 	
-	
+	/**
+	 * Loads config file and stores key:value paris in memory.
+	 * For testing purpose, uncomment second propertyFile initialization
+	 * 
+	 * @throws Exception
+	 */
 	public static void init() throws Exception {
 		//Uncomment below line while running project in webserver
 		File propertyFile = Utils.getFileFromResources(PROPERTY_FILE);
@@ -32,6 +37,12 @@ public class ConfigurationProperties {
 		}
 	}
 	
+	/**
+	 * Returns value of key stored in config.properties
+	 * @param key
+	 * @return value - stored for the given key
+	 * @throws Exception - If key is not present in config.properties
+	 */
 	public static String getConfiguration(String key) throws Exception {
 		String value = null;
 		if(configurations == null) {

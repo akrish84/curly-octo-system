@@ -13,7 +13,7 @@ import main.db.QueryProvider;
 public class CompanySuggestionsTable {
 	
 	private static final String INSERT_COMPANY_FOR_SUGGESTION = "main.db.tables.CompanySuggestions.insertCompanyForSuggestion";
-	private static final String GET_COMPANY_SUGGESTIONS = "main.db.tables.CompanySuggestions.getCompanySuggestions";
+	private static final String FETCH_COMPANY_SUGGESTIONS = "main.db.tables.CompanySuggestions.getCompanySuggestions";
 	
 	/***
 	 * INSERT FUNCTIONS
@@ -50,13 +50,13 @@ public class CompanySuggestionsTable {
 	 * @return List<String> list of company names.
 	 * @throws SQLException
 	 */
-	public static List<String> getCompanySuggestions() throws SQLException {
+	public static List<String> fetchCompanySuggestions() throws SQLException {
 		Connection connection = DataSourceConnector.getConnection();
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         List<String> suggestions = new ArrayList<>();
         try {
-	        statement = connection.prepareStatement(QueryProvider.getQuery(GET_COMPANY_SUGGESTIONS));
+	        statement = connection.prepareStatement(QueryProvider.getQuery(FETCH_COMPANY_SUGGESTIONS));
 	        resultSet = statement.executeQuery();
 	        while(resultSet.next()){
 	        	suggestions.add(resultSet.getString("NAME"));

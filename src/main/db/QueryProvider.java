@@ -35,7 +35,7 @@ public class QueryProvider {
 
 		for (File file : listOfFiles) {
 		    if (file.isFile() && file.getName().contains(QUERY_FILE_SUFFIX)) {
-		    	QueryFileParser.loadQueriesFromFile(file, QUERIES);
+		    	QueryFileParser.parseFileAndLoadQueries(file, QUERIES);
 		    }
 		}
 	}

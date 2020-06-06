@@ -1,4 +1,4 @@
 <queries>
 	<query key="main.db.tables.UsersTable.insertUser">insert into users(email, password, first_name, last_name) values (?, ?, ?, ?)</query>
-	<query key="main.db.tables.UsersTabls.getUserPassword">select password from users where email = ?</query>
+	<query key="main.db.tables.UsersTabls.getUserPassword">select id, email, first_name, last_name, password from users where email = ?</query>
 </queries>

@@ -6,10 +6,10 @@ import java.util.logging.Logger;
 
 import com.opensymphony.xwork2.Action;
 
-import main.authentication.AuthenticationHandler;
-import main.util.Response;
+import main.db.DataManager;
 import main.util.Utils;
 import main.util.Validator;
+import main.beans.User;
 
 /**
  * 
@@ -95,14 +95,19 @@ public class UserManagementAction {
 		}
 		LOGGER.log(Level.INFO, "Action: Login. User email: " + email);
 		try {
-			Response response = UserManagementHandler.login(email, password);
-			if(response.getStatus()) {
-				AuthenticationHandler.createSessionForUser(email);
-				responseMessage = Utils.getSuccessMessage(response.getMessage());
-			} else {
-				responseMessage = Utils.getErrorMessage(response.getMessage());
+			User user = DataManager.fetchUser(email);
+			if(user != null) {
+				responseMessage = Utils.getErrorMessage("Email does not exist");
+				LOGGER.log(Level.SEVERE, responseMessage);
+			}else {
+				if(UserManagementHandler.login(user, password)) {
+					responseMessage = Utils.getSuccessMessage("User: " + email +" logged in successfully");
+					LOGGER.log(Level.INFO, responseMessage);
+				} else {
+					responseMessage = Utils.getErrorMessage("Wrong password");
+					LOGGER.log(Level.INFO, responseMessage);
+				}
 			}
-			System.out.println(responseMessage);
 		} catch(Exception e) {
 			responseMessage = Utils.getErrorMessage("Action Login: Failed. User Email: " + email);
 			LOGGER.log(Level.SEVERE, responseMessage, e);
@@ -149,5 +154,4 @@ public class UserManagementAction {
 	public void setResponseMessage(String responseMessage) {
 		this.responseMessage = responseMessage;
 	}
-
 }

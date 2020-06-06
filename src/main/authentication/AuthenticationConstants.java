@@ -14,7 +14,7 @@ public class AuthenticationConstants {
 	// AuthenticationHandler
 	
 	public static final String ATTR_NAME_USER_SESSION_ID = "USER_SESSION_ID";
-	public static final String ATTR_NAME_EMAIL = "EMAIL";
+	public static final String ATTR_NAME_USER_ID = "USER_ID";
 	public static final int AUTHENTICATION_FAILED_CODE = 601;
 	public static final List<String> EXCLUDED_URLS;
 	public static final int SESSION_ID_GENERATION_MAX_ATTEMPT = 10;

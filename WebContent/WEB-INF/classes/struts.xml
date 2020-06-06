@@ -58,10 +58,42 @@
 			<result type="dispatcher">/jsp/sign-up.html</result>
 		</action>
 		
-		<action name="dashboard" class="main.usermanagement.UserManagementAction" method="pageDispatcher">
+		<action name="dashboard" class="main.application.ApplicationAction" method="pageDispatcher">
 			<interceptor-ref name="authStack"/>
 			<result name="success" type="dispatcher">/jsp/dashboard.html</result>
 		</action>
+		
+		<action name="suggestions/company/get" class="main.application.SuggestionsAction" method="getCompanySuggestions">
+			<interceptor-ref name="authStack"/>
+			<result type="json" />
+		</action>
+		
+		<action name="suggestions/jobtitle/get" class="main.application.SuggestionsAction" method="getJonTitleSuggestions">
+			<interceptor-ref name="authStack"/>
+			<result type="json" />
+		</action>
+		
+		<action name="suggestions/aps/get" class="main.application.SuggestionsAction" method="getAPSSuggestions">
+			<interceptor-ref name="authStack"/>
+			<result type="json" />
+		</action>
+
+		<action name="application/statuses/get" class="main.application.ApplicationAction" method="getApplicationStatuses">
+			<interceptor-ref name="authStack"/>
+			<result type="json" />
+		</action>
+
+		<action name="application/all/get" class="main.application.ApplicationAction" method="getAllApplications">
+			<interceptor-ref name="authStack"/>
+			<result type="json" />
+		</action>
+		
+		<action name="application/get" class="main.application.ApplicationAction" method="getApplication">
+			<interceptor-ref name="authStack"/>
+			<result type="json" />
+		</action>
+		
+		
 		
 	</package>
 

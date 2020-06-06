@@ -28,7 +28,7 @@ public class QueryFileParser {
 	private static final String SCHEMA_FILE = "queries/queries.xsd";
 	private static Schema schema = null;
 
-	public static Map<String, String> loadQueriesFromFile(File file, Map<String, String> queriesMap) throws ParserConfigurationException, SAXException, IOException {
+	public static Map<String, String> parseFileAndLoadQueries(File file, Map<String, String> queriesMap) throws ParserConfigurationException, SAXException, IOException {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		Document document = builder.parse(file);

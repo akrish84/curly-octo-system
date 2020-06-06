@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 import main.db.DataSourceConnector;
 import main.db.QueryProvider;
-import main.usermanagement.User;
+import main.beans.User;
 
 /**
  * Executes Queries on Users table.
@@ -20,7 +20,7 @@ public class UsersTable {
 	
 	
 	private static final String INSERT_USER = "main.db.tables.UsersTable.insertUser";
-	private static final String GET_USER_PASSWORD = "main.db.tables.UsersTabls.getUserPassword";
+	private static final String FETCH_USER = "main.db.tables.UsersTabls.getUser";
 	
 	
 	/***
@@ -64,22 +64,27 @@ public class UsersTable {
 	 */
 	
 	/**
-	 * Fetches user's password from user's table
+	 * Fetches user's information from user's table
 	 * @param email
-	 * @return
+	 * @return User
 	 * @throws Exception
 	 */
-	public static String getUserPassword(String email) throws SQLException {
+	public static User fetchUser(String email) throws SQLException {
 		Connection connection = DataSourceConnector.getConnection();
         PreparedStatement statement = null;
         ResultSet resultSet = null;
-        String password = "";
         try {
-	        statement = connection.prepareStatement(QueryProvider.getQuery(GET_USER_PASSWORD));
+	        statement = connection.prepareStatement(QueryProvider.getQuery(FETCH_USER));
 	        statement.setString(1, email);
 	        resultSet = statement.executeQuery();
 	        while(resultSet.next()){
-	            password = resultSet.getString(1);
+	        	User user = new User();
+	        	user.setId(resultSet.getLong("id"));
+	            user.setEmail(resultSet.getString("email"));
+	            user.setFirstName(resultSet.getString("first_name"));
+	            user.setLastName(resultSet.getString("last_name"));
+	            user.setPassword(resultSet.getString("password"));
+	            return user;
 	        }
 	        
         } finally {
@@ -88,6 +93,6 @@ public class UsersTable {
         		}
         		statement.close();
         }
-        return password;
+        return null;
 	}
 }

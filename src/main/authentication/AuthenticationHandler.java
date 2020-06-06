@@ -21,18 +21,18 @@ public class AuthenticationHandler {
 	
 // Storing session in db so that when server restarts session can be restored, we have cookie age for 7 days.
 // Store session in db and load values from db to map when session starts
-private static final Map<String, String> SESSION_ID_TO_USER = new HashMap<>();
+private static final Map<String, Long> SESSION_ID_TO_USER = new HashMap<>();
 	
 	
 	/**
-	 * Creates a session for the given email id
+	 * Creates a session for the given userID id
 	 * A random session id is generate, It is signed with a private key.
 	 * the signed session id is then added to the cookie. 
-	 * The session id is mapped to a user and is stored in SESSION_ID_TO_USER. 
-	 * @param email
+	 * The session id is mapped to a user and is stored in SESSION_ID_TO_USER.
+	 * @param userID
 	 * @throws Exception
 	 */
-	public static void createSessionForUser(String email) throws Exception {
+	public static void createSessionForUser(Long userID) throws Exception {
 		String sessionID = null;
 		for(int i = 0 ; sessionID == null && i < AuthenticationConstants.SESSION_ID_GENERATION_MAX_ATTEMPT; i++) {
 			sessionID = SessionIDGenerator.generateID();
@@ -43,8 +43,9 @@ private static final Map<String, String> SESSION_ID_TO_USER = new HashMap<>();
 		HMACSignature sessionIDsignature = new HMACSignature(sessionID);
 		String signedSessionID = sessionIDsignature.sign();
 		// Also store value in db
-		SESSION_ID_TO_USER.put(signedSessionID, email);
+		SESSION_ID_TO_USER.put(signedSessionID, userID);
 		CookiesHandler.addSessionCookie(signedSessionID, ServletActionContext.getResponse());
+		HttpServletRequest request = (HttpServletRequest) ServletActionContext.getRequest();
 	}
 	
 	/**
@@ -95,23 +96,19 @@ private static final Map<String, String> SESSION_ID_TO_USER = new HashMap<>();
 	/**
 	 * 
 	 * Checks sessionID stored in request is valid.
-	 * Email of user mapped to sessionID in SESSION_ID_TO_USER is returned.
+	 * userID mapped to sessionID in SESSION_ID_TO_USER is returned.
 	 * 
-	 * @return email - emailID of logged in user
+	 * @return userID - ID of logged in user
 	 * @throws FailedLoginException
 	 */
-	public static String getLoggedInUserEmail() throws FailedLoginException {
+	public static Long getLoggedInUserID() throws FailedLoginException {
 		HttpServletRequest request = (HttpServletRequest) ServletActionContext.getRequest();
-		HttpSession session = ServletActionContext.getRequest().getSession();
-		String email = (String) session.getAttribute(AuthenticationConstants.ATTR_NAME_EMAIL); 
-		if(email == null || email.isEmpty()) {
-			String sessionID = getSessionID(request);
-			if(sessionID == null || SESSION_ID_TO_USER.get(sessionID) == null) {
-				throw new FailedLoginException("Invalid Session");
-			}
-			email = SESSION_ID_TO_USER.get(sessionID);
+		String sessionID = getSessionID(request);
+		if(sessionID == null || SESSION_ID_TO_USER.get(sessionID) == null) {
+			throw new FailedLoginException("Invalid Session");
 		}
-		return email;
+		return SESSION_ID_TO_USER.get(sessionID);
+		
 	}
 	
 //	/**

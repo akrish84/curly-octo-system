@@ -4,7 +4,7 @@ import java.security.MessageDigest;
 
 import javax.xml.bind.DatatypeConverter;
 
-import main.db.DataManager;
+import main.beans.User;
 
 public class PasswordManager {
 	
@@ -15,20 +15,16 @@ public class PasswordManager {
 		return DatatypeConverter.printHexBinary(digest).toUpperCase();
 	}
 	
-	public static Response verifyPassword(String email, String password) throws Exception {
-		Response response = new Response();
-		String passwordHashFromDB = DataManager.getUserPassword(email);
-		if(passwordHashFromDB == null || passwordHashFromDB.isEmpty()) {
-			response.setError("Email " + email + " does not exist");
-			return response;
+	public static boolean verifyPassword(User user, String password) throws Exception {
+		String passwordHashFromDB = user.getPassword();
+		if(passwordHashFromDB == null) {
+			return false;
 		}
 		String passwordHash = getPasswordHash(password);
 		if(!passwordHash.equals(passwordHashFromDB)) {
-			response.setError("Wrong password");
-		} else {
-			response.setSuccess("Password matched");
+			return false;
 		}
-		return response;
+		return true;
 	}
 	
 	public static void main(String[] args) {

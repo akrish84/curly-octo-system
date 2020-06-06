@@ -1,8 +1,10 @@
 package main.usermanagement;
 
+
+import main.authentication.AuthenticationHandler;
 import main.db.DataManager;
 import main.util.PasswordManager;
-import main.util.Response;
+import main.beans.*;
 
 /**
  * Handler class to perform UserManagement operations
@@ -26,16 +28,19 @@ public class UserManagementHandler {
 	}
 	
 	/**
-	 * Verifies if user is logged in.
-	 * Login status with message is returned as Response object.
-	 * 
-	 * @param email
+	 * Logs in user if password matches db stored password and returns true
+	 * If password does not match, returns false
+	 * @param user
 	 * @param password
-	 * @return Response: true -> login success, false -> login failed
+	 * @return true if password matches db password else returns false
 	 * @throws Exception
 	 */
-	public static Response login(String email, String password) throws Exception {
-		return PasswordManager.verifyPassword(email, password);
+	public static boolean login(User user, String password) throws Exception {
+		if(!PasswordManager.verifyPassword(user, password)) {
+			return false;
+		}
+		AuthenticationHandler.createSessionForUser(user.getId());
+		return true;
 	}
 	
 }

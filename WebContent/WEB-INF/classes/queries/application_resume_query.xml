@@ -1,0 +1,4 @@
+<queries>
+	<query key="main.db.tables.ResumesTable.insertResumeDetails">insert into resumes(file_path, file_name, hash) values (?, ?, ?)</query>
+	<query key="main.db.tables.ResumesTable.getResumeDetails">select file_path, file_name, hash from resumes</query>
+</queries>

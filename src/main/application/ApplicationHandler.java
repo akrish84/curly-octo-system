@@ -1,7 +1,9 @@
 package main.application;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import main.beans.ApplicationStatus;
 import main.db.DataManager;
@@ -22,7 +24,7 @@ public class ApplicationHandler {
 	 * @throws Exception
 	 */
 	
-	public static void addDefaultOptionsForUser(Long userID) throws Exception {
+	public static void addDefaultOptionsForUser(Long userID) throws SQLException {
 		List<ApplicationStatus> statuses = new ArrayList<>();
 		ApplicationStatus wishlist = new ApplicationStatus();
 		wishlist.setStatus(DefaultApplicationStatuses.WISHLIST.getStatus());
@@ -46,6 +48,10 @@ public class ApplicationHandler {
 		statuses.add(offer);
 		
 		DataManager.addStatusesForUser(statuses, userID);
+	}
+	
+	public static Map<Long, ApplicationStatus> getApplicationStatusesForUser(Long userID) throws SQLException {
+		return DataManager.getApplicationStatusesForUser(userID);
 	}
 
 }

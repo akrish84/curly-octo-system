@@ -5,7 +5,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import main.application.ApplicationHandler;
-import main.authentication.AuthenticationHandler;
+import main.authentication.SessionHandler;
 import main.db.DataManager;
 import main.util.PasswordManager;
 import main.beans.*;
@@ -51,7 +51,7 @@ public class UserManagementHandler {
 		if(!PasswordManager.verifyPassword(user, password)) {
 			return false;
 		}
-		AuthenticationHandler.createSessionForUser(user.getId());
+		SessionHandler.createSessionForUser(user.getId());
 		return true;
 	}
 	

@@ -2,6 +2,8 @@
 <!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <struts>
+	<constant name="struts.action.extension" value=","/> 
+	<constant name="struts.enable.SlashesInActionNames" value="true"/>
 
 	<package name="website-default" extends="struts-default,json-default">
 
@@ -78,7 +80,7 @@
 			<result type="json" />
 		</action>
 
-		<action name="application/statuses/get" class="main.application.ApplicationAction" method="getApplicationStatuses">
+		<action name="user/statuses" class="main.application.ApplicationAction" method="getUserStatuses">
 			<interceptor-ref name="authStack"/>
 			<result type="json" />
 		</action>
@@ -92,9 +94,7 @@
 			<interceptor-ref name="authStack"/>
 			<result type="json" />
 		</action>
-		
-		
-		
+
 	</package>
 
 </struts>

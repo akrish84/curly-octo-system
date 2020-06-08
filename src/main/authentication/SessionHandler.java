@@ -5,7 +5,6 @@ import java.util.Map;
 
 import javax.security.auth.login.FailedLoginException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
 
@@ -16,7 +15,7 @@ import org.apache.struts2.ServletActionContext;
  *
  */
 
-public class AuthenticationHandler {
+public class SessionHandler {
 
 	
 // Storing session in db so that when server restarts session can be restored, we have cookie age for 7 days.
@@ -45,7 +44,6 @@ private static final Map<String, Long> SESSION_ID_TO_USER = new HashMap<>();
 		// Also store value in db
 		SESSION_ID_TO_USER.put(signedSessionID, userID);
 		CookiesHandler.addSessionCookie(signedSessionID, ServletActionContext.getResponse());
-		HttpServletRequest request = (HttpServletRequest) ServletActionContext.getRequest();
 	}
 	
 	/**
@@ -108,7 +106,6 @@ private static final Map<String, Long> SESSION_ID_TO_USER = new HashMap<>();
 			throw new FailedLoginException("Invalid Session");
 		}
 		return SESSION_ID_TO_USER.get(sessionID);
-		
 	}
 	
 //	/**

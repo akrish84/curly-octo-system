@@ -121,10 +121,9 @@ public class UserApplicationStatusesTable {
 	        	ApplicationStatus status = new ApplicationStatus();
 	        	status.setId(resultSet.getLong("id"));
 	        	status.setStatus(resultSet.getString("status"));
-	        	status.setRank(resultSet.getInt("`rank`"));
+	        	status.setRank(resultSet.getInt("rank"));
 	        	statuses.put(status.getId(), status);
 	        }
-	        
         } finally {
     		if(resultSet != null) {
     			resultSet.close();

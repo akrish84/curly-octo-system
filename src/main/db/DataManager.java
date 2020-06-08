@@ -2,6 +2,7 @@ package main.db;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import main.db.tables.CompanySuggestionsTable;
 import main.db.tables.JobTitleSuggestionsTable;
@@ -79,6 +80,11 @@ public class DataManager {
 	
 	public static void addStatusesForUser(List<ApplicationStatus> statuses, Long userID) throws SQLException {
 		UserApplicationStatusesTable.addStatusesForUser(statuses, userID);
+	}
+	
+
+	public static Map<Long, ApplicationStatus> getApplicationStatusesForUser(Long userID) throws SQLException {
+		return UserApplicationStatusesTable.fetchAllApplicationStatusForUser(userID);
 	}
 
 }

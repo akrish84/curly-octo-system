@@ -1,8 +1,8 @@
 # curly-octo-system
 1. Save all your job application's information in one place.
 2. User friendly kanban view to organize applications.
-3. Helpful insights to improve applications by analyzing job description and resume.
-4. Reports to help understand application progress.
+3. Helpful insights to improve your job applications by analyzing job descriptions and resume.
+4. Reports to help understand your application progress.
 
 # Requirements:
 1. Java jdk

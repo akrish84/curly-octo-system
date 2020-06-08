@@ -38,6 +38,12 @@ public class Startup extends HttpServlet{
 			System.out.println("SUCCESSFUL");
 			System.out.println("-----------------------------------------");
 			
+			System.out.println("------------------------------------------------------------------------------------------------------------------------");
+			System.out.println("                                       SERVER STARTUP SUCCESSFUL                                                        ");
+			System.out.println("------------------------------------------------------------------------------------------------------------------------");
+			
+			
+			
 		} catch (Exception e) {
 			System.out.println("SERVER STARTUP FAIELD");
 			throw new ServletException(e);

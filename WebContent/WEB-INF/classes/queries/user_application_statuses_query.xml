@@ -1,0 +1,5 @@
+<queries>
+	<query key="main.db.tables.UserApplicationStatusesTable.addUserStatus">insert into user_application_statuses(status, user_id, `rank`) values (?, ?, ?)</query>
+	<query key="main.db.tables.UserApplicationStatusesTable.fetchAllApplicationStatusForUser">select id, status, `rank` from user_application_statuses where user_id = ?</query>
+	
+</queries>

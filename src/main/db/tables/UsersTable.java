@@ -28,12 +28,11 @@ public class UsersTable {
 	 */
 	
 	/**
-	 * adds user details to Users table.
+	 * adds user details to Users table and sets userID to user object.
 	 * @param user
-	 * @return id of user.
 	 * @throws Exception
 	 */
-	public static Long add(User user) throws SQLException {
+	public static void add(User user) throws SQLException {
 		Connection connection = DataSourceConnector.getConnection();
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -51,12 +50,14 @@ public class UsersTable {
 	            lastInsertId = resultSet.getLong(1);
         		}
         } finally {
-        		if(resultSet != null) {
-        			resultSet.close();
-        		}
-        		statement.close();
+    		if(resultSet != null) {
+    			resultSet.close();
+    		}
+    		if(statement != null) {
+    			statement.close();
+    		}
         }
-        return lastInsertId;
+        user.setId(lastInsertId);
 	}
 	
 	/***
@@ -88,10 +89,12 @@ public class UsersTable {
 	        }
 	        
         } finally {
-        		if(resultSet != null) {
-        			resultSet.close();
-        		}
-        		statement.close();
+    		if(resultSet != null) {
+    			resultSet.close();
+    		}
+    		if(statement != null) {
+    			statement.close();
+    		}
         }
         return null;
 	}

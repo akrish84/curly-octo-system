@@ -62,12 +62,13 @@ public class UserManagementAction {
 			responseMessage = Utils.getSuccessMessage("User " + email + " Successfully signed up");
 			LOGGER.log(Level.INFO, responseMessage);
 		} catch(SQLIntegrityConstraintViolationException e ) {
+			e.printStackTrace();
 			if(e.getMessage().contains("email")) {
 				responseMessage = Utils.getErrorMessage("Email ID already exists");
 			} else {
 				responseMessage = Utils.getErrorMessage("Failed to sign up, please try again later");
 			}
-			LOGGER.log(Level.INFO, responseMessage);
+			LOGGER.log(Level.SEVERE, responseMessage, e);
 		}
 		catch(Exception e) {
 			responseMessage = Utils.getErrorMessage("Failed to sign up, please try again later");
@@ -96,7 +97,7 @@ public class UserManagementAction {
 		LOGGER.log(Level.INFO, "Action: Login. User email: " + email);
 		try {
 			User user = DataManager.fetchUser(email);
-			if(user != null) {
+			if(user == null) {
 				responseMessage = Utils.getErrorMessage("Email does not exist");
 				LOGGER.log(Level.SEVERE, responseMessage);
 			}else {

@@ -20,12 +20,7 @@ create table jobs (
 	FOREIGN KEY (aps_id) REFERENCES aps(id)
 );
 
-create table default_status ( 
-	status varchar(52), 
-	`rank` smallint unique 
-);
-
-create table status ( 
+create table user_application_statuses ( 
 	id int unsigned auto_increment not null primary key, 
 	status varchar(52) not null, 
 	user_id int unsigned not null, 
@@ -63,7 +58,7 @@ create table applications (
 	user_id int unsigned not null, 
 	resume_id int unsigned , 
 	FOREIGN KEY (job_id) references jobs(id), 
-	FOREIGN KEY (status_id) references status(id), 
+	FOREIGN KEY (status_id) references user_application_statuses(id), 
 	FOREIGN KEY (user_id) references users(id), 
 	FOREIGN KEY (resume_id) references resumes(id)
 );

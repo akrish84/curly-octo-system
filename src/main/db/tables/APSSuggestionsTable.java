@@ -29,16 +29,14 @@ public class APSSuggestionsTable {
 	public static void addApsForSuggestion(String apsName) throws SQLException {
 		Connection connection = DataSourceConnector.getConnection();
         PreparedStatement statement = null;
-        ResultSet resultSet = null;
         try {
 	        statement = connection.prepareStatement(QueryProvider.getQuery(INSERT_APS_FOR_SUGGESTION));
 	        statement.setString(1, apsName);
 	        statement.executeUpdate();
         } finally {
-        		if(resultSet != null) {
-        			resultSet.close();
-        		}
-        		statement.close();
+        	if(statement != null) {
+    			statement.close();
+    		}
         }
 	}
 	
@@ -69,7 +67,9 @@ public class APSSuggestionsTable {
         		if(resultSet != null) {
         			resultSet.close();
         		}
-        		statement.close();
+        		if(statement != null) {
+        			statement.close();
+        		}
         }
         return suggestions;
 	}

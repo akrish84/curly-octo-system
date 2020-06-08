@@ -30,16 +30,14 @@ public class JobTitleSuggestionsTable {
 	public static void addJobTitleForSuggestion(String jobTitle) throws SQLException {
 		Connection connection = DataSourceConnector.getConnection();
         PreparedStatement statement = null;
-        ResultSet resultSet = null;
         try {
 	        statement = connection.prepareStatement(INSERT_JOB_TITLE_FOR_SUGGESTION);
 	        statement.setString(1, jobTitle);
 	        statement.executeUpdate();
         } finally {
-        		if(resultSet != null) {
-        			resultSet.close();
-        		}
-        		statement.close();
+        	if(statement != null) {
+    			statement.close();
+    		}
         }
 	}
 	
@@ -69,7 +67,9 @@ public class JobTitleSuggestionsTable {
         		if(resultSet != null) {
         			resultSet.close();
         		}
-        		statement.close();
+        		if(statement != null) {
+        			statement.close();
+        		}
         }
         return suggestions;
 	}

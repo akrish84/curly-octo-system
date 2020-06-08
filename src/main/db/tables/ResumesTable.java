@@ -25,7 +25,6 @@ public class ResumesTable {
 	public static void addResumeDetails(Resume resume) throws SQLException {
 		Connection connection = DataSourceConnector.getConnection();
         PreparedStatement statement = null;
-        ResultSet resultSet = null;
         try {
 	        statement = connection.prepareStatement(QueryProvider.getQuery(INSERT_RESUME_DETAILS));
 	        statement.setString(1, resume.getFilePath());
@@ -33,10 +32,9 @@ public class ResumesTable {
 	        statement.setString(3, resume.getHash());
 	        statement.executeUpdate();
         } finally {
-        		if(resultSet != null) {
-        			resultSet.close();
-        		}
-        		statement.close();
+        	if(statement != null) {
+    			statement.close();
+    		}
         }
 	}
 	
@@ -69,7 +67,9 @@ public class ResumesTable {
         		if(resultSet != null) {
         			resultSet.close();
         		}
-        		statement.close();
+        		if(statement != null) {
+        			statement.close();
+        		}
         }
         return null;
 	}

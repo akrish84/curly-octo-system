@@ -27,21 +27,19 @@ public class CompanySuggestionsTable {
 	public static void addCompanyForSuggestion(String companyName) throws SQLException {
 		Connection connection = DataSourceConnector.getConnection();
         PreparedStatement statement = null;
-        ResultSet resultSet = null;
         try {
 	        statement = connection.prepareStatement(QueryProvider.getQuery(INSERT_COMPANY_FOR_SUGGESTION));
 	        statement.setString(1, companyName);
 	        statement.executeUpdate();
         } finally {
-        		if(resultSet != null) {
-        			resultSet.close();
-        		}
-        		statement.close();
+        	if(statement != null) {
+    			statement.close();
+    		}
         }
 	}
 	
 	/***
-	 * GET FUNCTIONS
+	 * FETCH FUNCTIONS
 	 */
 	
 	/**
@@ -66,7 +64,9 @@ public class CompanySuggestionsTable {
         		if(resultSet != null) {
         			resultSet.close();
         		}
-        		statement.close();
+        		if(statement != null) {
+        			statement.close();
+        		}
         }
         return suggestions;
 	}

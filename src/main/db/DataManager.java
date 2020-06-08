@@ -5,7 +5,9 @@ import java.util.List;
 
 import main.db.tables.CompanySuggestionsTable;
 import main.db.tables.JobTitleSuggestionsTable;
+import main.db.tables.UserApplicationStatusesTable;
 import main.db.tables.UsersTable;
+import main.beans.ApplicationStatus;
 import main.beans.User;
 import main.db.tables.APSSuggestionsTable;
 
@@ -63,6 +65,20 @@ public class DataManager {
 	 */
 	public static List<String> fetchAPSSuggestions() throws SQLException {
 		return APSSuggestionsTable.fetchApsSuggestions();
+	}
+	
+	/**
+	 * Adds/Updates statuses in DB for user.
+	 * If status ID is not null or if status.id does not exist in existing user statuses -> status is inserted as new status
+	 * If status already present in existing user statuses -> status, rank, userID is updated.
+	 * 
+	 * @param statuses
+	 * @param userID
+	 * @throws SQLException
+	 */
+	
+	public static void addStatusesForUser(List<ApplicationStatus> statuses, Long userID) throws SQLException {
+		UserApplicationStatusesTable.addStatusesForUser(statuses, userID);
 	}
 
 }

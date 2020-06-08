@@ -12,7 +12,7 @@
 # Build project
 1. Go to project folder and enter command
   ant -f build.xml
-2. A war file ROOT.war is created inside folder war
+2. A war file ROOT.war is created inside folder build/war
 3. Copy ROOT.war to apache tomcat's webapps dir.
 4. Start tomcat
 5. In browser enter http://localhost:8080/ [Assuming tomcat is running on 8080 default port]

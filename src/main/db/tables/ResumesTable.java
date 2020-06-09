@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import main.beans.Resume;
-import main.db.DataSourceConnector;
 import main.db.QueryProvider;
 
 public class ResumesTable {
@@ -22,8 +21,7 @@ public class ResumesTable {
 	 * @param resume
 	 * @throws SQLException
 	 */
-	public static void addResumeDetails(Resume resume) throws SQLException {
-		Connection connection = DataSourceConnector.getConnection();
+	public static void addResumeDetails(Resume resume, Connection connection) throws SQLException {
         PreparedStatement statement = null;
         try {
 	        statement = connection.prepareStatement(QueryProvider.getQuery(INSERT_RESUME_DETAILS));
@@ -49,8 +47,7 @@ public class ResumesTable {
 	 * @return List<String> list of company names.
 	 * @throws SQLException
 	 */
-	public static Resume fetchResumeDetails() throws SQLException {
-		Connection connection = DataSourceConnector.getConnection();
+	public static Resume fetchResumeDetails(Connection connection) throws SQLException {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {

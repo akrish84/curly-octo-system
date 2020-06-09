@@ -1,6 +1,15 @@
 package main.beans;
 
-public class ApplicationStatus implements Comparable<ApplicationStatus>{
+import java.io.Serializable;
+
+public class ApplicationStatus implements Comparable<ApplicationStatus>, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5738067862182112950L;
+
+	public static final int DEFAULT_RANK_GAP = 2014;
+	
 	private String status;
 	private int rank;
 	private Long id;
@@ -10,6 +19,10 @@ public class ApplicationStatus implements Comparable<ApplicationStatus>{
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	@Override
+	public String toString() {
+		return "ApplicationStatus [status=" + status + ", rank=" + rank + ", id=" + id + "]";
 	}
 	public int getRank() {
 		return rank;

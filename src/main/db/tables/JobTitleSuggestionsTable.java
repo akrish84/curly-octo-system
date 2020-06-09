@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.db.DataSourceConnector;
 import main.db.QueryProvider;
 
 public class JobTitleSuggestionsTable {
@@ -27,8 +26,7 @@ public class JobTitleSuggestionsTable {
 	 * @throws SQLException
 	 */
 
-	public static void addJobTitleForSuggestion(String jobTitle) throws SQLException {
-		Connection connection = DataSourceConnector.getConnection();
+	public static void addJobTitleForSuggestion(String jobTitle, Connection connection) throws SQLException {
         PreparedStatement statement = null;
         try {
 	        statement = connection.prepareStatement(INSERT_JOB_TITLE_FOR_SUGGESTION);
@@ -51,8 +49,7 @@ public class JobTitleSuggestionsTable {
 	 * @return List<String> list of company names.
 	 * @throws SQLException
 	 */
-	public static List<String> fetchJobTitleSuggestions() throws SQLException {
-		Connection connection = DataSourceConnector.getConnection();
+	public static List<String> fetchJobTitleSuggestions(Connection connection) throws SQLException {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         List<String> suggestions = new ArrayList<>();

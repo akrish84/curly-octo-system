@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.db.DataSourceConnector;
 import main.db.QueryProvider;
 
 public class APSSuggestionsTable {
@@ -26,8 +25,7 @@ public class APSSuggestionsTable {
 	 * @param apsName
 	 * @throws SQLException
 	 */
-	public static void addApsForSuggestion(String apsName) throws SQLException {
-		Connection connection = DataSourceConnector.getConnection();
+	public static void addApsForSuggestion(String apsName, Connection connection) throws SQLException {
         PreparedStatement statement = null;
         try {
 	        statement = connection.prepareStatement(QueryProvider.getQuery(INSERT_APS_FOR_SUGGESTION));
@@ -51,8 +49,7 @@ public class APSSuggestionsTable {
 	 * @return List<String> list of company names.
 	 * @throws SQLException
 	 */
-	public static List<String> fetchApsSuggestions() throws SQLException {
-		Connection connection = DataSourceConnector.getConnection();
+	public static List<String> fetchApsSuggestions(Connection connection) throws SQLException {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         List<String> suggestions = new ArrayList<>();

@@ -27,7 +27,6 @@ public class ApplicationTable {
 	private static final String COLUMN_RESUME_ID = "resume_id";
 	
 	
-	
 	/***
 	 * INSERT FUNCTIONS
 	 */
@@ -44,8 +43,7 @@ public class ApplicationTable {
 	 * @return List of User's Applications
 	 * @throws SQLException
 	 */
-	public static List<Application> fetchUserApplications(Long userID) throws SQLException {
-		Connection connection = DataSourceConnector.getConnection();
+	public static List<Application> fetchUserApplications(Long userID, Connection connection) throws SQLException {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         List<Application> applications = new ArrayList<>();

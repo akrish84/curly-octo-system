@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import main.db.DataSourceConnector;
 import main.db.QueryProvider;
 import main.beans.User;
 
@@ -39,8 +38,7 @@ public class UsersTable {
 	 * @param user
 	 * @throws Exception
 	 */
-	public static void add(User user) throws SQLException {
-		Connection connection = DataSourceConnector.getConnection();
+	public static void add(User user, Connection connection) throws SQLException {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         Long lastInsertId = null;
@@ -77,8 +75,7 @@ public class UsersTable {
 	 * @return User
 	 * @throws Exception
 	 */
-	public static User fetchUser(String email) throws SQLException {
-		Connection connection = DataSourceConnector.getConnection();
+	public static User fetchUser(String email, Connection connection) throws SQLException {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {

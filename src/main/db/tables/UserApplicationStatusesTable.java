@@ -9,14 +9,14 @@ import java.util.List;
 import java.util.Map;
 
 import main.beans.ApplicationStatus;
-import main.db.DataSourceConnector;
 import main.db.QueryProvider;
-import main.db.Transaction;
 
 public class UserApplicationStatusesTable {
 	
 	private static final String INSER_USER_STATUS = "main.db.tables.UserApplicationStatusesTable.addUserStatus";
+	private static final String UPDATE_USER_STATUS = "main.db.tables.UserApplicationStatusesTable.updateUserStatus";
 	private static final String FETCH_ALL_APPLICATION_STATUSES_FOR_USER = "main.db.tables.UserApplicationStatusesTable.fetchAllApplicationStatusForUser";
+	private static final String FETCH_MAX_RANK_FOR_USER = "main.db.tables.UserApplicationStatusesTable.fetchMaxRankForUser";
 	
 	
 	/***
@@ -25,75 +25,66 @@ public class UserApplicationStatusesTable {
 
 
 	/**
-	 * Adds/Updates statuses in DB for user.
-	 * If status ID is not null or if status.id does not exist in existing user statuses -> status is inserted as new status
-	 * If status already present in existing user statuses -> status, rank, userID is updated.
-	 * 
+	 * Adds statuses for user.
 	 * @param statuses
 	 * @param userID
+	 * @param connection
 	 * @throws SQLException
 	 */
-	public static void addStatusesForUser(List<ApplicationStatus> statuses, long userID) throws SQLException {
-		Connection connection = DataSourceConnector.getConnection();
-        PreparedStatement insertStatement = null;
-        PreparedStatement updateStatement = null;
-        Transaction transaction = new Transaction(connection);
+	public static void addStatusesForUser(List<ApplicationStatus> statuses, long userID, Connection connection) throws SQLException {
+        PreparedStatement statement = null;
         try {
-        	transaction.begin();
-        	insertStatement = connection.prepareStatement(QueryProvider.getQuery(INSER_USER_STATUS));
-        	updateStatement = connection.prepareStatement(QueryProvider.getQuery(INSER_USER_STATUS));
-        	Map<Long, ApplicationStatus> existingStatuses = fetchAllApplicationStatusForUser(userID);
-        	
-        	
-	        for(ApplicationStatus status : statuses) {
-	        	if(status.getId() == null || !existingStatuses.containsKey(status.getId())) {
-	        		buildStatement(status, userID, insertStatement);
-	        	} else {
-	        		buildStatement(status, userID, updateStatement);
-	        	}
-	        }
-	        int[] results = insertStatement.executeBatch();
+        	statement = connection.prepareStatement(QueryProvider.getQuery(INSER_USER_STATUS));
+        	for(ApplicationStatus status : statuses) {
+        		statement.setString(1, status.getStatus());
+                statement.setLong(2, userID);
+                statement.setInt(3, status.getRank());
+                statement.addBatch();
+        	}
+        	int[] results = statement.executeBatch();
 	        for(int result: results) {
 	        	if(result == PreparedStatement.EXECUTE_FAILED) {
-	        		throw new SQLException("Failed to insert status for user " + userID);
+	        		throw new SQLException("Failed to add status for user " + userID);
 	        	}
 	        }
-	        results = updateStatement.executeBatch();
-	        for(int result: results) {
-	        	if(result == PreparedStatement.EXECUTE_FAILED) {
-	        		throw new SQLException("Failed to update status for user " + userID);
-	        	}
-	        }
-	        transaction.commit();
-	        
-        } catch (SQLException e) {
-        	transaction.rollback();
-        	throw e;
-        }
-        finally {
-        	if(insertStatement != null) {
-        		insertStatement.close();
+        } finally {
+        	if(statement != null) {
+        		statement.close();
     		}
-        	if(updateStatement != null) {
-        		updateStatement.close();
-    		}
-        	transaction.end();
         }
 	}
+
 	
 	/**
-	 * Populates statement with given status details.
-	 * 
-	 * @param status
+	 * Updates statuses for user.
+	 * @param statuses
 	 * @param userID
-	 * @param statement
+	 * @param connection
 	 * @throws SQLException
 	 */
-	private static void buildStatement(ApplicationStatus status, long userID, PreparedStatement statement) throws SQLException {
-        statement.setString(1, status.getStatus());
-        statement.setLong(2, userID);
-        statement.setInt(3, status.getRank());
-        statement.addBatch();
+	public static void updateStatusesForUser(List<ApplicationStatus> statuses, long userID, Connection connection) throws SQLException {
+        PreparedStatement statement = null;
+        try {
+        	statement = connection.prepareStatement(QueryProvider.getQuery(UPDATE_USER_STATUS));
+        	for(ApplicationStatus status : statuses) {
+        		System.out.println("In rs " + status.getStatus());
+        		statement.setString(1, status.getStatus());
+                statement.setInt(2, status.getRank());
+                statement.setLong(3, userID);
+                statement.setLong(4, status.getId());
+                statement.addBatch();
+        	}
+        	int[] results = statement.executeBatch();
+	        for(int result: results) {
+	        	if(result == PreparedStatement.EXECUTE_FAILED) {
+	        		throw new SQLException("Failed to add status for user " + userID);
+	        	}
+	        }
+        } finally {
+        	if(statement != null) {
+        		statement.close();
+    		}
+        }
 	}
 	
 	/***
@@ -108,8 +99,7 @@ public class UserApplicationStatusesTable {
 	 * @return a map of user statuses -> Map<statusID , ApplicationStatus>
 	 * @throws SQLException
 	 */
-	public static Map<Long, ApplicationStatus> fetchAllApplicationStatusForUser(Long userID) throws SQLException {
-		Connection connection = DataSourceConnector.getConnection();
+	public static Map<Long, ApplicationStatus> fetchAllApplicationStatusForUser(Long userID, Connection connection) throws SQLException {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         Map<Long, ApplicationStatus> statuses = new HashMap<>();
@@ -135,4 +125,31 @@ public class UserApplicationStatusesTable {
         return statuses;
 	}
 
+	
+	/**
+	 * Fetches max rank of status for given user
+	 * @param userID
+	 * @return max rank of status for user.
+	 * @throws SQLException
+	 */
+	public static int fetchMaxStatusRankForUser(Long userID, Connection connection) throws SQLException {
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+	        statement = connection.prepareStatement(QueryProvider.getQuery(FETCH_MAX_RANK_FOR_USER));
+	        statement.setLong(1, userID);
+	        resultSet = statement.executeQuery();
+	        while(resultSet.next()){
+	        	return resultSet.getInt("max_rank");
+	        }
+        } finally {
+    		if(resultSet != null) {
+    			resultSet.close();
+    		}
+    		if(statement != null) {
+    			statement.close();
+    		}
+        }
+        return 1;
+	}
 }

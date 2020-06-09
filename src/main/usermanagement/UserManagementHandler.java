@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import main.application.ApplicationHandler;
 import main.authentication.SessionHandler;
-import main.db.DataManager;
+import main.db.DatabaseManager;
 import main.util.PasswordManager;
 import main.beans.*;
 
@@ -31,7 +31,7 @@ public class UserManagementHandler {
 	public static void signup(User user) throws Exception{
 		String passwordHash = PasswordManager.getPasswordHash(user.getPassword());
 		user.setPassword(passwordHash);
-		DataManager.addUser(user);
+		new DatabaseManager().addUser(user);
 		try {
 			ApplicationHandler.addDefaultOptionsForUser(user.getId());
 		} catch(Exception e) {

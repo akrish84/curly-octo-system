@@ -65,17 +65,17 @@
 			<result name="success" type="dispatcher">/jsp/dashboard.html</result>
 		</action>
 		
-		<action name="suggestions/company/get" class="main.application.SuggestionsAction" method="getCompanySuggestions">
+		<action name="suggestions/company" class="main.application.SuggestionsAction" method="getCompanySuggestions">
 			<interceptor-ref name="authStack"/>
 			<result type="json" />
 		</action>
 		
-		<action name="suggestions/jobtitle/get" class="main.application.SuggestionsAction" method="getJonTitleSuggestions">
+		<action name="suggestions/jobtitle" class="main.application.SuggestionsAction" method="getJonTitleSuggestions">
 			<interceptor-ref name="authStack"/>
 			<result type="json" />
 		</action>
 		
-		<action name="suggestions/aps/get" class="main.application.SuggestionsAction" method="getAPSSuggestions">
+		<action name="suggestions/aps" class="main.application.SuggestionsAction" method="getAPSSuggestions">
 			<interceptor-ref name="authStack"/>
 			<result type="json" />
 		</action>
@@ -90,11 +90,16 @@
 			<result type="json" />
 		</action>
 
-		<action name="application/all/get" class="main.application.ApplicationAction" method="AllApplications">
+		<action name="statuses/update" class="main.application.ApplicationAction" method="updateStatuses">
 			<interceptor-ref name="authStack"/>
 			<result type="json" />
 		</action>
 		
+		<action name="status/add" class="main.application.ApplicationAction" method="addStatus">
+			<interceptor-ref name="authStack"/>
+			<result type="json" />
+		</action>
+
 		<action name="application/get" class="main.application.ApplicationAction" method="getApplication">
 			<interceptor-ref name="authStack"/>
 			<result type="json" />

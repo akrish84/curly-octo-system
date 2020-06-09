@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import com.opensymphony.xwork2.Action;
 
-import main.db.DataManager;
+import main.db.DatabaseManager;
 import main.util.Utils;
 import main.util.Validator;
 import main.beans.User;
@@ -96,7 +96,7 @@ public class UserManagementAction {
 		}
 		LOGGER.log(Level.INFO, "Action: Login. User email: " + email);
 		try {
-			User user = DataManager.fetchUser(email);
+			User user = new DatabaseManager().fetchUser(email);
 			if(user == null) {
 				responseMessage = Utils.getErrorMessage("Email does not exist");
 				LOGGER.log(Level.SEVERE, responseMessage);

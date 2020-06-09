@@ -58,7 +58,7 @@ public class ApplicationHandler {
 		statuses.add(applied);
 		statuses.add(interview);
 		statuses.add(offer);
-		
+		LOGGER.log(Level.INFO, "Adding default statuses " + statuses + " for user " + userID);
 		new DatabaseManager().addStatusesForUser(statuses, userID);
 	}
 	
@@ -75,7 +75,9 @@ public class ApplicationHandler {
 		status.setRank(maxStatusRank + ApplicationStatus.DEFAULT_RANK_GAP);
 		List<ApplicationStatus> statuses = new ArrayList<>();
 		statuses.add(status);
+		LOGGER.log(Level.INFO, "Adding status " + status.getStatus() + " for user " + userID);
 		dbManager.addStatusesForUser(statuses, userID);
+		LOGGER.log(Level.INFO, "Successful");
 	}
 	
 	/**
@@ -95,17 +97,13 @@ public class ApplicationHandler {
 		List<ApplicationStatus> addStatuses = new ArrayList<>();
 		List<ApplicationStatus> updateStatuses = new ArrayList<>();
 		Map<Long, ApplicationStatus> existingStatuses = dbManager.fetchApplicationStatusesForUser(userID);
-		System.out.println("New statuses");
-		System.out.println(statuses);
 		for(ApplicationStatus status : statuses) {
 			status.setRank(rank);
 			rank += ApplicationStatus.DEFAULT_RANK_GAP;
 			if(status.getId() == null || !existingStatuses.containsKey(status.getId())) {
-				System.out.println("New status " + status.getStatus());
 				addStatuses.add(status);
 			} else {
 				updateStatuses.add(status);
-				System.out.println("Old status " + status.getStatus());
 				existingStatuses.remove(status.getId());
 			}
 		}
@@ -117,8 +115,10 @@ public class ApplicationHandler {
 		try {
 			LOGGER.log(Level.INFO, "Adding statuses " + addStatuses + " for user " + userID);
 			dbManager.addStatusesForUser(addStatuses, userID);
+			LOGGER.log(Level.INFO, "Added successfully");
 			LOGGER.log(Level.INFO, "Updating statuses " + addStatuses + " for user " + userID);
 			dbManager.updateStatusesForUser(updateStatuses, userID);
+			LOGGER.log(Level.INFO, "Updated successfully");
 			dbManager.commit();
 		} catch(SQLException e) {
 			dbManager.rollback();

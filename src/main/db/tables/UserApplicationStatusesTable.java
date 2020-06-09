@@ -67,7 +67,6 @@ public class UserApplicationStatusesTable {
         try {
         	statement = connection.prepareStatement(QueryProvider.getQuery(UPDATE_USER_STATUS));
         	for(ApplicationStatus status : statuses) {
-        		System.out.println("In rs " + status.getStatus());
         		statement.setString(1, status.getStatus());
                 statement.setInt(2, status.getRank());
                 statement.setLong(3, userID);

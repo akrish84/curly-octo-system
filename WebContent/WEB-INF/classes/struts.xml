@@ -80,12 +80,17 @@
 			<result type="json" />
 		</action>
 
-		<action name="user/statuses" class="main.application.ApplicationAction" method="getUserStatuses">
+		<action name="statuses" class="main.application.ApplicationAction" method="fetchUserStatuses">
+			<interceptor-ref name="authStack"/>
+			<result type="json" />
+		</action>
+		
+		<action name="applications" class="main.application.ApplicationAction" method="fetchUserApplications">
 			<interceptor-ref name="authStack"/>
 			<result type="json" />
 		</action>
 
-		<action name="application/all/get" class="main.application.ApplicationAction" method="getAllApplications">
+		<action name="application/all/get" class="main.application.ApplicationAction" method="AllApplications">
 			<interceptor-ref name="authStack"/>
 			<result type="json" />
 		</action>

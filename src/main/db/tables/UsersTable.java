@@ -20,7 +20,14 @@ public class UsersTable {
 	
 	
 	private static final String INSERT_USER = "main.db.tables.UsersTable.insertUser";
-	private static final String FETCH_USER = "main.db.tables.UsersTabls.getUser";
+	private static final String FETCH_USER = "main.db.tables.UsersTabls.fetchUser";
+	
+	private static final String COLUMN_ID = "id";
+	private static final String COLUMN_EMAIL = "email";
+	private static final String COLUMN_FIRST_NAME = "first_name";
+	private static final String COLUMN_LAST_NAME = "last_name";
+	private static final String COLUMN_PASSWORD = "password";
+	
 	
 	
 	/***
@@ -61,7 +68,7 @@ public class UsersTable {
 	}
 	
 	/***
-	 * GET FUNCTIONS
+	 * FETCH FUNCTIONS
 	 */
 	
 	/**
@@ -80,11 +87,11 @@ public class UsersTable {
 	        resultSet = statement.executeQuery();
 	        while(resultSet.next()){
 	        	User user = new User();
-	        	user.setId(resultSet.getLong("id"));
-	            user.setEmail(resultSet.getString("email"));
-	            user.setFirstName(resultSet.getString("first_name"));
-	            user.setLastName(resultSet.getString("last_name"));
-	            user.setPassword(resultSet.getString("password"));
+	        	user.setId(resultSet.getLong(COLUMN_ID));
+	            user.setEmail(resultSet.getString(COLUMN_EMAIL));
+	            user.setFirstName(resultSet.getString(COLUMN_FIRST_NAME));
+	            user.setLastName(resultSet.getString(COLUMN_LAST_NAME));
+	            user.setPassword(resultSet.getString(COLUMN_PASSWORD));
 	            return user;
 	        }
 	        

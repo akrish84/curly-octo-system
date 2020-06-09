@@ -8,9 +8,11 @@ import main.db.tables.CompanySuggestionsTable;
 import main.db.tables.JobTitleSuggestionsTable;
 import main.db.tables.UserApplicationStatusesTable;
 import main.db.tables.UsersTable;
+import main.beans.Application;
 import main.beans.ApplicationStatus;
 import main.beans.User;
 import main.db.tables.APSSuggestionsTable;
+import main.db.tables.ApplicationTable;
 
 /**
  * 
@@ -83,8 +85,27 @@ public class DataManager {
 	}
 	
 
-	public static Map<Long, ApplicationStatus> getApplicationStatusesForUser(Long userID) throws SQLException {
+	/**
+	 * Fetches user's application statuses.
+	 * @param userID
+	 * @return Map of statusID to ApplicationStatus
+	 * @throws SQLException
+	 */
+	public static Map<Long, ApplicationStatus> fetchApplicationStatusesForUser(Long userID) throws SQLException {
 		return UserApplicationStatusesTable.fetchAllApplicationStatusForUser(userID);
+	}
+	
+	/**
+	 * 
+	 * Fetches user's job applications' details
+	 * 
+	 * @param userID
+	 * @return List of user's Applications
+	 * @throws SQLException
+	 */
+	public static List<Application> fetchUserApplications(Long userID) throws SQLException {
+		return ApplicationTable.fetchUserApplications(userID);
+		
 	}
 
 }

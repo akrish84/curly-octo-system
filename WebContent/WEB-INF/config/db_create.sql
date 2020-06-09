@@ -6,20 +6,6 @@ create table users(
 	last_name varchar(46)
 );
 
-create table aps ( 
-	id int unsigned auto_increment not null primary key, 
-	name varchar(52) not null
-);
-
-create table jobs ( 
-	id INT UNSIGNED AUTO_INCREMENT not null primary key, 
-	company_name varchar(52) not null, 
-	job_title varchar(100),
-	job_description text,
-	aps_id int unsigned, 
-	FOREIGN KEY (aps_id) REFERENCES aps(id)
-);
-
 create table user_application_statuses ( 
 	id int unsigned auto_increment not null primary key, 
 	status varchar(52) not null, 
@@ -52,12 +38,14 @@ create table resumes (
 
 create table applications ( 
 	id int unsigned auto_increment not null primary key, 
-	job_id int unsigned not null, 
+	company_name varchar(52) not null, 
+	job_title varchar(100),
+	job_description text,
+	aps varchar(52) not null,
 	status_id int unsigned not null, 
 	applied_date date not null, 
 	user_id int unsigned not null, 
 	resume_id int unsigned , 
-	FOREIGN KEY (job_id) references jobs(id), 
 	FOREIGN KEY (status_id) references user_application_statuses(id), 
 	FOREIGN KEY (user_id) references users(id), 
 	FOREIGN KEY (resume_id) references resumes(id)

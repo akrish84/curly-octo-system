@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import main.beans.Application;
 import main.beans.ApplicationStatus;
 import main.db.DataManager;
 
@@ -50,8 +51,27 @@ public class ApplicationHandler {
 		DataManager.addStatusesForUser(statuses, userID);
 	}
 	
-	public static Map<Long, ApplicationStatus> getApplicationStatusesForUser(Long userID) throws SQLException {
-		return DataManager.getApplicationStatusesForUser(userID);
+	/**
+	 * Fetches user's statuses
+	 * 
+	 * @param userID
+	 * @return Map of statusID to ApplicationStatus for user
+	 * @throws SQLException
+	 */
+	public static Map<Long, ApplicationStatus> fetchApplicationStatusesForUser(Long userID) throws SQLException {
+		return DataManager.fetchApplicationStatusesForUser(userID);
+	}
+	
+	/**
+	 * 
+	 * Fetches user's job applications' details
+	 * 
+	 * @param userID
+	 * @return List of user's Applications
+	 * @throws SQLException
+	 */
+	public static List<Application> fetchUserApplications(Long userID) throws SQLException {
+		return DataManager.fetchUserApplications(userID);
 	}
 
 }

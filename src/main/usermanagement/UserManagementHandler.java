@@ -22,7 +22,7 @@ public class UserManagementHandler {
 	/**
 	 * 
 	 * Stores user details in db.
-	 * password is hased before saving.
+	 * password is hashed before saving.
 	 * Adds default statuses for user
 	 * 
 	 * @param user
@@ -40,11 +40,11 @@ public class UserManagementHandler {
 	}
 	
 	/**
-	 * Logs in user if password matches db stored password and returns true
+	 * Logs in user if password matches db-stored password and returns true
 	 * If password does not match, returns false
 	 * @param user
 	 * @param password
-	 * @return true if password matches db password else returns false
+	 * @return true if password matches db-stored password else returns false
 	 * @throws Exception
 	 */
 	public static boolean login(User user, String password) throws Exception {

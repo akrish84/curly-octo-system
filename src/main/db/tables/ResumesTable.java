@@ -40,7 +40,7 @@ public class ResumesTable {
 	
 	
 	/***
-	 * GET FUNCTIONS
+	 * FETCH FUNCTIONS
 	 */
 	
 	/**

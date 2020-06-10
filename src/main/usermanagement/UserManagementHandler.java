@@ -55,4 +55,8 @@ public class UserManagementHandler {
 		return true;
 	}
 	
+	public static void logout() {
+		SessionHandler.logoutCurrentSession();
+	}
+	
 }

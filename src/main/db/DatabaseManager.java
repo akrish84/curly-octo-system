@@ -155,7 +155,12 @@ public class DatabaseManager {
 		safeClose(con);
 	}
 	
-	
+	public ApplicationStatus fetchStatus(Long userID, Long statusID) throws SQLException {
+		Connection con = getConnection();
+		ApplicationStatus status = UserApplicationStatusesTable.fetchStatus(userID, statusID, con);
+		safeClose(con);
+		return status;
+	}
 	
 	/**
 	 * Fetches max rank of status for given user
@@ -201,8 +206,6 @@ public class DatabaseManager {
 		return applications;
 		
 	}
-	
-	
 	
 	
 	

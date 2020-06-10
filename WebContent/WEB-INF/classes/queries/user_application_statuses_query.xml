@@ -1,6 +1,7 @@
 <queries>
 	<query key="main.db.tables.UserApplicationStatusesTable.addUserStatus">insert into user_application_statuses(status, user_id, `rank`) values (?, ?, ?)</query>
 	<query key="main.db.tables.UserApplicationStatusesTable.updateUserStatus">update user_application_statuses set status = ?, `rank` = ? where user_id = ? and id = ?</query>
+	<query key="main.db.tables.UserApplicationStatusesTable.fetchStatus">select id, status, `rank` from user_application_statuses where user_id = ? and id = ?</query>
 	<query key="main.db.tables.UserApplicationStatusesTable.fetchAllApplicationStatusForUser">select id, status, `rank` from user_application_statuses where user_id = ?</query>
 	<query key="main.db.tables.UserApplicationStatusesTable.fetchMaxRankForUser">select max(`rank`) as max_rank from user_application_statuses where user_id = ?</query>
 

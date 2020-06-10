@@ -104,6 +104,11 @@
 			<interceptor-ref name="authStack"/>
 			<result type="json" />
 		</action>
+		
+		<action name="status/update" class="main.application.ApplicationAction" method="updateStatus">
+			<interceptor-ref name="authStack"/>
+			<result type="json" />
+		</action>
 
 		<action name="application/get" class="main.application.ApplicationAction" method="getApplication">
 			<interceptor-ref name="authStack"/>

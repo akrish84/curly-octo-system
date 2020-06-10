@@ -80,6 +80,21 @@ public class ApplicationHandler {
 		LOGGER.log(Level.INFO, "Successful");
 	}
 	
+	public static void updateStatusForUser(ApplicationStatus status , Long userID) throws SQLException {
+		DatabaseManager dbManager = new DatabaseManager();
+		ApplicationStatus existingStatus = dbManager.fetchStatus(userID, status.getId());
+		if(existingStatus == null) {
+			throw new IllegalArgumentException("Status with id " + status.getId() + " does not exist for user " + userID);
+		}
+		String oldStatus = existingStatus.getStatus();
+		existingStatus.setStatus(status.getStatus());
+		List<ApplicationStatus> statuses = new ArrayList<>();
+		statuses.add(existingStatus);
+		LOGGER.log(Level.INFO, "Updating status from " + oldStatus + " to " + status.getStatus() + " for user " + userID);
+		dbManager.updateStatusesForUser(statuses, userID);
+		LOGGER.log(Level.INFO, "Successful");
+	}
+	
 	/**
 	 * All status is Re Ranked.
 	 * New Statuses are inserted.

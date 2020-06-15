@@ -4,11 +4,15 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.security.auth.login.FailedLoginException;
+
 import com.opensymphony.xwork2.Action;
 
 import main.db.DatabaseManager;
 import main.util.Utils;
 import main.util.Validator;
+import main.authentication.AuthenticationConstants;
+import main.authentication.SessionHandler;
 import main.beans.User;
 
 /**
@@ -113,6 +117,11 @@ public class UserManagementAction {
 			responseMessage = Utils.getErrorMessage("Action Login: Failed. User Email: " + email);
 			LOGGER.log(Level.SEVERE, responseMessage, e);
 		}
+		return Action.SUCCESS;
+	}
+	
+	public String logout() {
+		UserManagementHandler.logout();
 		return Action.SUCCESS;
 	}
 	

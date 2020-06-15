@@ -44,6 +44,11 @@
 			<result type="json" />
 		</action>
 		
+		<action name="logoutAction" class="main.usermanagement.UserManagementAction" method="logout">
+			<interceptor-ref name="authStack"/>
+			<result type="dispatcher">/jsp/login.html</result>
+		</action>
+		
 		<action name="login" class="main.usermanagement.UserManagementAction" method="pageDispatcher">
 			<result type="dispatcher">/jsp/login.html</result>
 		</action>
@@ -96,6 +101,11 @@
 		</action>
 		
 		<action name="status/add" class="main.application.ApplicationAction" method="addStatus">
+			<interceptor-ref name="authStack"/>
+			<result type="json" />
+		</action>
+		
+		<action name="status/update" class="main.application.ApplicationAction" method="updateStatus">
 			<interceptor-ref name="authStack"/>
 			<result type="json" />
 		</action>

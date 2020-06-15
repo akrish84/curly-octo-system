@@ -8,7 +8,7 @@ public class ApplicationStatus implements Comparable<ApplicationStatus>, Seriali
 	 */
 	private static final long serialVersionUID = -5738067862182112950L;
 
-	public static final int DEFAULT_RANK_GAP = 2014;
+	public static final int DEFAULT_RANK_GAP = 1024;
 	
 	private String status;
 	private int rank;

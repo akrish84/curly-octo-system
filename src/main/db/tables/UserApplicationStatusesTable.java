@@ -17,6 +17,8 @@ public class UserApplicationStatusesTable {
 	private static final String UPDATE_USER_STATUS = "main.db.tables.UserApplicationStatusesTable.updateUserStatus";
 	private static final String FETCH_ALL_APPLICATION_STATUSES_FOR_USER = "main.db.tables.UserApplicationStatusesTable.fetchAllApplicationStatusForUser";
 	private static final String FETCH_MAX_RANK_FOR_USER = "main.db.tables.UserApplicationStatusesTable.fetchMaxRankForUser";
+	private static final String FETCH_STATUS = "main.db.tables.UserApplicationStatusesTable.fetchStatus";
+	
 	
 	
 	/***
@@ -124,6 +126,41 @@ public class UserApplicationStatusesTable {
         return statuses;
 	}
 
+	/**
+	 * Fetch status details
+	 * 
+	 * @param userID
+	 * @param statusID
+	 * @param connection
+	 * @return ApplicationStatus details
+	 * @throws SQLException
+	 */
+	public static ApplicationStatus fetchStatus(Long userID, Long statusID, Connection connection) throws SQLException {
+		PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+	        statement = connection.prepareStatement(QueryProvider.getQuery(FETCH_STATUS));
+	        statement.setLong(1, userID);
+	        statement.setLong(2, statusID);
+	        resultSet = statement.executeQuery();
+	        while(resultSet.next()){
+	        	ApplicationStatus status = new ApplicationStatus();
+	        	status.setId(resultSet.getLong("id"));
+	        	status.setStatus(resultSet.getString("status"));
+	        	status.setRank(resultSet.getInt("rank"));
+	        	return status;
+	        }
+        } finally {
+    		if(resultSet != null) {
+    			resultSet.close();
+    		}
+    		if(statement != null) {
+    			statement.close();
+    		}
+        }
+        return null;
+		
+	}
 	
 	/**
 	 * Fetches max rank of status for given user

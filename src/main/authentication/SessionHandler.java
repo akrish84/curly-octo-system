@@ -50,7 +50,7 @@ private static final Map<String, Long> SESSION_ID_TO_USER = new HashMap<>();
 	 * Deletes the logged in user's session by removing the user's cookie.
 	 * Cookie is removed from the request and from the SESSION_ID_TO_USER map.
 	 */
-	public static void deleteCurrentSession() {
+	public static void logoutCurrentSession() {
 		HttpServletRequest request = (HttpServletRequest) ServletActionContext.getRequest();
 		String sessionID = getSessionID(request);
 		CookiesHandler.deleteSessionCookie(sessionID, ServletActionContext.getResponse());

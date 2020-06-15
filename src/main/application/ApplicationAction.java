@@ -85,6 +85,27 @@ public class ApplicationAction {
 		
 	}
 	
+	public String updateStatus() {
+		Long userID = null;
+		try {
+			userID = SessionHandler.getLoggedInUserID();
+		} catch(FailedLoginException e) {
+			LOGGER.log(Level.SEVERE, "Unauthenticated access");
+			return AuthenticationConstants.ACTION_AUTH_ERROR;
+		}
+		try {
+			if(status == null || status.getId() == null || status.getStatus() == null || status.getStatus().isEmpty()) {
+				throw new IllegalArgumentException();
+			}
+			ApplicationHandler.updateStatusForUser(status, userID);
+		} catch(SQLException e) {
+			LOGGER.log(Level.SEVERE, "Failed to add status for user " + userID, e);
+			responseMessage = Utils.getErrorMessage("Failed to add status for user");
+		}
+		return Action.SUCCESS;
+		
+	}
+	
 	public String updateStatuses() {
 		Long userID = null;
 		try {

@@ -44,14 +44,14 @@
                                 <form class="register-form" id="login-form">
                                     <div class="form-group">
                                         <label for="your_email"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                        <input oninput="buttonActivator()" type="text" name="your_email" id="your_email" placeholder="Email" required/>
+                                        <input type="text" name="your_email" id="your_email" placeholder="Email" class="form_input" required/>
                                     </div>
                                     <div class="form-group">
                                         <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
-                                        <input oninput="buttonActivator()" type="password" name="your_pass" id="your_pass" placeholder="Password" required/>
+                                        <input type="password" name="your_pass" id="your_pass" placeholder="Password" class="form_input" required/>
                                     </div>
                                     <div class="form-group">
-                                        <input oninput="buttonActivator()" type="checkbox" name="remember-me" id="remember-me" class="remember-me" />
+                                        <input type="checkbox" name="remember-me" id="remember-me" class="remember-me" />
                                         <label for="remember-me" class="label-remember-me"><span><span></span></span>Remember me</label>
                                     </div>
                                     <div class="form-group form-button">                                        
@@ -109,12 +109,31 @@
             .then(data => {
                 document.querySelector("footer").innerHTML = data;
         });
-        function buttonActivator()
-        {
+        
+        /* $('.form_input').on("input", function(event) {        	
+        	//console.log(event, event.keyCode);
+        	if (event.keyCode === 13) { 
+                $("#signin").click();
+            }
+        	else{
+        		buttonActivator();
+        	}
+        }); */
+        
+        $(".form_input").on("keyup",(function(event) { 
+            if (event.keyCode === 13) { 
+                $("#signin").click(); 
+            }
+            else{
+        		buttonActivator();
+        	}
+        }));
+        
+        function buttonActivator()        
+        {    	
             $('#errorMessage')[0].style.display = 'none';
             if($("#your_email").val().length && $("#your_pass").val().length && ValidateEmail($("#your_email").val()))
-            {
-                console.log('Activate Login Button')
+            {                
                 $('#signin')[0].classList.remove('customDisabled');
             }
 
@@ -123,21 +142,17 @@
             var login_variables = {};
             login_variables['email'] = $("#your_email").val();
             login_variables['password'] = $("#your_pass").val();            
-            // login_variables['agree'] = $("#remember-me").val();
-            console.log(login_variables);
+            // login_variables['agree'] = $("#remember-me").val();            
             
             // Make an AJAX Call
             if (ValidateEmail(login_variables['email']))
             {
                 // Make an AJAX
-                var url = makeURL("loginAction", login_variables);
-                console.log(url);
-                sendAjaxRequest(url, function(resp){
-                    console.log(resp);            	
+                var url = makeURL("loginAction", login_variables);                
+                sendAjaxRequest(url, function(resp){                                
                     if (resp['responseMessage'].includes('Error'))
                     {
-                        // Error
-                        // console.log($('#errorMessage'));
+                        // Error                        
                         $('#errorMessage')[0].style.display = 'block';
                         $('#errorMessage')[0].innerHTML = resp['responseMessage'];
                     }

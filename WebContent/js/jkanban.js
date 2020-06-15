@@ -264,7 +264,7 @@ var dragula = require("dragula");
         //create node
         var boardNode = document.createElement("div");
         boardNode.dataset.id = board.id;
-        boardNode.dataset.order = self.container.childNodes.length + 1;
+        boardNode.dataset.order = self.container.childNodes.length + 1;        
         boardNode.classList.add("kanban-board");
         //set style
         if (self.options.responsivePercentage) {
@@ -301,7 +301,7 @@ var dragula = require("dragula");
           btn.appendChild(t);
           //var buttonHtml = '<button class="kanban-title-button btn btn-default btn-xs">'+buttonContent+'</button>'
           headerBoardRow.appendChild(btn);
-//          console.log(headerBoardRow);          
+         //console.log(headerBoardRow);          
           __onButtonClickHandler(btn, board.id);
         }
         //content board
@@ -349,8 +349,24 @@ var dragula = require("dragula");
         boardNode.appendChild(contentBoard);
         boardNode.appendChild(footerBoard);
         //board add
-        self.container.appendChild(boardNode);
-      }
+        if(isInit)
+        {          
+          self.container.appendChild(boardNode);
+        }
+        else{
+          //Data Order of the board you want it to be.
+          $('*[data-order="2"]').after(boardNode);
+          
+          console.log($('.kanban-container').children());
+          console.log($('.kanban-container').children().length);
+          for(var k = 0; k<$('.kanban-container').children().length; k++)
+          {
+            //console.log($('.kanban-container').children()[k]);
+            $('.kanban-container').children()[k].setAttribute("data-order",(k+1).toString(10));
+          }
+
+        }        
+      }      
       return self;
     };
 
@@ -452,8 +468,8 @@ var dragula = require("dragula");
       var boardContainer = document.createElement("div");
       boardContainer.classList.add("kanban-container");
       self.container = boardContainer;
-      //add boards
-      self.addBoards(self.options.boards, true);
+      //add boards      
+      self.addBoards(self.options.boards, true);      
       //appends to container
       self.element.appendChild(self.container);
     }

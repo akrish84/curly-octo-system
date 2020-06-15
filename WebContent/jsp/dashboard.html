@@ -30,6 +30,7 @@
             	</div>           
             	<div class="dashboard-container">            	
             		<div class='row'>
+						<p id="addBoard">+</p>
 	            		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque et magna at augue laoreet placerat vel et eros. Nunc efficitur, neque nec suscipit pulvinar, magna ex porttitor ipsum, at mollis nibh sapien et turpis. Fusce turpis mauris, lacinia a pharetra vel, tempus sagittis massa. Pellentesque vulputate ac tellus eu convallis. Donec nec elit risus. Fusce vel pulvinar lorem. Nullam tellus metus, sagittis eget volutpat et, viverra non lectus.</p>
 						<p>Phasellus id ex quam. Praesent sapien metus, ullamcorper ut ligula a, semper maximus ligula. Ut imperdiet finibus efficitur. Aliquam vitae nibh in odio sollicitudin semper. Donec velit magna, auctor vitae metus ut, lacinia tristique ipsum. In nec sem at erat auctor sagittis. Pellentesque semper pretium massa. Sed ex tortor, aliquam finibus lorem id, eleifend tincidunt magna. Etiam volutpat nunc eu neque facilisis tempor. Vivamus et sollicitudin est.</p>						
 						<p>Vivamus luctus quam urna, id euismod nisl auctor ut. Sed sed facilisis magna. Nunc vel placerat lorem. Vestibulum fermentum libero neque, quis maximus enim eleifend ut. Aliquam ullamcorper dui ac est porttitor pulvinar. Vestibulum tincidunt pharetra venenatis. Pellentesque congue bibendum ante, at pulvinar risus gravida sed. Proin et ullamcorper sem, ut feugiat libero. Ut felis erat, sagittis ac sapien at, fermentum tincidunt tortor. Duis rhoncus odio vel lectus tincidunt, quis facilisis ipsum maximus.</p>
@@ -70,7 +71,7 @@
             })
             .then(data => {
                 document.querySelector("#footer").innerHTML = data;
-        }); 
+        });
         $(function() {
             /* Document Ready */
             
@@ -169,7 +170,7 @@
 			            }
 			        
 			    ],                                           					  // json of boards
-			    dragBoards       : false,                                        // the boards are draggable, if false only item can be dragged
+			    dragBoards       : true,                                        // the boards are draggable, if false only item can be dragged
 			    addItemButton    : true,                                         // add a button to board for easy item creation
 			    buttonContent    : '+',                                          // text or html content of the board button
 			    itemHandleOptions: {
@@ -183,9 +184,9 @@
 			    dragEl           : function (el, source) {},                     // callback when any board's item are dragged
 			    dragendEl        : function (el) {},                             // callback when any board's item stop drag
 			    dropEl           : function (el, target, source, sibling) {dropEl(el, target, source, sibling)},    // callback when any board's item drop in a board
-			    dragBoard        : function (el, source) {},                     // callback when any board stop drag
-			    dragendBoard     : function (el) {},                             // callback when any board stop drag
-			    buttonClick      : function(el, boardId) {}                      // callback when the board's button is clicked
+			    dragBoard        : function (el, source) {dragBoard(el)},                     // callback when any board stop drag
+			    dragendBoard     : function (el) {dragendBoard(el)},                             // callback when any board stop drag
+			    buttonClick      : function(el, boardId) {}                      // callback when the board's button is clicked				
 			});
             function click(el){
             	console.log('Item Clicked');
@@ -205,7 +206,36 @@
             		/* Do Nothing */	
             	}            		
             	
-            }
+			}
+			
+			function dragBoard(el) {
+				console.log('Dragging: ',el);
+			}
+
+			function dragendBoard(el, source){
+				console.log("Drag End: ",el," Source: ",source);
+			}
+
+			$('#addBoard').on("click", function() {
+				kanban.addBoards(
+			            [{
+			                'id' : '_default',
+			                'title'  : 'Kanban Default',
+			                'item'  : [
+			                    {
+			                        'title':'Default Item',
+			                    },
+			                    {
+			                        'title':'Default Item 2',
+			                    },
+			                    {
+			                        'title':'Default Item 3',
+			                    }
+			                ]
+			            }], false
+					);
+				
+			})
         });
     </script>
 </body>

@@ -82,3 +82,17 @@ input::placeholder
 	padding-left: 15px;
 	padding-right: 15px;
 }
+
+.kdiv {
+	overflow-x: scroll;
+  	overflow-y: hidden;
+  	white-space: nowrap;
+}
+
+.display-none {
+	display:none;
+}
+
+.display-block{
+	display:block;
+}

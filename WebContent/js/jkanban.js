@@ -191,7 +191,7 @@ var dragula = require("dragula");
         '[data-id="' + boardID + '"] .kanban-drag'
       );
       var nodeItem = document.createElement("div");
-      nodeItem.classList.add("kanban-item");
+      //nodeItem.classList.add("kanban-item");
       if (typeof element.id !== "undefined" && element.id !== "") {
         nodeItem.setAttribute("data-eid", element.id);
       }
@@ -319,7 +319,7 @@ var dragula = require("dragula");
           //create item
           var itemKanban = board.item[itemkey];
           var nodeItem = document.createElement("div");
-          nodeItem.classList.add("kanban-item");
+          //nodeItem.classList.add("kanban-item");
           if (itemKanban.id) {
             nodeItem.dataset.eid = itemKanban.id;
           }
@@ -523,6 +523,7 @@ var dragula = require("dragula");
 
     function __buildItemTitle(title) {
       var result = title;
+      console.log(result);
       if (self.options.itemHandleOptions.enabled) {
         if ((self.options.itemHandleOptions.customHandler || undefined) === undefined) {
           var customCssHandler = self.options.itemHandleOptions.customCssHandler;

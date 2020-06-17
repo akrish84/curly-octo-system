@@ -26,7 +26,9 @@
         <div id="content-wrap">
             <div class="main pt-5 container-fluid">
             	<div class='boards' id='boards'>
-            		<div class="kdiv" id="kdiv"></div>
+            		<div class="kdiv" id="kdiv">
+                        
+                    </div>
             	</div>           
             	<div class="dashboard-container">            	
             		<div class='row'>
@@ -39,6 +41,22 @@
             </div>
         </div>                
     </main>
+    <div class="templates display-none">
+        <!-- <div class="app-card-template">
+            <h2 id="companyName"></h2>
+            <h4 id="jobTitle"></h4>
+            <h4 id="appliedDate"></h4>
+        </div> -->
+
+        <div class="app-card-template card bg-light mb-3" style="max-width: 18rem;">
+            <div class="card-header company-name"></div>
+            <div class="card-body">
+              <p class="card-text job-title"></p>
+              <p class="card-text applied-date"></p>
+            </div>
+        </div>
+    </div>
+    
     <!-- Footer -->
     <footer class="footer page-footer font-small blue" id='footer'></footer>
 
@@ -48,6 +66,7 @@
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="js/main.js"></script>
     <script src="js/common.js"></script>
+    <script src="js/dashboard.js"></script>
 	
 	<!-- Kanban JS -->
 	<script src="js/jkanban.js"></script>
@@ -72,150 +91,12 @@
             .then(data => {
                 document.querySelector("#footer").innerHTML = data;
         });
+
         $(function() {
-            /* Document Ready */
-            
-            /* Initialize jKanban */
-            var kanban = new jKanban({
-			    element          : '#kdiv',                                      // selector of the kanban container
-			    gutter           : '15px',                                       // gutter of the board
-			    widthBoard       : '250px',                                      // width of the board
-			    responsivePercentage: false,                                     // if it is true I use percentage in the width of the boards and it is not necessary gutter and widthBoard
-			    dragItems        : true,                                         // if false, all items are not draggable
-			    boards           : [
-			    	
-			            {
-			                'id' : '_todo',
-			                'title'  : 'Try Drag me!',
-			                'item'  : [
-			                    {
-			                        'title':'You can drag me too',
-			                    },
-			                    {
-			                        'title':'Buy Milk',
-			                    }
-			                ]
-			            },
-			            {
-			                'id' : '_working',
-			                'title'  : 'Working',
-			                'item'  : [
-			                    {
-			                        'title':'Do Something!',
-			                    },
-			                    {
-			                        'title':'Run?',
-			                    }
-			                ]
-			            },
-			            {
-			                'id' : '_done',
-			                'title'  : 'Done',
-			                'item'  : [
-			                    {
-			                        'title':'All right',
-			                    },
-			                    {
-			                        'title':'Ok!',
-			                    }
-			                ]
-			            },
-			            {
-			                'id' : '_trial1',
-			                'title'  : 'Done',
-			                'item'  : [
-			                    {
-			                        'title':'All right',
-			                    },
-			                    {
-			                        'title':'Ok!',
-			                    }
-			                ]
-			            },
-			            {
-			                'id' : '_trial2',
-			                'title'  : 'Done',
-			                'item'  : [
-			                    {
-			                        'title':'All right',
-			                    },
-			                    {
-			                        'title':'Ok!',
-			                    }
-			                ]
-			            },
-			            {
-			                'id' : '_trial3',
-			                'title'  : 'Done',
-			                'item'  : [
-			                    {
-			                        'title':'All right',
-			                    },
-			                    {
-			                        'title':'Ok!',
-			                    }
-			                ]
-			            },
-			            {
-			                'id' : '_trial4',
-			                'title'  : 'Done',
-			                'item'  : [
-			                    {
-			                        'title':'All right',
-			                    },
-			                    {
-			                        'title':'Ok!',
-			                    }
-			                ]
-			            }
-			        
-			    ],                                           					  // json of boards
-			    dragBoards       : true,                                        // the boards are draggable, if false only item can be dragged
-			    addItemButton    : true,                                         // add a button to board for easy item creation
-			    buttonContent    : '+',                                          // text or html content of the board button
-			    itemHandleOptions: {
-			        enabled             : false,                                 // if board item handle is enabled or not
-			        handleClass         : "item_handle",                         // css class for your custom item handle
-			        customCssHandler    : "drag_handler",                        // when customHandler is undefined, jKanban will use this property to set main handler class
-			        customCssIconHandler: "drag_handler_icon",                   // when customHandler is undefined, jKanban will use this property to set main icon handler class. If you want, you can use font icon libraries here
-			        customHandler       : "<span class='item_handle'>+</span> %s"// your entirely customized handler. Use %s to position item title
-			    },
-			    click            : function (el) {click(el)},                             // callback when any board's item are clicked
-			    dragEl           : function (el, source) {},                     // callback when any board's item are dragged
-			    dragendEl        : function (el) {},                             // callback when any board's item stop drag
-			    dropEl           : function (el, target, source, sibling) {dropEl(el, target, source, sibling)},    // callback when any board's item drop in a board
-			    dragBoard        : function (el, source) {dragBoard(el)},                     // callback when any board stop drag
-			    dragendBoard     : function (el) {dragendBoard(el)},                             // callback when any board stop drag
-			    buttonClick      : function(el, boardId) {}                      // callback when the board's button is clicked				
-			});
-            function click(el){
-            	console.log('Item Clicked');
-            }
-            
-            function dropEl(el, target, source, sibling){
-            	console.log('Element: ',el);
-            	console.log('Source: ',source);
-            	console.log('Target: ',target);
-            	console.log('Sibling: ',sibling);
-            	
-            	if (source != target){
-            		/* Update Database */
-            		
-            	}
-            	else{
-            		/* Do Nothing */	
-            	}            		
-            	
-			}
+
+			//kanban.init();
+			showUserDashboard();
 			
-			function dragBoard(el) {
-				console.log('Dragging: ',el);
-			}
-
-			function dragendBoard(el, source){
-				console.log("Drag End: ",el," Source: ",source);
-			}
-
 			$('#addBoard').on("click", function() {
 				kanban.addBoards(
 			            [{

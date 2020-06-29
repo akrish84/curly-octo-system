@@ -60,7 +60,7 @@ public class DatabaseManager {
 			return DataSourceConnector.getConnection();
 		} else {
 			if(connection == null) {
-				throw new SQLException("Connection is null in between transaction");
+				throw new SQLException("Connection is null in between a transaction");
 			}
 			return connection;
 		}
@@ -255,7 +255,23 @@ public class DatabaseManager {
 		ApplicationTable.updateApplicationStatus(applicationID, statusID, con);
 		safeClose(con);
 	}
-	 
+	
+	/**
+	 * Fetches application details for given applicationID from applications table.
+	 * App details are populated in an application object.
+	 * 
+	 * @param applicationID
+	 * @return Application object with app details.
+	 * @return null if there is no application with given applicationID
+	 * @throws SQLException
+	 */
+	public Application fetchApplication(Long applicationID) throws SQLException {
+		Connection con = getConnection();
+		Application application = ApplicationTable.fetchApplication(applicationID, con);
+		safeClose(con);
+		return application;
+	}
+	
 	/**
 	 * 
 	 * Fetches user's job applications' details
@@ -273,18 +289,18 @@ public class DatabaseManager {
 	}
 	
 	/**
-	 * Fetches user's application IDs having given status.
+	 * Fetches user's application IDs To Rank mapping having given status.
 	 * 
 	 * @param userID
 	 * @param statusID
-	 * @return List of application IDs
+	 * @return Map of applicationID to Rank
 	 * @throws SQLException
 	 */
-	public List<Long> fetchUserApplicationIDsForStatus(Long userID, Long statusID) throws SQLException {
+	public Map<Long, Integer> fetchUserApplicationIDSWithRankHavingStatusID(Long userID, Long statusID) throws SQLException {
 		Connection con = getConnection();
-		List<Long> applicationIDs = ApplicationTable.fetchUserApplicationIDsForStatus(userID, statusID, con);
+		Map<Long, Integer> applicationIDToRankMap = ApplicationTable.fetchUserApplicationIDSWithRankHavingStatusID(userID, statusID, con);
 		safeClose(con);
-		return applicationIDs;
+		return applicationIDToRankMap;
 	}
 	
 	//*************************************
@@ -333,7 +349,7 @@ public class DatabaseManager {
 	 */
 	public void beginTransaction() throws SQLException {
 		if(connection != null) {
-			throw new SQLException("Transaction already started");
+			throw new SQLException("A transaction is already in progress");
 		}
 		connection = DataSourceConnector.getConnection();
 		connection.setAutoCommit(false);
@@ -343,12 +359,16 @@ public class DatabaseManager {
 	public void commit() throws SQLException {
 		if(connection != null) {
 			connection.commit();
+		} else {
+			throw new SQLException("Empty Connection");
 		}
 	}
 	
 	public void rollback() throws SQLException {
 		if(connection != null) {
 			connection.rollback();
+		} else {
+			throw new SQLException("Empty Connection");
 		}
 		
 	}

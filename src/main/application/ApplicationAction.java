@@ -27,7 +27,6 @@ public class ApplicationAction {
 	private ApplicationStatus status;
 	private String responseMessage;
 	private Long applicationID;
-	private Long oldStatusID;
 	private Long newStatusID;
 	private Long[] applicationIDs;
 	
@@ -146,10 +145,10 @@ public class ApplicationAction {
 			return AuthenticationConstants.ACTION_AUTH_ERROR;
 		}
 		try {
-			if(Validator.isNull(applicationID, oldStatusID, newStatusID, applicationIDs)) {
+			if(Validator.isNull(applicationID, newStatusID, applicationIDs)) {
 				throw new IllegalArgumentException();
 			}
-			ApplicationHandler.updateApplication(userID, applicationID, oldStatusID, newStatusID, applicationIDs);
+			ApplicationHandler.updateApplication(userID, applicationID, newStatusID, applicationIDs);
 		} catch(Exception e) {
 			LOGGER.log(Level.SEVERE, "Failed to update application " + applicationID + " for user " + userID, e);
 			responseMessage = Utils.getErrorMessage("Failed to update application");
@@ -243,14 +242,6 @@ public class ApplicationAction {
 
 	public void setApplicationID(Long applicationID) {
 		this.applicationID = applicationID;
-	}
-
-	public Long getOldStatusID() {
-		return oldStatusID;
-	}
-
-	public void setOldStatusID(Long oldStatusID) {
-		this.oldStatusID = oldStatusID;
 	}
 
 	public Long getNewStatusID() {

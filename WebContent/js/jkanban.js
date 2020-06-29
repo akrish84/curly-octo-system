@@ -125,7 +125,8 @@ var dragula = require("dragula");
           })
           .on("drag", function(el, source) {
             var elClass = el.getAttribute("class");
-            if (elClass !== "" && elClass.indexOf("not-draggable") > -1) {
+            //Akhi added "elClass != null &&"  as it was throwing exception. Though was not able to find why onDrag elClass was null.
+            if (elClass != null && elClass !== "" && elClass.indexOf("not-draggable") > -1) {
               self.drake.cancel(true);
               return;
             }
@@ -357,8 +358,8 @@ var dragula = require("dragula");
           //Data Order of the board you want it to be.
           $('*[data-order="2"]').after(boardNode);
           
-          console.log($('.kanban-container').children());
-          console.log($('.kanban-container').children().length);
+          //console.log($('.kanban-container').children());
+          //console.log($('.kanban-container').children().length);
           for(var k = 0; k<$('.kanban-container').children().length; k++)
           {
             //console.log($('.kanban-container').children()[k]);
@@ -523,7 +524,6 @@ var dragula = require("dragula");
 
     function __buildItemTitle(title) {
       var result = title;
-      console.log(result);
       if (self.options.itemHandleOptions.enabled) {
         if ((self.options.itemHandleOptions.customHandler || undefined) === undefined) {
           var customCssHandler = self.options.itemHandleOptions.customCssHandler;

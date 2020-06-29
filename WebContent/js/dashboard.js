@@ -2,6 +2,8 @@ var kanbanObj;
 var boardsMap;
 var statusIDPrefix = "status-id-";
 var applicationIDPrefix = "application-id-";
+var dataEIDAttribute = "data-eid";
+var dataIDAttribute = "data-id";
 var $appCardTempalte;
 var allAppData = {};
 var statusMap = {};
@@ -15,6 +17,11 @@ function showUserDashboard() {
 	init()
 	showUserBoards();
 	// Add cards
+}
+
+function refreshUserBoards() {
+	document.getElementById("kdiv").innerHTML="";
+	showUserBoards();
 }
 
 function showUserBoards() {
@@ -51,12 +58,75 @@ function addUserApplications(){
         else
         {
 			var applications = resp['applications'];
-			for(i in applications){
+			for(var i = applications.length-1; i>=0 ;i--) {
 				application = applications[i];
 				kanban.buildAppCard(application);
 			}
         }
     });
+}
+
+function getAppIDFromDataEID(dataEid) {
+	return dataEid.replace(applicationIDPrefix, "");
+}
+
+function getStatusIDFromDataID(dataId){
+	return dataId.replace(statusIDPrefix, "");
+}
+
+function getDataID(element) {
+	if(element != null ) {
+		return element.getAttribute(dataIDAttribute)
+	}
+	return "";
+}
+
+function getDataEID(element) {
+	if(element != null ) {
+		return element.getAttribute(dataEIDAttribute)
+	}
+	return "";
+}
+
+function updateApplication(applicationID, oldStatusID, newStatusID, applicationIDs) {
+	var params = {}
+	params['applicationID'] = applicationID;
+	params['newStatusID'] = newStatusID;
+	var url = makeURL("application/update", params);
+	for(var i = 0 ; i < applicationIDs.length; i++) {
+		url += '&applicationIDs=' + applicationIDs[i];
+	}
+	sendAjaxRequest(url, function(resp){                                
+        if (resp['responseMessage'] != null && resp['responseMessage'].includes('Error'))
+        {               
+			alert("Failed to save app reordering");
+			refreshUserBoards();
+        } else {
+			console.log("Successfully saved app card change");
+		}
+    });
+	
+}
+
+function handleApplicationDragEnd(application, source, target) {
+	applicationDataEID = getDataEID(application);
+	sourceDataID = getDataID(source.parentNode);
+	targetDataID = getDataID(target.parentNode);
+
+	items = kanbanObj.getBoardElements(targetDataID);
+	//console.log(items);
+	var applicationIDs = [];
+	for(var i = 0 ; i < items.length; i++) {
+		item = items[i];
+		applicationIDs.push(getAppIDFromDataEID(getDataEID(item)));
+	}
+	applicationID = getAppIDFromDataEID(applicationDataEID);
+	// For now not needed. In future need to do fron end validation before sending request to backend.
+	sourceStatusID = getStatusIDFromDataID(sourceDataID); 
+	
+	targetStatusID = getStatusIDFromDataID(targetDataID);
+
+	updateApplication(applicationID, sourceStatusID, targetStatusID, applicationIDs);
 }
 
 
@@ -93,23 +163,28 @@ var kanban = {
         }
         
         function dropEl(el, target, source, sibling){
-        	console.log('Element: ',el);
-        	console.log('Source: ',source);
-        	console.log('Target: ',target);
-        	console.log('Sibling: ',sibling);
-        	
-        	if (source != target){
-        		/* Update Database */
+
+			// console.log('Element: ',el);
+			handleApplicationDragEnd(el, source, target)
+			//console.log('Source: statusID ' + getIDFromSourceElement(source));
+			// console.log('Target: statusID ' + getIDFromSourceElement(target));
+        	// console.log('Target: ',target);
+			// console.log('Sibling: ',sibling);
+			// console.log("ElementID is " + el.getAttribute("data-eid"))
+			// console.log("SourceID is " + source.getAttribute("-eid"))
+			// console.log("TargetID is " + source.getAttribute("data-eid"))        	
+        	// if (source != target){
+        	// 	/* Update Database */
         		
-        	}
-        	else{
-        		/* Do Nothing */	
-        	}            		
+        	// }
+        	// else{
+        	// 	/* Do Nothing */	
+        	// }    		
         	
 		}
 		
 		function dragBoard(el) {
-			console.log('Dragging: ',el);
+			//console.log('Dragging: ',el);
 		}
 
 		function dragendBoard(el, source){

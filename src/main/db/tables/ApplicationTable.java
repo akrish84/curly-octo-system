@@ -1,7 +1,6 @@
 package main.db.tables;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,7 +8,9 @@ import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import main.beans.Application;
 import main.db.QueryProvider;
@@ -19,8 +20,9 @@ public class ApplicationTable {
 
 	private static final String INSERT_USER_APPLICATION = "main.db.tables.ApplicationTabls.insertUserApplication";
 	private static final String UPDATE_APPLICATION_STATUS = "main.db.tables.ApplicationTabls.updateApplicationStatus";
+	private static final String FETCH_APPLICATION = "main.db.tables.ApplicationTabls.fetchApplication";
 	private static final String FETCH_USER_APPLICATIONS = "main.db.tables.ApplicationTabls.fetchUserApplications";
-	private static final String FETCH_ALL_APPLICATION_IDS__OF_STATUS_FOR_USER = "main.db.tables.ApplicationTable.fetchAllApplicationIDsOfStatusForUser";
+	private static final String FETCH_USER_APPLICATION_IDS_WITH_RANK_HAVING_STATUSID = "main.db.tables.ApplicationTable.fetchUserApplicationIdsWithRankHavingStatusID";
 	
 	private static final String COLUMN_ID = "id";
 	private static final String COLUMN_COMPANY_NAME = "company_name";
@@ -103,6 +105,42 @@ public class ApplicationTable {
 	
 	// FETCH FUNCTIONS
 	
+	
+	public static Application fetchApplication(Long applicationID, Connection connection) throws SQLException {
+		PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        Application application = null;
+        try {
+	        statement = connection.prepareStatement(QueryProvider.getQuery(FETCH_APPLICATION));
+	        statement.setLong(1, applicationID);
+	        resultSet = statement.executeQuery();
+	        while(resultSet.next()){
+	        	application = new Application();
+	        	application.setId(resultSet.getLong(COLUMN_ID));
+	        	application.setCompanyName(resultSet.getString(COLUMN_COMPANY_NAME));
+	        	application.setJobTitle(resultSet.getString(COLUMN_JOB_TITLE));
+	        	application.setJobDescription(resultSet.getString(COLUMN_JOB_DESCRIPTION));
+	        	application.setAps(resultSet.getString(COLUMN_APS));
+	        	application.setStatusID(resultSet.getLong(COLUMN_STATUS_ID));
+	        	application.setAppliedDate(resultSet.getString(COLUMN_APPLIED_DATE));
+	        	application.setUserID(resultSet.getLong(COLUMN_USER_ID));
+	        	application.setResumeID(resultSet.getLong(COLUMN_RESUME_ID));
+	        	application.setRank(resultSet.getInt(COLUMN_RANK));
+	            return application;
+	        }
+	        
+        } finally {
+    		if(resultSet != null) {
+    			resultSet.close();
+    		}
+    		if(statement != null) {
+    			statement.close();
+    		}
+        }
+        return application;
+	}
+	
+	
 	/**
 	 * Fetches user's job applications' details
 	 * 
@@ -144,27 +182,27 @@ public class ApplicationTable {
         return applications;
 	}
 	
-	
 	/**
-	 * Fetches all application IDs of given statusID for user
+	 * 
+	 * Fetches user's application IDs To Rank mapping having given status.
 	 * 
 	 * @param userID
 	 * @param statusID
 	 * @param connection
-	 * @return List of application IDs 
+	 * @return Map of applicationID to Rank
 	 * @throws SQLException
 	 */
-	public static List<Long> fetchUserApplicationIDsForStatus(Long userID, Long statusID, Connection connection) throws SQLException {
+	public static Map<Long, Integer> fetchUserApplicationIDSWithRankHavingStatusID(Long userID, Long statusID, Connection connection) throws SQLException {
 		PreparedStatement statement = null;
         ResultSet resultSet = null;
-        List<Long> applicationIDs = new ArrayList<>();
+        Map<Long, Integer> applicationIDToRankMap = new HashMap<>();
         try {
-	        statement = connection.prepareStatement(QueryProvider.getQuery(FETCH_ALL_APPLICATION_IDS__OF_STATUS_FOR_USER));
+	        statement = connection.prepareStatement(QueryProvider.getQuery(FETCH_USER_APPLICATION_IDS_WITH_RANK_HAVING_STATUSID));
 	        statement.setLong(1, userID);
 	        statement.setLong(2, statusID);
 	        resultSet = statement.executeQuery();
 	        while(resultSet.next()){
-	        	applicationIDs.add(resultSet.getLong("id"));
+	        	applicationIDToRankMap.put(resultSet.getLong("id"), resultSet.getInt("rank"));
 	        }
         } finally {
     		if(resultSet != null) {
@@ -174,6 +212,7 @@ public class ApplicationTable {
     			statement.close();
     		}
         }
-        return applicationIDs;
+        return applicationIDToRankMap;
 	}
-}
+} 
+

@@ -7,3 +7,8 @@ label {
 	margin-left: 0px !important;
 	margin-right: 0px !important;
 }
+
+.kdiv {
+	min-height: 30%;
+	max-height: 70%;
+}

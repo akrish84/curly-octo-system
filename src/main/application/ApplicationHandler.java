@@ -4,10 +4,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -212,34 +210,45 @@ public class ApplicationHandler {
 	 * @param applicationIDs
 	 * @throws Exception
 	 */
-	public static void updateApplication(Long userID, Long applicationID, Long oldStatusID, Long newStatusID, Long[] applicationIDs) throws Exception {
+	public static void updateApplication(Long userID, Long applicationID, Long newStatusID, Long[] applicationIDs) throws Exception {
 		LOGGER.log(Level.INFO, "Updating application " + applicationID + " for user " + userID);
 		LOGGER.log(Level.INFO, "Reordering application " + Arrays.toString(applicationIDs));
 		DatabaseManager dbManager = DatabaseManager.getInstance();
-		Set<Long> oldApplicationIDs = new HashSet<>(dbManager.fetchUserApplicationIDsForStatus(userID, newStatusID));
+		Application application = dbManager.fetchApplication(applicationID);
+		Map<Long, Integer> applicationIDToRankMap = dbManager.fetchUserApplicationIDSWithRankHavingStatusID(userID, newStatusID);
 		dbManager.beginTransaction();
 		try {
+			Long oldStatusID = application.getStatusID();
+			boolean updateDB = false;
 			if(oldStatusID != newStatusID) {
+				updateDB = true;
 				dbManager.updateApplicationStatus(applicationID, newStatusID);
 			}
 			Map<Long, Integer> appIDToRank = new HashMap<>();
-			int rank = 1;
-			System.out.println("App ids are ");
-			System.out.println(Arrays.deepToString(applicationIDs));
+			int rank = 0;
 			for(int i = applicationIDs.length-1; i >= 0 ; i--) {
 				Long id = applicationIDs[i];
 				if(appIDToRank.containsKey(id)) {
 					throw new IllegalArgumentException("Application ID repeated multiple time: " + Arrays.toString(applicationIDs));
 				}
-				appIDToRank.put(id, rank++);
-				oldApplicationIDs.remove(id);
+				rank = rank+1;
+				appIDToRank.put(id, rank);
+				if(!updateDB && applicationIDToRankMap.get(id) != rank) {
+					updateDB = true;
+				}
+				applicationIDToRankMap.remove(id);
 			}
-			if(oldApplicationIDs.size() > 0) {
+			if(!applicationIDToRankMap.isEmpty()) {
+				LOGGER.log(Level.SEVERE, "Input missing all old applications, Can not rerank applications. Remaining app ids to rank map: " + applicationIDToRankMap);
 				throw new IllegalArgumentException("Input missing all old applications, Can not rerank applications");
 			}
-			dbManager.updateUserApplicationsRanks(appIDToRank);
-			dbManager.commit();
-			LOGGER.log(Level.INFO, "Successfully Updated Application " + applicationID);
+			if(updateDB) {
+				dbManager.updateUserApplicationsRanks(appIDToRank);
+				dbManager.commit();
+			} else {
+				LOGGER.log(Level.INFO, "[Action: Update Application] Not updating application since new app order same as old order");
+			}
+			LOGGER.log(Level.INFO, "[Action: Update Application] Successfully Updated Application " + applicationID);
 			dbManager.endTransaction();
 		} catch(Exception e) {
 			dbManager.rollback();

@@ -1,0 +1,9 @@
+label {
+	position: relative !important;
+	display: inline !important;
+}
+
+.form-row {
+	margin-left: 0px !important;
+	margin-right: 0px !important;
+}

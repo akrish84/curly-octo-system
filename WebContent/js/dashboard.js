@@ -3,6 +3,9 @@ var boardsMap;
 var statusIDPrefix = "status-id-";
 var applicationIDPrefix = "application-id-";
 var $appCardTempalte;
+var allAppData = {};
+var statusMap = {};
+var statusesMap;
 function init() {
 	$appCardTempalte = $('.app-card-template').clone();
 	$('.templates').remove();
@@ -23,7 +26,7 @@ function showUserBoards() {
         }
         else
         {
-			var statusesMap = resp['statusesMap'];
+			statusesMap = resp['statusesMap'];
 			var boards = [];
 			for (var statusID in statusesMap){
 				var status = statusesMap[statusID];
@@ -86,8 +89,7 @@ var kanban = {
 		    buttonClick      : function(el, boardId) {}                      // callback when the board's button is clicked				
 		});
 		
-		function click(el){
-        	console.log('Item Clicked');
+		function click(el){			
         }
         
         function dropEl(el, target, source, sibling){
@@ -130,8 +132,53 @@ var kanban = {
 		$appCard.find(".applied-date").text(appliedDate);
 
 		item['id'] = applicationIDPrefix + id;
+		var appValues = {}
+
+		appValues.companyName = companyName;
+		appValues.id = id;
+		appValues.jobDescription = jobDescription;
+		appValues.jobTitle = jobTitle;
+		appValues.statusID = statusID;
+		appValues.aps = aps;
+		appValues.appliedDate = appliedDate;
+
+		$appCard.attr("onclick", function (event) {			
+			return "populateModal("+id+")";
+		})		
+		
+		item['id'] = applicationIDPrefix + id;		
 		item['title'] = $appCard.wrap("<div />").parent().html()
 		kanbanObj.addElement(statusIDPrefix+statusID, item);
+
+		allAppData[id] = appValues;		
 	}
 	
 };
+
+function populateModal(appID){	
+	var appData = allAppData[appID];
+	console.log(appData)
+	$("#companyName").val(appData.companyName);	
+	$("#jobTitle").val(appData.jobTitle);
+	$("#appliedDate").val(appData.appliedDate);
+	$("#jobDescription").val(appData.jobDescription);
+	$("#aps").val(appData.aps);
+	$("#aps").val(appData.aps);
+	$("#appStatus").val(statusesMap[appData.statusID]["status"]);
+	console.log(statusesMap[appData.statusID]["status"]);
+	
+	$("#modalButton").click();
+}
+
+$('#appModal').submit(function () {
+	console.log("Submitted");
+	return false;
+});
+
+$("input.form-control").on("click", function(event) {				
+	$(this).attr("readonly", false);	
+})
+
+$("input.form-control").on("blur", function (event) {	
+	$(this).attr("readonly", true);
+})

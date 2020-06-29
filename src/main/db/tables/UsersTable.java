@@ -53,7 +53,9 @@ public class UsersTable {
 	            resultSet = statement.getGeneratedKeys();
 	            resultSet.next();
 	            lastInsertId = resultSet.getLong(1);
-        		}
+        	} else {
+	    		throw new SQLException("User not added ");
+	    	}
         } finally {
     		if(resultSet != null) {
     			resultSet.close();

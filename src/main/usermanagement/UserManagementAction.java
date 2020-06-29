@@ -100,7 +100,7 @@ public class UserManagementAction {
 		}
 		LOGGER.log(Level.INFO, "Action: Login. User email: " + email);
 		try {
-			User user = new DatabaseManager().fetchUser(email);
+			User user = DatabaseManager.getInstance().fetchUser(email);
 			if(user == null) {
 				responseMessage = Utils.getErrorMessage("Email does not exist");
 				LOGGER.log(Level.SEVERE, responseMessage);

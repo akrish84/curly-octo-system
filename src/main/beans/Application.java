@@ -1,6 +1,7 @@
 package main.beans;
 
 public class Application {
+	
 	private Long id;
 	private String companyName;
 	private String jobTitle;
@@ -10,6 +11,7 @@ public class Application {
 	private String appliedDate;
 	private Long resumeID;
 	private Long userID;
+	private int rank;
 	
 	public Long getId() {
 		return id;
@@ -65,7 +67,18 @@ public class Application {
 	public void setUserID(Long userID) {
 		this.userID = userID;
 	}
+	public int getRank() {
+		return rank;
+	}
+	public void setRank(int rank) {
+		this.rank = rank;
+	}
 	
-	
+	@Override
+	public String toString() {
+		return "Application [id=" + id + ", companyName=" + companyName + ", jobTitle=" + jobTitle + ", jobDescription="
+				+ jobDescription + ", aps=" + aps + ", statusID=" + statusID + ", appliedDate=" + appliedDate
+				+ ", resumeID=" + resumeID + ", userID=" + userID + ", rank=" + rank + "]";
+	}
 
 }

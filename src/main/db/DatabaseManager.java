@@ -2,6 +2,7 @@ package main.db;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import main.beans.Application;
 import main.beans.ApplicationStatus;
 import main.beans.User;
 import main.db.tables.APSSuggestionsTable;
+import main.db.tables.ApplicationRankTable;
 import main.db.tables.ApplicationTable;
 
 /**
@@ -29,6 +31,25 @@ public class DatabaseManager {
 	private Connection connection = null;
 	private boolean TRANSACTION_IN_PROGRESS = false;
 
+	/**
+	 * Not a singleton class, using getInstance() a much cleaner way of creating instance for unary db function executions.
+	 * To maintain object creation consistency through out the code having getInstance function. 
+	 */
+	
+	private DatabaseManager() {
+		// empty function
+	}
+	
+	
+	/**
+	 * Returns a new instance of the class.
+	 * [Note] class is not a singleton, function is a cleaner way of creating instance for unary db function executions.
+	 * To maintain object creation consistency through out the code having getInstance() function. 
+	 * @return
+	 */
+	public static DatabaseManager getInstance() {
+		return new DatabaseManager();
+	}
 	
 	//*************************************
 	// Basic connection handling functions
@@ -141,6 +162,13 @@ public class DatabaseManager {
 		safeClose(con);
 	}
 	
+	
+	public void updateStatusForUser(ApplicationStatus status, Long userID) throws SQLException {
+		Connection con = getConnection();
+		UserApplicationStatusesTable.updateStatusForUser(status, userID, con);
+		safeClose(con);
+	}
+	
 	/**
 	 * Updates statuses in DB for user.
 	 * 
@@ -155,6 +183,15 @@ public class DatabaseManager {
 		safeClose(con);
 	}
 	
+	/**
+	 * 
+	 * Fetches Application Status details for the given statusID and userID 
+	 * 
+	 * @param userID
+	 * @param statusID
+	 * @return ApplicationStatus
+	 * @throws SQLException
+	 */
 	public ApplicationStatus fetchStatus(Long userID, Long statusID) throws SQLException {
 		Connection con = getConnection();
 		ApplicationStatus status = UserApplicationStatusesTable.fetchStatus(userID, statusID, con);
@@ -175,9 +212,6 @@ public class DatabaseManager {
 		return maxRank;
 	}
 	
-	//*************************************
-	// Application Table
-	//*************************************
 	/**
 	 * Fetches user's application statuses.
 	 * @param userID
@@ -191,6 +225,37 @@ public class DatabaseManager {
 		return applicationStatusesForUser;
 	}
 	
+	//*************************************
+	// Application Table
+	//*************************************
+	
+	/**
+	 * 
+	 * Adds application for user to db. 
+	 * 
+	 * @param application
+	 * @throws SQLException
+	 * @throws ParseException
+	 */
+	public void addUserApplication(Application application) throws SQLException, ParseException {
+		Connection con = getConnection();
+		ApplicationTable.addUserApplication(application, con);
+		safeClose(con);
+	}
+	
+	/**
+	 * Updates status for application
+	 * 
+	 * @param applicationID
+	 * @param statusID
+	 * @throws SQLException
+	 */
+	public void updateApplicationStatus(Long applicationID, Long statusID) throws SQLException {
+		Connection con = getConnection();
+		ApplicationTable.updateApplicationStatus(applicationID, statusID, con);
+		safeClose(con);
+	}
+	 
 	/**
 	 * 
 	 * Fetches user's job applications' details
@@ -207,7 +272,56 @@ public class DatabaseManager {
 		
 	}
 	
+	/**
+	 * Fetches user's application IDs having given status.
+	 * 
+	 * @param userID
+	 * @param statusID
+	 * @return List of application IDs
+	 * @throws SQLException
+	 */
+	public List<Long> fetchUserApplicationIDsForStatus(Long userID, Long statusID) throws SQLException {
+		Connection con = getConnection();
+		List<Long> applicationIDs = ApplicationTable.fetchUserApplicationIDsForStatus(userID, statusID, con);
+		safeClose(con);
+		return applicationIDs;
+	}
 	
+	//*************************************
+	// Application Rank Table
+	//*************************************
+	
+	public void addApplicationRank(Long applicationID, int rank) throws SQLException {
+		Connection con = getConnection();
+		ApplicationRankTable.addApplicationRank(applicationID, rank, con);
+		safeClose(con);
+	}
+	
+	/**
+	 * Updates rank for given applicationIDs
+	 * 
+	 * @param appIDToRank
+	 * @throws SQLException
+	 */
+	public void updateUserApplicationsRanks(Map<Long, Integer> appIDToRank) throws SQLException {
+		Connection con = getConnection();
+		ApplicationRankTable.updateApplicationsRanks(appIDToRank, con);		
+		safeClose(con);
+	}
+	
+	/**
+	 * Fetches user's max application rank having statusID 
+	 * @param userID
+	 * @param statusID
+	 * @return max rank of application under having statusID
+	 * @throws SQLException
+	 */
+	public int fetchUsersMaxRankForStatus(Long userID, Long statusID) throws SQLException {
+		Connection con = getConnection();
+		int maxRank = ApplicationRankTable.fetchUsersMaxRankForStatus(userID, statusID, con);		
+		safeClose(con);
+		return maxRank;
+	}
 	
 	//*************************************
 	// Transaction handling functions

@@ -50,7 +50,6 @@ function addUserApplications(){
 			var applications = resp['applications'];
 			for(i in applications){
 				application = applications[i];
-				console.log(application.companyName);
 				kanban.buildAppCard(application);
 			}
         }
@@ -131,7 +130,6 @@ var kanban = {
 		$appCard.find(".applied-date").text(appliedDate);
 
 		item['id'] = applicationIDPrefix + id;
-		console.log($appCard.html());
 		item['title'] = $appCard.wrap("<div />").parent().html()
 		kanbanObj.addElement(statusIDPrefix+statusID, item);
 	}

@@ -284,7 +284,7 @@ var dragula = require("dragula");
           headerBoard.classList.add(value);
         });
         var headerBoardRow = document.createElement("div");
-        // headerBoardRow.classList.add("row");
+        headerBoardRow.classList.add("row");
         headerBoard.appendChild(headerBoardRow);
         headerBoardRow.innerHTML =
           '<div class="kanban-title-board col-10">' + board.title + "</div>";

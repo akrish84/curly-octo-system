@@ -1,0 +1,6 @@
+<queries>
+	<query key="main.db.tables.ApplicationRankTable.insertUserApplicationRank">insert into application_rank(application_id, `rank`) values (?, ?) </query>
+	<query key="main.db.tables.ApplicationRankTable.updateUserApplicationsRanks">update application_rank set `rank` = ? where application_id = ? </query>
+	<query key="main.db.tables.ApplicationRankTable.fetchMaxRankForUser">select max(`rank`) as max_rank from application_rank inner join applications on applications.id = application_rank.application_id where application_id in (select id from applications where user_id = ? and  status_id = ?)</query>	
+</queries>
+

@@ -8,15 +8,15 @@ import main.db.DatabaseManager;
 public class SuggestionsHandler {
 	
 	public static List<String> fetchCompanySuggestions() throws SQLException {
-		return new DatabaseManager().fetchCompanySuggestions();
+		return DatabaseManager.getInstance().fetchCompanySuggestions();
 	}
 	
 	public static List<String> fetchJobTitleSuggestions() throws SQLException {
-		return new DatabaseManager().fetchJobTitleSuggestions();
+		return DatabaseManager.getInstance().fetchJobTitleSuggestions();
 	}
 	
 	public static List<String> fetchAPSSuggestions() throws SQLException {
-		return new DatabaseManager().fetchAPSSuggestions();
+		return DatabaseManager.getInstance().fetchAPSSuggestions();
 	}
 
 }

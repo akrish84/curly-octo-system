@@ -1,7 +1,13 @@
 package main.util;
 
+import java.sql.SQLException;
+import java.util.Map;
+
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+
+import main.beans.ApplicationStatus;
+import main.db.DatabaseManager;
 
 /**
  * Performs input validation
@@ -28,5 +34,29 @@ public class Validator {
 		return result;
 	}
 
-
+	public static boolean isNull(Object... obj) {
+		for(Object arg : obj) {
+			if(arg == null) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static boolean isEmpty(String... args) {
+		for(String arg : args) {
+			if(arg.isEmpty()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static boolean isValidStatusID(Long statusID, Long userID) throws SQLException {
+		Map<Long, ApplicationStatus> applicationStatuses = DatabaseManager.getInstance().fetchApplicationStatusesForUser(userID);
+		if(applicationStatuses.containsKey(statusID)) {
+			return true;
+		}
+		return false;
+	}
 }

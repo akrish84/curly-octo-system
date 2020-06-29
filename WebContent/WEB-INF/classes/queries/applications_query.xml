@@ -1,4 +1,6 @@
 <queries>
-	<query key="main.db.tables.ApplicationTabls.insertUserApplications">insert into applications(company_name, job_title, job_description, aps, status_id, applied_date, user_id, resume_id) values ();</query>
-	<query key="main.db.tables.ApplicationTabls.fetchUserApplications">select id, company_name, job_title, job_description, aps, status_id, applied_date, user_id, resume_id from applications where user_id = ?</query>
+	<query key="main.db.tables.ApplicationTabls.insertUserApplication">insert into applications(company_name, job_title, job_description, aps, status_id, applied_date, user_id) values (?, ?, ?, ?, ?, ?, ?);</query>
+	<query key="main.db.tables.ApplicationTabls.updateApplicationStatus">update applications set status_id = ? where id = ?</query>
+	<query key="main.db.tables.ApplicationTabls.fetchUserApplications">select id, company_name, job_title, job_description, aps, status_id, DATE_FORMAT(applied_date,'%d/%m/%Y') AS applied_date, user_id, resume_id, `rank` from applications inner join application_rank on application_rank.application_id = id where user_id = ?</query>
+	<query key="main.db.tables.ApplicationTable.fetchAllApplicationIDsOfStatusForUser">select id from applications where user_id = ? and status_id = ?</query>
 </queries>

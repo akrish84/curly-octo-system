@@ -2,8 +2,12 @@ package main.application;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -59,7 +63,7 @@ public class ApplicationHandler {
 		statuses.add(interview);
 		statuses.add(offer);
 		LOGGER.log(Level.INFO, "Adding default statuses " + statuses + " for user " + userID);
-		new DatabaseManager().addStatusesForUser(statuses, userID);
+		DatabaseManager.getInstance().addStatusesForUser(statuses, userID);
 	}
 	
 	/**
@@ -70,7 +74,7 @@ public class ApplicationHandler {
 	 * @throws SQLException
 	 */
 	public static void addStatusForUser(ApplicationStatus status, Long userID) throws SQLException {
-		DatabaseManager dbManager = new DatabaseManager();
+		DatabaseManager dbManager = DatabaseManager.getInstance();
 		int maxStatusRank = dbManager.fetchMaxStatusRankForUser(userID);
 		status.setRank(maxStatusRank + ApplicationStatus.DEFAULT_RANK_GAP);
 		List<ApplicationStatus> statuses = new ArrayList<>();
@@ -80,18 +84,25 @@ public class ApplicationHandler {
 		LOGGER.log(Level.INFO, "Successful");
 	}
 	
-	public static void updateStatusForUser(ApplicationStatus status , Long userID) throws SQLException {
-		DatabaseManager dbManager = new DatabaseManager();
+	
+	/**
+	 * Updates status for user
+	 * @param status
+	 * @param userID
+	 * @throws SQLException
+	 */
+	public static void updateStatusForUser(ApplicationStatus status , Long userID) throws SQLException, IllegalArgumentException {
+		DatabaseManager dbManager = DatabaseManager.getInstance();
 		ApplicationStatus existingStatus = dbManager.fetchStatus(userID, status.getId());
 		if(existingStatus == null) {
 			throw new IllegalArgumentException("Status with id " + status.getId() + " does not exist for user " + userID);
 		}
 		String oldStatus = existingStatus.getStatus();
 		existingStatus.setStatus(status.getStatus());
-		List<ApplicationStatus> statuses = new ArrayList<>();
-		statuses.add(existingStatus);
+//		List<ApplicationStatus> statuses = new ArrayList<>();
+//		statuses.add(existingStatus);
 		LOGGER.log(Level.INFO, "Updating status from " + oldStatus + " to " + status.getStatus() + " for user " + userID);
-		dbManager.updateStatusesForUser(statuses, userID);
+		dbManager.updateStatusForUser(existingStatus, userID);
 		LOGGER.log(Level.INFO, "Successful");
 	}
 	
@@ -105,9 +116,9 @@ public class ApplicationHandler {
 	 * @throws SQLException
 	 * @throws JSONException 
 	 */
-	public static void updateStatusesForUser(String stasusesAsJSONString, Long userID) throws SQLException, JSONException {
+	public static void updateStatusesForUser(String stasusesAsJSONString, Long userID) throws SQLException, JSONException, IllegalArgumentException {
 		List<ApplicationStatus> statuses = buildStatusesFromJSONString(stasusesAsJSONString);
-		DatabaseManager dbManager = new DatabaseManager();
+		DatabaseManager dbManager = DatabaseManager.getInstance();
 		int rank = 0;
 		List<ApplicationStatus> addStatuses = new ArrayList<>();
 		List<ApplicationStatus> updateStatuses = new ArrayList<>();
@@ -124,7 +135,7 @@ public class ApplicationHandler {
 		}
 		if(!existingStatuses.isEmpty()) {
 			LOGGER.log(Level.SEVERE, "Missing old statuses " + existingStatuses);
-			throw new IllegalArgumentException("Input missing all old statuses, Cannot rerank statuses");
+			throw new IllegalArgumentException("Input missing all old statuses, Can not rerank statuses");
 		}
 		dbManager.beginTransaction();
 		try {
@@ -137,12 +148,13 @@ public class ApplicationHandler {
 			dbManager.commit();
 		} catch(SQLException e) {
 			dbManager.rollback();
+			dbManager.endTransaction();
 			throw e;
 		}
 		dbManager.endTransaction();
 	}
 	
-	private static List<ApplicationStatus> buildStatusesFromJSONString(String statusesAsJSONString) throws JSONException {
+	private static List<ApplicationStatus> buildStatusesFromJSONString(String statusesAsJSONString) throws JSONException, IllegalArgumentException {
 		List<ApplicationStatus> statuses = new ArrayList<>();
 		JSONArray arr = new JSONArray(statusesAsJSONString);
 		for(int i = 0 ; i < arr.length(); i++) {
@@ -161,6 +173,7 @@ public class ApplicationHandler {
 		}
 		return statuses;
 	}
+
 	/**
 	 * Fetches user's statuses
 	 * 
@@ -169,7 +182,7 @@ public class ApplicationHandler {
 	 * @throws SQLException
 	 */
 	public static Map<Long, ApplicationStatus> fetchApplicationStatusesForUser(Long userID) throws SQLException {
-		return new DatabaseManager().fetchApplicationStatusesForUser(userID);
+		return DatabaseManager.getInstance().fetchApplicationStatusesForUser(userID);
 	}
 	
 	/**
@@ -180,8 +193,90 @@ public class ApplicationHandler {
 	 * @return List of user's Applications
 	 * @throws SQLException
 	 */
-	public static List<Application> fetchUserApplications(Long userID) throws SQLException {
-		return new DatabaseManager().fetchUserApplications(userID);
+	public static List<Application> fetchUserApplications(Long userID) throws SQLException, IllegalArgumentException {
+		return DatabaseManager.getInstance().fetchUserApplications(userID);
 	}
+	
+	/**
+	 * 
+	 * Updates application status, rank.
+	 * If oldStatusID and newStatusID is the same, application is reordered within the same status.
+	 * All application IDs are fetched and re ranked. 
+	 * 
+	 * [Note] App ID with higher rank is displayed on top in the UI.
+	 * 
+	 * @param userID
+	 * @param applicationID
+	 * @param oldStatusID
+	 * @param newStatusID
+	 * @param applicationIDs
+	 * @throws Exception
+	 */
+	public static void updateApplication(Long userID, Long applicationID, Long oldStatusID, Long newStatusID, Long[] applicationIDs) throws Exception {
+		LOGGER.log(Level.INFO, "Updating application " + applicationID + " for user " + userID);
+		LOGGER.log(Level.INFO, "Reordering application " + Arrays.toString(applicationIDs));
+		DatabaseManager dbManager = DatabaseManager.getInstance();
+		Set<Long> oldApplicationIDs = new HashSet<>(dbManager.fetchUserApplicationIDsForStatus(userID, newStatusID));
+		dbManager.beginTransaction();
+		try {
+			if(oldStatusID != newStatusID) {
+				dbManager.updateApplicationStatus(applicationID, newStatusID);
+			}
+			Map<Long, Integer> appIDToRank = new HashMap<>();
+			int rank = 1;
+			System.out.println("App ids are ");
+			System.out.println(Arrays.deepToString(applicationIDs));
+			for(int i = applicationIDs.length-1; i >= 0 ; i--) {
+				Long id = applicationIDs[i];
+				if(appIDToRank.containsKey(id)) {
+					throw new IllegalArgumentException("Application ID repeated multiple time: " + Arrays.toString(applicationIDs));
+				}
+				appIDToRank.put(id, rank++);
+				oldApplicationIDs.remove(id);
+			}
+			if(oldApplicationIDs.size() > 0) {
+				throw new IllegalArgumentException("Input missing all old applications, Can not rerank applications");
+			}
+			dbManager.updateUserApplicationsRanks(appIDToRank);
+			dbManager.commit();
+			LOGGER.log(Level.INFO, "Successfully Updated Application " + applicationID);
+			dbManager.endTransaction();
+		} catch(Exception e) {
+			dbManager.rollback();
+			dbManager.endTransaction();
+			throw e;
+		}
+	}
+	
+	/**
+	 * Adds application to db
+	 * Sets rank for application for given status (maxRank + 1)
+	 * 
+	 * @param application
+	 * @throws Exception
+	 */
+	public static void addApplication(Application application) throws Exception {
+		LOGGER.log(Level.INFO, "Adding application " + application.getCompanyName() + " for user " + application.getUserID());
+		DatabaseManager dbManager = DatabaseManager.getInstance();
+		int maxRank = dbManager.fetchUsersMaxRankForStatus(application.getUserID(), application.getStatusID());
+		dbManager.beginTransaction();
+		try {
+			dbManager.addUserApplication(application);
+			application.setRank(maxRank+1);
+			dbManager.addApplicationRank(application.getId(), maxRank+1);
+			dbManager.commit();
+			dbManager.endTransaction();
+			LOGGER.log(Level.INFO, "Successfully Added Application " + application.toString());
+		} catch(Exception e) {
+			dbManager.rollback();
+			dbManager.endTransaction();
+			throw e;
+		}
+	}
+	
+	
+//	public Application buildApplicationFromJSONString(String applicationAsJSONString) {
+//		Application application = new Application();
+//	}
 
 }

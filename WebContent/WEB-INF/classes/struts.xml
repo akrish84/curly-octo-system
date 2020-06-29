@@ -94,6 +94,16 @@
 			<interceptor-ref name="authStack"/>
 			<result type="json" />
 		</action>
+		
+		<action name="application/add" class="main.application.ApplicationAction" method="addApplication">
+			<interceptor-ref name="authStack"/>
+			<result type="json" />
+		</action>
+		
+		<action name="application/update" class="main.application.ApplicationAction" method="updateApplication">
+			<interceptor-ref name="authStack"/>
+			<result type="json" />
+		</action>
 
 		<action name="statuses/update" class="main.application.ApplicationAction" method="updateStatuses">
 			<interceptor-ref name="authStack"/>
@@ -106,11 +116,6 @@
 		</action>
 		
 		<action name="status/update" class="main.application.ApplicationAction" method="updateStatus">
-			<interceptor-ref name="authStack"/>
-			<result type="json" />
-		</action>
-
-		<action name="application/get" class="main.application.ApplicationAction" method="getApplication">
 			<interceptor-ref name="authStack"/>
 			<result type="json" />
 		</action>

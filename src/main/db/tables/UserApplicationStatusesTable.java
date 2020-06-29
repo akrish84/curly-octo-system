@@ -21,9 +21,8 @@ public class UserApplicationStatusesTable {
 	
 	
 	
-	/***
-	 * INSERT FUNCTIONS
-	 */
+	//INSERT FUNCTIONS
+	 
 
 
 	/**
@@ -56,6 +55,28 @@ public class UserApplicationStatusesTable {
         }
 	}
 
+	/**
+	 * Updates status for user
+	 * @param status
+	 * @param userID
+	 * @param connection
+	 * @throws SQLException
+	 */
+	public static void updateStatusForUser(ApplicationStatus status, long userID, Connection connection) throws SQLException {
+		PreparedStatement statement = null;
+        try {
+	        statement = connection.prepareStatement(QueryProvider.getQuery(UPDATE_USER_STATUS));
+	        statement.setString(1, status.getStatus());
+            statement.setInt(2, status.getRank());
+            statement.setLong(3, userID);
+            statement.setLong(4, status.getId());
+	        statement.executeUpdate();
+        } finally {
+        	if(statement != null) {
+    			statement.close();
+    		}
+        }
+	}
 	
 	/**
 	 * Updates statuses for user.
@@ -88,10 +109,7 @@ public class UserApplicationStatusesTable {
         }
 	}
 	
-	/***
-	 * FETCH FUNCTIONS
-	 *
-	 */
+	// FETCH FUNCTIONS
 	
 	/**
 	 * Fetches all statuses as Map<statusID , ApplicationStatus> for given user.

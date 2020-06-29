@@ -31,7 +31,7 @@ public class UserManagementHandler {
 	public static void signup(User user) throws Exception{
 		String passwordHash = PasswordManager.getPasswordHash(user.getPassword());
 		user.setPassword(passwordHash);
-		new DatabaseManager().addUser(user);
+		DatabaseManager.getInstance().addUser(user);
 		try {
 			ApplicationHandler.addDefaultOptionsForUser(user.getId());
 		} catch(Exception e) {

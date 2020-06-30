@@ -8,8 +8,12 @@ var $appCardTempalte;
 var allAppData = {};
 var statusMap = {};
 var statusesMap;
+var statusIDSelectedToAddApplication=-1
+
+
 function init() {
 	$appCardTempalte = $('.app-card-template').clone();
+	
 	$('.templates').remove();
 }
 
@@ -156,7 +160,7 @@ var kanban = {
 		    dropEl           : function (el, target, source, sibling) {dropEl(el, target, source, sibling)},    // callback when any board's item drop in a board
 		    dragBoard        : function (el, source) {dragBoard(el)},                     // callback when any board stop drag
 		    dragendBoard     : function (el) {dragendBoard(el)},                             // callback when any board stop drag
-		    buttonClick      : function(el, boardId) {}                      // callback when the board's button is clicked				
+		    buttonClick      : function(el, boardId) {buttonClick(el, boardId)}                      // callback when the board's button is clicked				
 		});
 		
 		function click(el){			
@@ -189,6 +193,21 @@ var kanban = {
 
 		function dragendBoard(el, source){
 			console.log("Drag End: ",el," Source: ",source);
+		}
+
+		function buttonClick(el, boardId) {
+			console.log(el)
+			console.log(boardId)
+			$("#modal-companyName").val("");	
+			$("#modal-jobTitle").val("");
+			$("#modal-appliedDate").val("");
+			$("#modal-jobDescription").val("");
+			$("#modal-aps").val("");
+			$("#modal-aps").val("");
+			$("#modal-appStatus").val("");
+			document.getElementById("applicationDetailsModalTitle").classList.add("display-none");
+			document.getElementById("addApplicationModalTitle").classList.remove("display-none");
+			$("#modalButton").click();
 		}
 	},
 
@@ -233,20 +252,20 @@ var kanban = {
 function populateModal(appID){	
 	var appData = allAppData[appID];
 	console.log(appData)
-	$("#companyName").val(appData.companyName);	
-	$("#jobTitle").val(appData.jobTitle);
-	$("#appliedDate").val(appData.appliedDate);
-	$("#jobDescription").val(appData.jobDescription);
-	$("#aps").val(appData.aps);
-	$("#aps").val(appData.aps);
-	$("#appStatus").val(statusesMap[appData.statusID]["status"]);
+	$("#modal-companyName").val(appData.companyName);	
+	$("#modal-jobTitle").val(appData.jobTitle);
+	$("#modal-appliedDate").val(appData.appliedDate);
+	$("#modal-jobDescription").val(appData.jobDescription);
+	$("#modal-aps").val(appData.aps);
+	$("#modal-aps").val(appData.aps);
+	$("#modal-appStatus").val(statusesMap[appData.statusID]["status"]);
 	console.log(statusesMap[appData.statusID]["status"]);
-	
+	document.getElementById("addApplicationModalTitle").classList.add("display-none");
+	document.getElementById("applicationDetailsModalTitle").classList.remove("display-none");
 	$("#modalButton").click();
 }
 
 $('#appModal').submit(function () {
-	console.log("Submitted");
 	return false;
 });
 

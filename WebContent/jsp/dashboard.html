@@ -38,7 +38,8 @@
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Application Details</h5>
+            <h5 class="modal-title display-none" id="addApplicationModalTitle" >Add Application</h5>
+            <h5 class="modal-title display-none" id="applicationDetailsModalTitle">Application Details</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
@@ -48,14 +49,14 @@
                 <div class="form-row">
                     <div class="col-md-4 mb-3">  
                         <label for="companyName">Company Name</label>                                                                  
-                        <input type="text" class="form-control" id="companyName" placeholder="Company Name" value="" required readonly>                                                                            
+                        <input type="text" class="form-control" id="modal-companyName" placeholder="Netflix" value="" required readonly>                                                                            
                     <div class="valid-tooltip">
                         Looks good!
                     </div>
                     </div>
                     <div class="col-md-4 mb-3">
                     <label for="jobTitle">Job Title</label>                    
-                    <input type="text" class="form-control" id="jobTitle" placeholder="Last name" value="" required readonly>                                            
+                    <input type="text" class="form-control" id="modal-jobTitle" placeholder="Software Developer 2" value="" required readonly>                                            
                     <div class="valid-tooltip">
                         Looks good!
                     </div>
@@ -66,9 +67,9 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="appliedDatePrepend"><i class="fa fa-calendar" aria-hidden="true"></i></span>
                         </div>
-                        <input type="text" class="form-control" id="appliedDate" placeholder="Username" aria-describedby="appliedDatePrepend" required readonly>
+                        <input type="text" class="form-control" id="modal-appliedDate" placeholder="Username" aria-describedby="appliedDatePrepend" required readonly>
                         <div class="invalid-tooltip">
-                        Please choose a unique and valid Applied Data.
+                            Please choose a unique and valid Applied Data.
                         </div>
                     </div>
                     </div>
@@ -76,27 +77,27 @@
                 <div class="form-row">
                     <div class="col-md-6 mb-3">
                     <label for="jobDescription">Description</label>
-                    <input type="text" class="form-control" id="jobDescription" placeholder="City" required readonly>
+                    <textarea class="form-control" id="modal-jobDescription" placeholder="We are currently in search of an experienced Software Developer..." required readonly rows="5" cols="50"></textarea>
                     <div class="invalid-tooltip">
-                        Please provide a valid Description.
+  
                     </div>
                     </div>
                     <div class="col-md-3 mb-3">
-                    <label for="aps">APS</label>
-                    <input type="text" class="form-control" id="aps" placeholder="State" required readonly>
-                    <div class="invalid-tooltip">
-                        Please provide a valid APS.
-                    </div>
+                        <label for="aps">APS</label>
+                        <input type="text" class="form-control" id="modal-aps" placeholder="Workday" required readonly>
+                        <div class="invalid-tooltip">
+                            Please provide a valid APS.
+                        </div>
                     </div>
                     <div class="col-md-3 mb-3">
-                    <label for="appStatus">Status</label>
-                    <input type="text" class="form-control" id="appStatus" placeholder="Zip" required readonly>
-                    <div class="invalid-tooltip">
-                        Please provide a valid Status.
-                    </div>
+                        <label for="appStatus">Status</label>
+                        <input type="text" class="form-control" id="modal-appStatus" placeholder="Zip" required readonly>
+                        <div class="invalid-tooltip">
+                            Please provide a valid Status.
+                        </div>
                     </div>
                 </div>
-                <button class="btn btn-primary">Submit form</button>
+                <!--<button class="btn btn-primary">Submit form</button>-->
             </form>
         </div>
         <div class="modal-footer">

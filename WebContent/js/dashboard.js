@@ -6,21 +6,18 @@ var dataEIDAttribute = "data-eid";
 var dataIDAttribute = "data-id";
 var $appCardTempalte;
 var allAppData = {};
-var statusMap = {};
-var statusesMap;
+var statusesMap = {}
 var statusIDSelectedToAddApplication=-1
 
 
 function init() {
 	$appCardTempalte = $('.app-card-template').clone();
-	
 	$('.templates').remove();
 }
 
 function showUserDashboard() {
 	init()
 	showUserBoards();
-	// Add cards
 }
 
 function refreshUserBoards() {
@@ -41,13 +38,14 @@ function showUserBoards() {
 			var boards = [];
 			for (var statusID in statusesMap){
 				var status = statusesMap[statusID];
-				item = {};
+				var item = {};
 				item['id'] = statusIDPrefix+statusID;
 				item['title'] = status.status;
 				boards.push(item);
-			}           
+			}
 			kanban.init(boards);
 			addUserApplications();
+			populateModalStatusesSelectBox();
         }
     });
 }
@@ -112,28 +110,115 @@ function updateApplication(applicationID, oldStatusID, newStatusID, applicationI
 	
 }
 
-function handleApplicationDragEnd(application, source, target) {
-	applicationDataEID = getDataEID(application);
-	sourceDataID = getDataID(source.parentNode);
-	targetDataID = getDataID(target.parentNode);
+function addApplication() {
+	companyName = $("#modal-companyName").val();
+	jobTitle = $("#modal-jobTitle").val();
+	appliedDate = $("#modal-appliedDate").val();
+	jobDescription = $("#modal-jobDescription").val();
+	aps = $("#modal-aps").val();
+}
 
-	items = kanbanObj.getBoardElements(targetDataID);
-	//console.log(items);
+
+function handleApplicationDragEnd(application, source, target) {
+	var applicationDataEID = getDataEID(application);
+	var sourceDataID = getDataID(source.parentNode);
+	var targetDataID = getDataID(target.parentNode);
+
+	var items = kanbanObj.getBoardElements(targetDataID);
 	var applicationIDs = [];
 	for(var i = 0 ; i < items.length; i++) {
 		item = items[i];
 		applicationIDs.push(getAppIDFromDataEID(getDataEID(item)));
 	}
 	applicationID = getAppIDFromDataEID(applicationDataEID);
-	// For now not needed. In future need to do fron end validation before sending request to backend.
+	// For now not needed. In future need to do front end validation before sending request to backend.
 	sourceStatusID = getStatusIDFromDataID(sourceDataID); 
-	
 	targetStatusID = getStatusIDFromDataID(targetDataID);
 
 	updateApplication(applicationID, sourceStatusID, targetStatusID, applicationIDs);
 }
 
+function hideElement(id) {
+	var x = document.getElementById(id);
+	x.style.display = "none";
+}
 
+function showElement(id){
+	var x = document.getElementById(id);
+	x.style.display = "block";	
+}
+
+
+function addApplicationModalPreProcessing() {
+
+	hideElement("applicationDetailsModalTitle");
+	hideElement("modalSaveBtn");
+	//hideElement("modalDeleteBtn");
+	
+	showElement("addApplicationModalTitle");
+	showElement("modalAddBtn");
+	
+	document.getElementById("modal-companyName").removeAttribute("readonly")
+	document.getElementById("modal-jobTitle").removeAttribute("readonly")
+	document.getElementById("modal-appliedDate").removeAttribute("readonly")
+	document.getElementById("modal-jobDescription").removeAttribute("readonly")
+	document.getElementById("modal-aps").removeAttribute("readonly")
+	document.getElementById("modal-appStatuses").removeAttribute("readonly")
+}
+
+function applicationDetailsModalPreProcessing(){ 
+	hideElement("addApplicationModalTitle");
+	hideElement("modalAddBtn");
+
+	showElement("applicationDetailsModalTitle")
+	showElement("modalSaveBtn")
+	//showElement("modalDeleteBtn")
+
+	document.getElementById("modal-companyName").setAttribute("readonly", "");
+	document.getElementById("modal-jobTitle").setAttribute("readonly", "");
+	document.getElementById("modal-appliedDate").setAttribute("readonly", "");
+	document.getElementById("modal-jobDescription").setAttribute("readonly", "");
+	document.getElementById("modal-aps").setAttribute("readonly", "");
+	document.getElementById("modal-appStatuses").setAttribute("readonly", "");
+	setCurrentDateAsAppliedDate();
+}
+
+function setFirstStatusAsSelectBoxValue(){
+	var statusesSelectElement = document.getElementById('modal-appStatuses');
+	for (var statusID in statusesMap){
+		var status = statusesMap[statusID];
+		var statusID = status["id"]
+		var statusValue = status["status"]
+		statusesSelectElement.value = statusValue;
+		return
+	}
+}
+function populateModalStatusesSelectBox() {
+	var statusesSelectElement = document.getElementById('modal-appStatuses');
+	selectBoxValue = ""
+	for (var statusID in statusesMap){
+		var status = statusesMap[statusID];
+		var statusID = status["id"]
+		var statusValue = status["status"]
+		var opt = document.createElement('option');
+		opt.text = statusValue;
+		opt.value = statusValue;
+		opt.setAttribute("id", statusID);
+		statusesSelectElement.appendChild(opt);
+		if(selectBoxValue == "") {
+			selectBoxValue = statusValue;
+		}
+	}
+}
+
+function setCurrentDateAsAppliedDate() {
+	var now = new Date();
+	var day = ("0" + now.getDate()).slice(-2);
+	var month = ("0" + (now.getMonth() + 1)).slice(-2);
+	var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+	console.log(today)
+	document.getElementById("modal-appliedDate").value = today;
+}
 var kanban = {
 	init : function(boards)
 	{
@@ -196,8 +281,6 @@ var kanban = {
 		}
 
 		function buttonClick(el, boardId) {
-			console.log(el)
-			console.log(boardId)
 			$("#modal-companyName").val("");	
 			$("#modal-jobTitle").val("");
 			$("#modal-appliedDate").val("");
@@ -205,27 +288,28 @@ var kanban = {
 			$("#modal-aps").val("");
 			$("#modal-aps").val("");
 			$("#modal-appStatus").val("");
-			document.getElementById("applicationDetailsModalTitle").classList.add("display-none");
-			document.getElementById("addApplicationModalTitle").classList.remove("display-none");
+			addApplicationModalPreProcessing();
 			$("#modalButton").click();
+			addApplicationModalPreProcessing();
 		}
 	},
 
 	buildAppCard : function(application) {
-		companyName = application.companyName;
-		id = application.id;
-		jobDescription = application.jobDescription;
-		jobTitle = application.jobDescription;
-		statusID = application.statusID;
-		aps = application.aps;
-		appliedDate = application.appliedDate;
+		var companyName = application.companyName;
+		var id = application.id;
+		var jobDescription = application.jobDescription;
+		var jobTitle = application.jobDescription;
+		var statusID = application.statusID;
+		var aps = application.aps;
+		var appliedDate = application.appliedDate;
 
 		$appCard = $appCardTempalte.clone();
 		$appCard.find(".company-name").text(companyName);
 		$appCard.find(".job-title").text(jobTitle);
 		$appCard.find(".applied-date").text(appliedDate);
 
-		item['id'] = applicationIDPrefix + id;
+		var appItem = {}
+		appItem['id'] = applicationIDPrefix + id;
 		var appValues = {}
 
 		appValues.companyName = companyName;
@@ -240,10 +324,10 @@ var kanban = {
 			return "populateModal("+id+")";
 		})		
 		
-		item['id'] = applicationIDPrefix + id;		
-		item['title'] = $appCard.wrap("<div />").parent().html()
-		kanbanObj.addElement(statusIDPrefix+statusID, item);
+		appItem['id'] = applicationIDPrefix + id;		
+		appItem['title'] = $appCard.wrap("<div />").parent().html()
 
+		kanbanObj.addElement(statusIDPrefix+statusID, appItem);
 		allAppData[id] = appValues;		
 	}
 	
@@ -251,17 +335,14 @@ var kanban = {
 
 function populateModal(appID){	
 	var appData = allAppData[appID];
-	console.log(appData)
 	$("#modal-companyName").val(appData.companyName);	
 	$("#modal-jobTitle").val(appData.jobTitle);
 	$("#modal-appliedDate").val(appData.appliedDate);
 	$("#modal-jobDescription").val(appData.jobDescription);
 	$("#modal-aps").val(appData.aps);
-	$("#modal-aps").val(appData.aps);
-	$("#modal-appStatus").val(statusesMap[appData.statusID]["status"]);
-	console.log(statusesMap[appData.statusID]["status"]);
-	document.getElementById("addApplicationModalTitle").classList.add("display-none");
-	document.getElementById("applicationDetailsModalTitle").classList.remove("display-none");
+	var statusesSelectElement = document.getElementById('modal-appStatuses');
+	statusesSelectElement.value = statusesMap[appData.statusID]["status"];
+	applicationDetailsModalPreProcessing();
 	$("#modalButton").click();
 }
 

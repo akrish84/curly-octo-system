@@ -15,7 +15,7 @@ public class ConfigurationProperties {
 	private static Map<String, String> configurations;
 	
 	/**
-	 * Loads config file and stores key:value paris in memory.
+	 * Loads config file and stores key:value pairs in memory.
 	 * For testing purpose, uncomment second propertyFile initialization
 	 * @throws IOException 
 	 * @throws FileNotFoundException 

@@ -67,7 +67,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="appliedDatePrepend"><i class="fa fa-calendar" aria-hidden="true"></i></span>
                         </div>
-                        <input type="text" class="form-control" id="modal-appliedDate" placeholder="Username" aria-describedby="appliedDatePrepend" required readonly>
+                        <input type="text" class="form-control" id="modal-appliedDate" aria-describedby="appliedDatePrepend" required readonly>
                         <div class="invalid-tooltip">
                             Please choose a unique and valid Applied Data.
                         </div>
@@ -89,9 +89,10 @@
                             Please provide a valid APS.
                         </div>
                     </div>
-                    <div class="col-md-3 mb-3">
+                    <div class="col-md-3 mb-3 form-group">
                         <label for="appStatus">Status</label>
-                        <input type="text" class="form-control" id="modal-appStatus" placeholder="Zip" required readonly>
+                        <select class="form-control" id="modal-appStatuses">
+                        </select>
                         <div class="invalid-tooltip">
                             Please provide a valid Status.
                         </div>
@@ -101,8 +102,10 @@
             </form>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <!--<button type="button" id = "modalDeleteBtn" class="btn btn-danger">Delete Application</button>-->
+            <button type="button" class="btn btn-secondary modal-btn" data-dismiss="modal">Close</button>
+            <button type="button" id="modalSaveBtn" class="btn btn-primary modal-btn">Save</button>
+            <button type="button" id="modalAddBtn" class="btn btn-primary modal-btn">Add</button>
         </div>
         </div>
     </div>

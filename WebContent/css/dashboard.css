@@ -9,6 +9,13 @@ label {
 }
 
 .kdiv {
-	min-height: 30%;
+	min-height: 50%;
 	max-height: 70%;
+}
+
+.modal-btn {
+	padding-left:30px;
+	padding-right: 30px;
+	margin-left:10px;
+	margin-right:10px;
 }

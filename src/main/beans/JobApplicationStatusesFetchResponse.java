@@ -4,14 +4,14 @@ import java.util.Map;
 
 public class JobApplicationStatusesFetchResponse {
 
-	private Map<Long, ApplicationStatus> statusesMap;
+	private Map<Long, ApplicationStatus> jobStatusesMap;
 
-	public Map<Long, ApplicationStatus> getStatusesMap() {
-		return statusesMap;
+	public Map<Long, ApplicationStatus> getJobStatusesMap() {
+		return jobStatusesMap;
 	}
 
-	public void setStatusesMap(Map<Long, ApplicationStatus> statusesMap) {
-		this.statusesMap = statusesMap;
+	public void setJobStatusesMap(Map<Long, ApplicationStatus> jobStatusesMap) {
+		this.jobStatusesMap = jobStatusesMap;
 	}
 
 

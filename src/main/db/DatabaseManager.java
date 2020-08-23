@@ -10,7 +10,7 @@ import main.db.tables.CompanySuggestionsTable;
 import main.db.tables.JobTitleSuggestionsTable;
 import main.db.tables.UserApplicationStatusesTable;
 import main.db.tables.UsersTable;
-import main.beans.Application;
+import main.beans.JobApplication;
 import main.beans.ApplicationStatus;
 import main.beans.User;
 import main.db.tables.APSSuggestionsTable;
@@ -237,7 +237,7 @@ public class DatabaseManager {
 	 * @throws SQLException
 	 * @throws ParseException
 	 */
-	public void addUserApplication(Application application) throws SQLException, ParseException {
+	public void addUserApplication(JobApplication application) throws SQLException, ParseException {
 		Connection con = getConnection();
 		ApplicationTable.addUserApplication(application, con);
 		safeClose(con);
@@ -265,9 +265,9 @@ public class DatabaseManager {
 	 * @return null if there is no application with given applicationID
 	 * @throws SQLException
 	 */
-	public Application fetchApplication(Long applicationID) throws SQLException {
+	public JobApplication fetchApplication(Long applicationID) throws SQLException {
 		Connection con = getConnection();
-		Application application = ApplicationTable.fetchApplication(applicationID, con);
+		JobApplication application = ApplicationTable.fetchApplication(applicationID, con);
 		safeClose(con);
 		return application;
 	}
@@ -280,9 +280,9 @@ public class DatabaseManager {
 	 * @return List of user's Applications
 	 * @throws SQLException
 	 */
-	public List<Application> fetchUserApplications(Long userID) throws SQLException {
+	public List<JobApplication> fetchUserApplications(Long userID) throws SQLException {
 		Connection con = getConnection();
-		List<Application> applications = ApplicationTable.fetchUserApplications(userID, con);
+		List<JobApplication> applications = ApplicationTable.fetchUserApplications(userID, con);
 		safeClose(con);
 		return applications;
 		

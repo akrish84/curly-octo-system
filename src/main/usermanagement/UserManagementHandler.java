@@ -4,7 +4,7 @@ package main.usermanagement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import main.application.ApplicationHandler;
+import main.application.JobApplicationHandler;
 import main.authentication.SessionHandler;
 import main.db.DatabaseManager;
 import main.util.PasswordManager;
@@ -33,7 +33,7 @@ public class UserManagementHandler {
 		user.setPassword(passwordHash);
 		DatabaseManager.getInstance().addUser(user);
 		try {
-			ApplicationHandler.addDefaultOptionsForUser(user.getId());
+			JobApplicationHandler.addDefaultOptionsForUser(user.getId());
 		} catch(Exception e) {
 			LOGGER.log(Level.SEVERE, "Failed to add default statuses for user " + user.getId(), e);
 		}

@@ -13,7 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import main.beans.Application;
+import main.beans.JobApplication;
 import main.beans.ApplicationStatus;
 import main.db.DatabaseManager;
 
@@ -24,9 +24,9 @@ import main.db.DatabaseManager;
  *
  */
 
-public class ApplicationHandler {
+public class JobApplicationHandler {
 	
-	private static Logger LOGGER = Logger.getLogger(ApplicationHandler.class.getName());
+	private static Logger LOGGER = Logger.getLogger(JobApplicationHandler.class.getName());
 	
 	private static final String KEY_STATUS_ID = "id";
 	private static final String KEY_STATUS_NAME = "status";
@@ -191,7 +191,7 @@ public class ApplicationHandler {
 	 * @return List of user's Applications
 	 * @throws SQLException
 	 */
-	public static List<Application> fetchUserApplications(Long userID) throws SQLException, IllegalArgumentException {
+	public static List<JobApplication> fetchUserApplications(Long userID) throws SQLException, IllegalArgumentException {
 		return DatabaseManager.getInstance().fetchUserApplications(userID);
 	}
 	
@@ -214,7 +214,7 @@ public class ApplicationHandler {
 		LOGGER.log(Level.INFO, "Updating application " + applicationID + " for user " + userID);
 		LOGGER.log(Level.INFO, "Reordering application " + Arrays.toString(applicationIDs));
 		DatabaseManager dbManager = DatabaseManager.getInstance();
-		Application application = dbManager.fetchApplication(applicationID);
+		JobApplication application = dbManager.fetchApplication(applicationID);
 		Map<Long, Integer> applicationIDToRankMap = dbManager.fetchUserApplicationIDSWithRankHavingStatusID(userID, newStatusID);
 		dbManager.beginTransaction();
 		try {
@@ -264,7 +264,7 @@ public class ApplicationHandler {
 	 * @param application
 	 * @throws Exception
 	 */
-	public static void addApplication(Application application) throws Exception {
+	public static void addApplication(JobApplication application) throws Exception {
 		LOGGER.log(Level.INFO, "Adding application " + application.getCompanyName() + " for user " + application.getUserID());
 		DatabaseManager dbManager = DatabaseManager.getInstance();
 		int maxRank = dbManager.fetchUsersMaxRankForStatus(application.getUserID(), application.getStatusID());

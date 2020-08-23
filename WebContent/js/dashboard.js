@@ -26,7 +26,7 @@ function refreshUserBoards() {
 }
 
 function showUserBoards() {
-	var url = "jobstatuses";                
+	var url = "jobStatuses";                
     sendAjaxRequest(url, function(resp){                                
         if (resp['responseMessage'] != null && resp['responseMessage'].includes('Error'))
         {               
@@ -34,7 +34,7 @@ function showUserBoards() {
         }
         else
         {
-			statusesMap = resp.response['statusesMap'];
+			statusesMap = resp.response['jobStatusesMap'];
 			var boards = [];
 			for (var statusID in statusesMap){
 				var status = statusesMap[statusID];
@@ -51,7 +51,7 @@ function showUserBoards() {
 }
 
 function addUserApplications(){
-	var url = "applications";                
+	var url = "jobApplications";                
     sendAjaxRequest(url, function(resp){                                
         if (resp['responseMessage'] != null && resp['responseMessage'].includes('Error'))
         {               
@@ -59,7 +59,7 @@ function addUserApplications(){
         }
         else
         {
-			var applications = resp['applications'];
+			var applications = resp.response['jobApplications'];
 			for(var i = applications.length-1; i>=0 ;i--) {
 				application = applications[i];
 				kanban.buildAppCard(application);

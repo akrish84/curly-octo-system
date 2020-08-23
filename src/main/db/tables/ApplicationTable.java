@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import main.beans.Application;
+import main.beans.JobApplication;
 import main.db.QueryProvider;
 
 public class ApplicationTable {
@@ -49,7 +49,7 @@ public class ApplicationTable {
 	 * @throws ParseException
 	 */
 	
-	public static Long addUserApplication(Application application, Connection connection) throws SQLException, ParseException {
+	public static Long addUserApplication(JobApplication application, Connection connection) throws SQLException, ParseException {
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		Long lastInsertId = null;
@@ -106,16 +106,16 @@ public class ApplicationTable {
 	// FETCH FUNCTIONS
 	
 	
-	public static Application fetchApplication(Long applicationID, Connection connection) throws SQLException {
+	public static JobApplication fetchApplication(Long applicationID, Connection connection) throws SQLException {
 		PreparedStatement statement = null;
         ResultSet resultSet = null;
-        Application application = null;
+        JobApplication application = null;
         try {
 	        statement = connection.prepareStatement(QueryProvider.getQuery(FETCH_APPLICATION));
 	        statement.setLong(1, applicationID);
 	        resultSet = statement.executeQuery();
 	        while(resultSet.next()){
-	        	application = new Application();
+	        	application = new JobApplication();
 	        	application.setId(resultSet.getLong(COLUMN_ID));
 	        	application.setCompanyName(resultSet.getString(COLUMN_COMPANY_NAME));
 	        	application.setJobTitle(resultSet.getString(COLUMN_JOB_TITLE));
@@ -148,16 +148,16 @@ public class ApplicationTable {
 	 * @return List of User's Applications
 	 * @throws SQLException
 	 */
-	public static List<Application> fetchUserApplications(Long userID, Connection connection) throws SQLException {
+	public static List<JobApplication> fetchUserApplications(Long userID, Connection connection) throws SQLException {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
-        List<Application> applications = new ArrayList<>();
+        List<JobApplication> applications = new ArrayList<>();
         try {
 	        statement = connection.prepareStatement(QueryProvider.getQuery(FETCH_USER_APPLICATIONS));
 	        statement.setLong(1, userID);
 	        resultSet = statement.executeQuery();
 	        while(resultSet.next()){
-	        	Application application = new Application();
+	        	JobApplication application = new JobApplication();
 	        	application.setId(resultSet.getLong(COLUMN_ID));
 	        	application.setCompanyName(resultSet.getString(COLUMN_COMPANY_NAME));
 	        	application.setJobTitle(resultSet.getString(COLUMN_JOB_TITLE));

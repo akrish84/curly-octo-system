@@ -1,6 +1,6 @@
 package main.beans;
 
-public class Application {
+public class JobApplication {
 	
 	private Long id;
 	private String companyName;

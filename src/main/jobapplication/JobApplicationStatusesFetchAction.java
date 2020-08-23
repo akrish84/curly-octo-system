@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import com.opensymphony.xwork2.Action;
 
-import main.application.ApplicationHandler;
+import main.application.JobApplicationHandler;
 import main.authentication.SessionHandler;
 import main.beans.ApplicationStatus;
 import main.beans.JobApplicationStatusesFetchResponse;
@@ -18,15 +18,14 @@ public class JobApplicationStatusesFetchAction {
 	
 	private JobApplicationStatusesFetchResponse response;
 	
-	public String fetchUsersJobApplicationStatuses() {
-		Long userID = 0l;
-		try {
-			userID = SessionHandler.getLoggedInUserID();
-			Map<Long, ApplicationStatus> statusesMap = ApplicationHandler.fetchApplicationStatusesForUser(userID);
+	public String fetchLoggedInUserJobApplicationStatuses() {
+		Long userID = SessionHandler.getLoggedInUserID();
+		try { 
+			Map<Long, ApplicationStatus> jobStatusesMap = JobApplicationHandler.fetchApplicationStatusesForUser(userID);
 			response = new JobApplicationStatusesFetchResponse();
-			response.setStatusesMap(statusesMap);
+			response.setJobStatusesMap(jobStatusesMap);
 		}catch(Exception e) {
-			LOGGER.log(Level.SEVERE, "Failed to fetch statuses for user for user " + userID, e);
+			LOGGER.log(Level.SEVERE, "Failed to fetch statuses for user " + userID, e);
 			return Action.ERROR;
 		}
 		return Action.SUCCESS;

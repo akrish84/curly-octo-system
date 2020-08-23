@@ -96,3 +96,14 @@ input::placeholder
 .display-block{
 	display:block;
 }
+
+
+
+
+/** HEADER **/
+
+
+.logo {
+	max-width: 50px;
+	max-height: 50px;
+}

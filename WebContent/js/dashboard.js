@@ -343,7 +343,8 @@ function populateModal(appID){
 	var statusesSelectElement = document.getElementById('modal-appStatuses');
 	statusesSelectElement.value = statusesMap[appData.statusID]["status"];
 	applicationDetailsModalPreProcessing();
-	$("#modalButton").click();
+	// $("#modalButton").click();
+	showModal("modalButton");
 }
 
 $('#appModal').submit(function () {
@@ -357,3 +358,8 @@ $("input.form-control").on("click", function(event) {
 $("input.form-control").on("blur", function (event) {	
 	$(this).attr("readonly", true);
 })
+
+function showModal(name) {
+	console.log(name);
+	$("#" + name ).click();
+}

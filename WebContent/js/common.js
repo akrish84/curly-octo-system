@@ -14,6 +14,15 @@ function sendAjaxRequest(url, successCallBackFn) {
 	});
 }
 
+function sendAjaxRequest(url, successCallBackFn, errorCallBackFn) {
+	$.ajax({
+		type: "POST",
+		url:url, 
+		success: successCallBackFn,
+		error: errorCallBackFn
+	});
+}
+
 function ValidateEmail(mail) {	
 	if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
 		return (true)

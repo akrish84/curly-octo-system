@@ -33,7 +33,29 @@
 		
 		<global-results>
     		<result name="auth_error" type="redirectAction">login</result>
+    		<result name="error" >
+    			<param name="statusCode">500</param>
+    		</result>
+    		<result name="input" >
+    			<param name="statusCode">400</param>
+    		</result>
     	</global-results>
+    	
+    	
+    	<!-- Header / Footer URL Configurations [START] -->
+    	
+    	<action name="header" class="main.usermanagement.UserManagementAction" method="pageDispatcher">
+			<result type="dispatcher">/jsp/header.html</result>
+		</action>
+		
+		<action name="footer" class="main.usermanagement.UserManagementAction" method="pageDispatcher">
+			<result type="dispatcher">/jsp/footer.html</result>
+		</action>
+		
+		<!-- Header / Footer URL Configurations [END] -->
+    	
+    	
+    	<!-- URL Configurations for Authentication [START] -->
 
 		<action name="signupAction" class="main.usermanagement.UserManagementAction" method="signup">
 			<result type="json" />
@@ -53,21 +75,22 @@
 			<result type="dispatcher">/jsp/login.html</result>
 		</action>
 		
-		<action name="header" class="main.usermanagement.UserManagementAction" method="pageDispatcher">
-			<result type="dispatcher">/jsp/header.html</result>
-		</action>
-		
-		<action name="footer" class="main.usermanagement.UserManagementAction" method="pageDispatcher">
-			<result type="dispatcher">/jsp/footer.html</result>
-		</action>
-		
 		<action name="signup" class="main.usermanagement.UserManagementAction" method="pageDispatcher">
 			<result type="dispatcher">/jsp/sign-up.html</result>
 		</action>
 		
-		<action name="dashboard" class="main.application.ApplicationAction" method="pageDispatcher">
+		<!-- URL Configurations for Authentication [END] -->
+		
+		<!-- URLS Configured for dashboard page  [START] -->
+		
+		<action name="dashboard" class="main.util.PageDispatcherAction" method="dispatch">
 			<interceptor-ref name="authStack"/>
 			<result name="success" type="dispatcher">/jsp/dashboard.html</result>
+		</action>
+		
+		<action name="jobstatuses" class="main.jobapplication.JobApplicationStatusesFetchAction" method="fetchUsersJobApplicationStatuses">
+			<interceptor-ref name="authStack"/>
+			<result type="json" />
 		</action>
 		
 		<action name="suggestions/company" class="main.application.SuggestionsAction" method="getCompanySuggestions">
@@ -81,11 +104,6 @@
 		</action>
 		
 		<action name="suggestions/aps" class="main.application.SuggestionsAction" method="getAPSSuggestions">
-			<interceptor-ref name="authStack"/>
-			<result type="json" />
-		</action>
-
-		<action name="statuses" class="main.application.ApplicationAction" method="fetchUserStatuses">
 			<interceptor-ref name="authStack"/>
 			<result type="json" />
 		</action>

@@ -96,14 +96,13 @@ private static final Map<String, Long> SESSION_ID_TO_USER = new HashMap<>();
 	 * Checks sessionID stored in request is valid.
 	 * userID mapped to sessionID in SESSION_ID_TO_USER is returned.
 	 * 
-	 * @return userID - ID of logged in user
-	 * @throws FailedLoginException
+	 * @return userID - ID of logged in user, else null if user is not logged in.
 	 */
-	public static Long getLoggedInUserID() throws FailedLoginException {
+	public static Long getLoggedInUserID() {
 		HttpServletRequest request = (HttpServletRequest) ServletActionContext.getRequest();
 		String sessionID = getSessionID(request);
 		if(sessionID == null || SESSION_ID_TO_USER.get(sessionID) == null) {
-			throw new FailedLoginException("Invalid Session");
+			return null;
 		}
 		return SESSION_ID_TO_USER.get(sessionID);
 	}

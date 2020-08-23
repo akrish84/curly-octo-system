@@ -5,11 +5,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.security.auth.login.FailedLoginException;
 
 import com.opensymphony.xwork2.Action;
 
-import main.authentication.AuthenticationConstants;
 import main.authentication.SessionHandler;
 import main.beans.Application;
 import main.beans.ApplicationStatus;
@@ -39,14 +37,9 @@ public class ApplicationAction {
 	
 
 	public String fetchUserStatuses() {
-		Long userID = null;
+		Long userID = 0l;
 		try {
 			userID = SessionHandler.getLoggedInUserID();
-		} catch(FailedLoginException e) {
-			LOGGER.log(Level.SEVERE, "Unauthenticated access");
-			return AuthenticationConstants.ACTION_AUTH_ERROR;
-		}
-		try {
 			statusesMap = ApplicationHandler.fetchApplicationStatusesForUser(userID);
 		}catch(Exception e) {
 			LOGGER.log(Level.SEVERE, "Failed to fetch statuses for user for user " + userID, e);
@@ -56,14 +49,9 @@ public class ApplicationAction {
 	}
 
 	public String fetchUserApplications() {
-		Long userID = null;
+		Long userID = 0l;
 		try {
 			userID = SessionHandler.getLoggedInUserID();
-		} catch(FailedLoginException e) {
-			LOGGER.log(Level.SEVERE, "Unauthenticated access");
-			return AuthenticationConstants.ACTION_AUTH_ERROR;
-		}
-		try {
 			applications = ApplicationHandler.fetchUserApplications(userID);
 		}catch(Exception e) {
 			LOGGER.log(Level.SEVERE, "Failed to fetch applications for user for user " + userID, e);
@@ -74,14 +62,9 @@ public class ApplicationAction {
 	
 	
 	public String addStatus() {
-		Long userID = null;
+		Long userID = 0l;
 		try {
 			userID = SessionHandler.getLoggedInUserID();
-		} catch(FailedLoginException e) {
-			LOGGER.log(Level.SEVERE, "Unauthenticated access");
-			return AuthenticationConstants.ACTION_AUTH_ERROR;
-		}
-		try {
 			if(status == null) {
 				throw new IllegalArgumentException();
 			}
@@ -95,14 +78,9 @@ public class ApplicationAction {
 	}
 	
 	public String updateStatus() {
-		Long userID = null;
+		Long userID = 0l;
 		try {
 			userID = SessionHandler.getLoggedInUserID();
-		} catch(FailedLoginException e) {
-			LOGGER.log(Level.SEVERE, "Unauthenticated access");
-			return AuthenticationConstants.ACTION_AUTH_ERROR;
-		}
-		try {
 			if(Validator.isNull(status, status.getId(), status.getStatus()) || status.getStatus().isEmpty()) {
 				throw new IllegalArgumentException();
 			}
@@ -116,14 +94,9 @@ public class ApplicationAction {
 	}
 	
 	public String updateStatuses() {
-		Long userID = null;
+		Long userID = 0l;
 		try {
 			userID = SessionHandler.getLoggedInUserID();
-		} catch(FailedLoginException e) {
-			LOGGER.log(Level.SEVERE, "Unauthenticated access");
-			return AuthenticationConstants.ACTION_AUTH_ERROR;
-		}
-		try {
 			if(statuses == null) {
 				throw new IllegalArgumentException();
 			}
@@ -137,14 +110,9 @@ public class ApplicationAction {
 	}
 	
 	public String updateApplication() {
-		Long userID = null;
+		Long userID = 0l;
 		try {
 			userID = SessionHandler.getLoggedInUserID();
-		} catch(FailedLoginException e) {
-			LOGGER.log(Level.SEVERE, "Unauthenticated access");
-			return AuthenticationConstants.ACTION_AUTH_ERROR;
-		}
-		try {
 			if(Validator.isNull(applicationID, newStatusID, applicationIDs)) {
 				throw new IllegalArgumentException();
 			}
@@ -157,14 +125,9 @@ public class ApplicationAction {
 	}
 
 	public String addApplication() {
-		Long userID = null;
+		Long userID = 0l;
 		try {
 			userID = SessionHandler.getLoggedInUserID();
-		} catch(FailedLoginException e) {
-			LOGGER.log(Level.SEVERE, "Unauthenticated access");
-			return AuthenticationConstants.ACTION_AUTH_ERROR;
-		}
-		try {
 			Application application = new Application();
 			application.setCompanyName(companyName);
 			application.setJobTitle(jobTitle);

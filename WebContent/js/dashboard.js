@@ -26,7 +26,7 @@ function refreshUserBoards() {
 }
 
 function showUserBoards() {
-	var url = "statuses";                
+	var url = "jobstatuses";                
     sendAjaxRequest(url, function(resp){                                
         if (resp['responseMessage'] != null && resp['responseMessage'].includes('Error'))
         {               
@@ -34,7 +34,7 @@ function showUserBoards() {
         }
         else
         {
-			statusesMap = resp['statusesMap'];
+			statusesMap = resp.response['statusesMap'];
 			var boards = [];
 			for (var statusID in statusesMap){
 				var status = statusesMap[statusID];

@@ -10,7 +10,8 @@ import com.opensymphony.xwork2.Action;
 
 import main.authentication.SessionHandler;
 import main.beans.JobApplication;
-import main.beans.ApplicationStatus;
+import main.jobapplication.JobApplicationHandler;
+import main.beans.JobApplicationStatus;
 import main.util.Utils;
 import main.util.Validator;
 
@@ -19,10 +20,10 @@ public class ApplicationAction {
 	private static Logger LOGGER = Logger.getLogger(ApplicationAction.class.getName());
 	
 	
-	private Map<Long, ApplicationStatus> statusesMap;
+	private Map<Long, JobApplicationStatus> statusesMap;
 	private List<JobApplication> applications;
 	private String statuses;
-	private ApplicationStatus status;
+	private JobApplicationStatus status;
 	private String responseMessage;
 	private Long applicationID;
 	private Long newStatusID;
@@ -40,7 +41,7 @@ public class ApplicationAction {
 		Long userID = 0l;
 		try {
 			userID = SessionHandler.getLoggedInUserID();
-			statusesMap = JobApplicationHandler.fetchApplicationStatusesForUser(userID);
+			statusesMap = JobApplicationHandler.fetchJobApplicationStatusesForUser(userID);
 		}catch(Exception e) {
 			LOGGER.log(Level.SEVERE, "Failed to fetch statuses for user for user " + userID, e);
 			responseMessage = Utils.getErrorMessage("Failed to fetch user statuses");
@@ -52,7 +53,7 @@ public class ApplicationAction {
 		Long userID = 0l;
 		try {
 			userID = SessionHandler.getLoggedInUserID();
-			applications = JobApplicationHandler.fetchUserApplications(userID);
+			applications = JobApplicationHandler.fetchUserJobApplications(userID);
 		}catch(Exception e) {
 			LOGGER.log(Level.SEVERE, "Failed to fetch applications for user for user " + userID, e);
 			responseMessage = Utils.getErrorMessage("Failed to fetch user applications");
@@ -68,7 +69,7 @@ public class ApplicationAction {
 			if(status == null) {
 				throw new IllegalArgumentException();
 			}
-			JobApplicationHandler.addStatusForUser(status, userID);
+			JobApplicationHandler.addJobStatusForUser(status, userID);
 		} catch(Exception e) {
 			LOGGER.log(Level.SEVERE, "Failed to add status for user " + userID, e);
 			responseMessage = Utils.getErrorMessage("Failed to add status for user");
@@ -84,7 +85,7 @@ public class ApplicationAction {
 			if(Validator.isNull(status, status.getId(), status.getStatus()) || status.getStatus().isEmpty()) {
 				throw new IllegalArgumentException();
 			}
-			JobApplicationHandler.updateStatusForUser(status, userID);
+			JobApplicationHandler.updateJobStatusForUser(status, userID);
 		} catch(Exception e) {
 			LOGGER.log(Level.SEVERE, "Failed to add status for user " + userID, e);
 			responseMessage = Utils.getErrorMessage("Failed to add status for user");
@@ -100,7 +101,7 @@ public class ApplicationAction {
 			if(statuses == null) {
 				throw new IllegalArgumentException();
 			}
-			JobApplicationHandler.updateStatusesForUser(statuses, userID);
+			JobApplicationHandler.updateJobStatusesForUser(statuses, userID);
 		} catch(Exception e) {
 			LOGGER.log(Level.SEVERE, "Failed to add status for user " + userID, e);
 			responseMessage = Utils.getErrorMessage("Failed to update statuses");
@@ -116,7 +117,7 @@ public class ApplicationAction {
 			if(Validator.isNull(applicationID, newStatusID, applicationIDs)) {
 				throw new IllegalArgumentException();
 			}
-			JobApplicationHandler.updateApplication(userID, applicationID, newStatusID, applicationIDs);
+			JobApplicationHandler.updateJobApplication(userID, applicationID, newStatusID, applicationIDs);
 		} catch(Exception e) {
 			LOGGER.log(Level.SEVERE, "Failed to update application " + applicationID + " for user " + userID, e);
 			responseMessage = Utils.getErrorMessage("Failed to update application");
@@ -146,7 +147,7 @@ public class ApplicationAction {
 			if(!Validator.isValidStatusID(application.getStatusID(), userID)) {
 				throw new IllegalArgumentException();
 			}
-			JobApplicationHandler.addApplication(application);
+			JobApplicationHandler.addJobApplication(application);
 			responseMessage= Utils.getSuccessMessage("Successfully added application");
 		} catch(Exception e) {
 			LOGGER.log(Level.SEVERE, "Failed to add application for user " + userID, e);
@@ -159,11 +160,11 @@ public class ApplicationAction {
 		return Action.SUCCESS;
 	}
 
-	public Map<Long, ApplicationStatus> getStatusesMap() {
+	public Map<Long, JobApplicationStatus> getStatusesMap() {
 		return statusesMap;
 	}
 
-	public void setStatusesMap(Map<Long, ApplicationStatus> statusesMap) {
+	public void setStatusesMap(Map<Long, JobApplicationStatus> statusesMap) {
 		this.statusesMap = statusesMap;
 	}
 
@@ -175,11 +176,11 @@ public class ApplicationAction {
 		this.applications = applications;
 	}
 
-	public ApplicationStatus getStatus() {
+	public JobApplicationStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(ApplicationStatus status) {
+	public void setStatus(JobApplicationStatus status) {
 		this.status = status;
 	}
 

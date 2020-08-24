@@ -2,7 +2,7 @@ package main.beans;
 
 import java.io.Serializable;
 
-public class ApplicationStatus implements Comparable<ApplicationStatus>, Serializable {
+public class JobApplicationStatus implements Comparable<JobApplicationStatus>, Serializable {
 	/**
 	 * 
 	 */
@@ -38,7 +38,7 @@ public class ApplicationStatus implements Comparable<ApplicationStatus>, Seriali
 	}
 	
 	@Override
-	public int compareTo(ApplicationStatus o) {
+	public int compareTo(JobApplicationStatus o) {
 		return Integer.compare(this.rank, o.rank);
 	}	
 	

@@ -8,16 +8,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import main.beans.ApplicationStatus;
+import main.beans.JobApplicationStatus;
 import main.db.QueryProvider;
 
-public class UserApplicationStatusesTable {
+public class UserJobApplicationStatusesTable {
 	
-	private static final String INSER_USER_STATUS = "main.db.tables.UserApplicationStatusesTable.addUserStatus";
-	private static final String UPDATE_USER_STATUS = "main.db.tables.UserApplicationStatusesTable.updateUserStatus";
-	private static final String FETCH_ALL_APPLICATION_STATUSES_FOR_USER = "main.db.tables.UserApplicationStatusesTable.fetchAllApplicationStatusForUser";
-	private static final String FETCH_MAX_RANK_FOR_USER = "main.db.tables.UserApplicationStatusesTable.fetchMaxRankForUser";
-	private static final String FETCH_STATUS = "main.db.tables.UserApplicationStatusesTable.fetchStatus";
+	private static final String INSER_USER_JOB_STATUS = "main.db.tables.UserApplicationStatusesTable.addUserStatus";
+	private static final String UPDATE_USER_JOB_STATUS = "main.db.tables.UserApplicationStatusesTable.updateUserStatus";
+	private static final String FETCH_ALL_JOB_APPLICATION_STATUSES_FOR_USER = "main.db.tables.UserApplicationStatusesTable.fetchAllApplicationStatusForUser";
+	private static final String FETCH_MAX_JOB_STATUS_RANK_FOR_USER = "main.db.tables.UserApplicationStatusesTable.fetchMaxRankForUser";
+	private static final String FETCH_JOB_STATUS = "main.db.tables.UserApplicationStatusesTable.fetchStatus";
 	
 	
 	
@@ -32,11 +32,11 @@ public class UserApplicationStatusesTable {
 	 * @param connection
 	 * @throws SQLException
 	 */
-	public static void addStatusesForUser(List<ApplicationStatus> statuses, long userID, Connection connection) throws SQLException {
+	public static void addJobStatusesForUser(List<JobApplicationStatus> statuses, long userID, Connection connection) throws SQLException {
         PreparedStatement statement = null;
         try {
-        	statement = connection.prepareStatement(QueryProvider.getQuery(INSER_USER_STATUS));
-        	for(ApplicationStatus status : statuses) {
+        	statement = connection.prepareStatement(QueryProvider.getQuery(INSER_USER_JOB_STATUS));
+        	for(JobApplicationStatus status : statuses) {
         		statement.setString(1, status.getStatus());
                 statement.setLong(2, userID);
                 statement.setInt(3, status.getRank());
@@ -62,10 +62,10 @@ public class UserApplicationStatusesTable {
 	 * @param connection
 	 * @throws SQLException
 	 */
-	public static void updateStatusForUser(ApplicationStatus status, long userID, Connection connection) throws SQLException {
+	public static void updateJobStatusForUser(JobApplicationStatus status, long userID, Connection connection) throws SQLException {
 		PreparedStatement statement = null;
         try {
-	        statement = connection.prepareStatement(QueryProvider.getQuery(UPDATE_USER_STATUS));
+	        statement = connection.prepareStatement(QueryProvider.getQuery(UPDATE_USER_JOB_STATUS));
 	        statement.setString(1, status.getStatus());
             statement.setInt(2, status.getRank());
             statement.setLong(3, userID);
@@ -85,11 +85,11 @@ public class UserApplicationStatusesTable {
 	 * @param connection
 	 * @throws SQLException
 	 */
-	public static void updateStatusesForUser(List<ApplicationStatus> statuses, long userID, Connection connection) throws SQLException {
+	public static void updateJobStatusesForUser(List<JobApplicationStatus> statuses, long userID, Connection connection) throws SQLException {
         PreparedStatement statement = null;
         try {
-        	statement = connection.prepareStatement(QueryProvider.getQuery(UPDATE_USER_STATUS));
-        	for(ApplicationStatus status : statuses) {
+        	statement = connection.prepareStatement(QueryProvider.getQuery(UPDATE_USER_JOB_STATUS));
+        	for(JobApplicationStatus status : statuses) {
         		statement.setString(1, status.getStatus());
                 statement.setInt(2, status.getRank());
                 statement.setLong(3, userID);
@@ -118,16 +118,16 @@ public class UserApplicationStatusesTable {
 	 * @return a map of user statuses -> Map<statusID , ApplicationStatus>
 	 * @throws SQLException
 	 */
-	public static Map<Long, ApplicationStatus> fetchAllApplicationStatusForUser(Long userID, Connection connection) throws SQLException {
+	public static Map<Long, JobApplicationStatus> fetchAllJobApplicationStatusForUser(Long userID, Connection connection) throws SQLException {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
-        Map<Long, ApplicationStatus> statuses = new HashMap<>();
+        Map<Long, JobApplicationStatus> statuses = new HashMap<>();
         try {
-	        statement = connection.prepareStatement(QueryProvider.getQuery(FETCH_ALL_APPLICATION_STATUSES_FOR_USER));
+	        statement = connection.prepareStatement(QueryProvider.getQuery(FETCH_ALL_JOB_APPLICATION_STATUSES_FOR_USER));
 	        statement.setLong(1, userID);
 	        resultSet = statement.executeQuery();
 	        while(resultSet.next()){
-	        	ApplicationStatus status = new ApplicationStatus();
+	        	JobApplicationStatus status = new JobApplicationStatus();
 	        	status.setId(resultSet.getLong("id"));
 	        	status.setStatus(resultSet.getString("status"));
 	        	status.setRank(resultSet.getInt("rank"));
@@ -153,16 +153,16 @@ public class UserApplicationStatusesTable {
 	 * @return ApplicationStatus details
 	 * @throws SQLException
 	 */
-	public static ApplicationStatus fetchStatus(Long userID, Long statusID, Connection connection) throws SQLException {
+	public static JobApplicationStatus fetchJobApplicationStatus(Long userID, Long statusID, Connection connection) throws SQLException {
 		PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
-	        statement = connection.prepareStatement(QueryProvider.getQuery(FETCH_STATUS));
+	        statement = connection.prepareStatement(QueryProvider.getQuery(FETCH_JOB_STATUS));
 	        statement.setLong(1, userID);
 	        statement.setLong(2, statusID);
 	        resultSet = statement.executeQuery();
 	        while(resultSet.next()){
-	        	ApplicationStatus status = new ApplicationStatus();
+	        	JobApplicationStatus status = new JobApplicationStatus();
 	        	status.setId(resultSet.getLong("id"));
 	        	status.setStatus(resultSet.getString("status"));
 	        	status.setRank(resultSet.getInt("rank"));
@@ -186,11 +186,11 @@ public class UserApplicationStatusesTable {
 	 * @return max rank of status for user.
 	 * @throws SQLException
 	 */
-	public static int fetchMaxStatusRankForUser(Long userID, Connection connection) throws SQLException {
+	public static int fetchMaxJobStatusRankForUser(Long userID, Connection connection) throws SQLException {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
-	        statement = connection.prepareStatement(QueryProvider.getQuery(FETCH_MAX_RANK_FOR_USER));
+	        statement = connection.prepareStatement(QueryProvider.getQuery(FETCH_MAX_JOB_STATUS_RANK_FOR_USER));
 	        statement.setLong(1, userID);
 	        resultSet = statement.executeQuery();
 	        while(resultSet.next()){

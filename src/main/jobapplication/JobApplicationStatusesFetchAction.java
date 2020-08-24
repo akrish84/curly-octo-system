@@ -6,9 +6,8 @@ import java.util.logging.Logger;
 
 import com.opensymphony.xwork2.Action;
 
-import main.application.JobApplicationHandler;
 import main.authentication.SessionHandler;
-import main.beans.ApplicationStatus;
+import main.beans.JobApplicationStatus;
 import main.beans.JobApplicationStatusesFetchResponse;
 
 
@@ -21,7 +20,7 @@ public class JobApplicationStatusesFetchAction {
 	public String fetchLoggedInUserJobApplicationStatuses() {
 		Long userID = SessionHandler.getLoggedInUserID();
 		try { 
-			Map<Long, ApplicationStatus> jobStatusesMap = JobApplicationHandler.fetchApplicationStatusesForUser(userID);
+			Map<Long, JobApplicationStatus> jobStatusesMap = JobApplicationHandler.fetchJobApplicationStatusesForUser(userID);
 			response = new JobApplicationStatusesFetchResponse();
 			response.setJobStatusesMap(jobStatusesMap);
 		}catch(Exception e) {

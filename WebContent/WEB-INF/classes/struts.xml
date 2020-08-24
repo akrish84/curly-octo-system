@@ -98,6 +98,26 @@
 			<result type="json" />
 		</action>
 		
+		<action name="jobapplication/add" class="main.jobapplication.JobApplicationAddAction" method="addJobApplication">
+			<interceptor-ref name="authStack"/>
+			<result type="json" />
+		</action>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		<action name="suggestions/company" class="main.application.SuggestionsAction" method="getCompanySuggestions">
 			<interceptor-ref name="authStack"/>
 			<result type="json" />
@@ -113,10 +133,7 @@
 			<result type="json" />
 		</action>
 		
-		<action name="application/add" class="main.application.ApplicationAction" method="addApplication">
-			<interceptor-ref name="authStack"/>
-			<result type="json" />
-		</action>
+
 		
 		<action name="application/update" class="main.application.ApplicationAction" method="updateApplication">
 			<interceptor-ref name="authStack"/>

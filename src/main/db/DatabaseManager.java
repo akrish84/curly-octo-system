@@ -8,14 +8,14 @@ import java.util.Map;
 
 import main.db.tables.CompanySuggestionsTable;
 import main.db.tables.JobTitleSuggestionsTable;
-import main.db.tables.UserApplicationStatusesTable;
+import main.db.tables.UserJobApplicationStatusesTable;
 import main.db.tables.UsersTable;
 import main.beans.JobApplication;
-import main.beans.ApplicationStatus;
+import main.beans.JobApplicationStatus;
 import main.beans.User;
 import main.db.tables.APSSuggestionsTable;
-import main.db.tables.ApplicationRankTable;
-import main.db.tables.ApplicationTable;
+import main.db.tables.JobApplicationRankTable;
+import main.db.tables.JobApplicationTable;
 
 /**
  * 
@@ -156,16 +156,16 @@ public class DatabaseManager {
 	 * @throws SQLException
 	 */
 	
-	public void addStatusesForUser(List<ApplicationStatus> statuses, Long userID) throws SQLException {
+	public void addJobStatusesForUser(List<JobApplicationStatus> statuses, Long userID) throws SQLException {
 		Connection con = getConnection();
-		UserApplicationStatusesTable.addStatusesForUser(statuses, userID, con);
+		UserJobApplicationStatusesTable.addJobStatusesForUser(statuses, userID, con);
 		safeClose(con);
 	}
 	
 	
-	public void updateStatusForUser(ApplicationStatus status, Long userID) throws SQLException {
+	public void updateJobStatusForUser(JobApplicationStatus status, Long userID) throws SQLException {
 		Connection con = getConnection();
-		UserApplicationStatusesTable.updateStatusForUser(status, userID, con);
+		UserJobApplicationStatusesTable.updateJobStatusForUser(status, userID, con);
 		safeClose(con);
 	}
 	
@@ -177,9 +177,9 @@ public class DatabaseManager {
 	 * @throws SQLException
 	 */
 	
-	public void updateStatusesForUser(List<ApplicationStatus> statuses, Long userID) throws SQLException {
+	public void updateJobStatusesForUser(List<JobApplicationStatus> statuses, Long userID) throws SQLException {
 		Connection con = getConnection();
-		UserApplicationStatusesTable.updateStatusesForUser(statuses, userID, con);
+		UserJobApplicationStatusesTable.updateJobStatusesForUser(statuses, userID, con);
 		safeClose(con);
 	}
 	
@@ -192,9 +192,9 @@ public class DatabaseManager {
 	 * @return ApplicationStatus
 	 * @throws SQLException
 	 */
-	public ApplicationStatus fetchStatus(Long userID, Long statusID) throws SQLException {
+	public JobApplicationStatus fetchJobStatus(Long userID, Long statusID) throws SQLException {
 		Connection con = getConnection();
-		ApplicationStatus status = UserApplicationStatusesTable.fetchStatus(userID, statusID, con);
+		JobApplicationStatus status = UserJobApplicationStatusesTable.fetchJobApplicationStatus(userID, statusID, con);
 		safeClose(con);
 		return status;
 	}
@@ -205,9 +205,9 @@ public class DatabaseManager {
 	 * @return max rank of status for user.
 	 * @throws SQLException
 	 */
-	public int fetchMaxStatusRankForUser(Long userID) throws SQLException {
+	public int fetchMaxJobStatusRankForUser(Long userID) throws SQLException {
 		Connection con = getConnection();
-		int maxRank = UserApplicationStatusesTable.fetchMaxStatusRankForUser(userID, con);
+		int maxRank = UserJobApplicationStatusesTable.fetchMaxJobStatusRankForUser(userID, con);
 		safeClose(con);
 		return maxRank;
 	}
@@ -218,9 +218,9 @@ public class DatabaseManager {
 	 * @return Map of statusID to ApplicationStatus
 	 * @throws SQLException
 	 */
-	public Map<Long, ApplicationStatus> fetchApplicationStatusesForUser(Long userID) throws SQLException {
+	public Map<Long, JobApplicationStatus> fetchJobApplicationStatusesForUser(Long userID) throws SQLException {
 		Connection con = getConnection();
-		Map<Long, ApplicationStatus> applicationStatusesForUser = UserApplicationStatusesTable.fetchAllApplicationStatusForUser(userID, con);
+		Map<Long, JobApplicationStatus> applicationStatusesForUser = UserJobApplicationStatusesTable.fetchAllJobApplicationStatusForUser(userID, con);
 		safeClose(con);
 		return applicationStatusesForUser;
 	}
@@ -237,9 +237,9 @@ public class DatabaseManager {
 	 * @throws SQLException
 	 * @throws ParseException
 	 */
-	public void addUserApplication(JobApplication application) throws SQLException, ParseException {
+	public void addUserJobApplication(JobApplication application) throws SQLException, ParseException {
 		Connection con = getConnection();
-		ApplicationTable.addUserApplication(application, con);
+		JobApplicationTable.addUserJobApplication(application, con);
 		safeClose(con);
 	}
 	
@@ -250,9 +250,9 @@ public class DatabaseManager {
 	 * @param statusID
 	 * @throws SQLException
 	 */
-	public void updateApplicationStatus(Long applicationID, Long statusID) throws SQLException {
+	public void updateJobApplicationStatus(Long applicationID, Long statusID) throws SQLException {
 		Connection con = getConnection();
-		ApplicationTable.updateApplicationStatus(applicationID, statusID, con);
+		JobApplicationTable.updateJobApplicationStatus(applicationID, statusID, con);
 		safeClose(con);
 	}
 	
@@ -265,9 +265,9 @@ public class DatabaseManager {
 	 * @return null if there is no application with given applicationID
 	 * @throws SQLException
 	 */
-	public JobApplication fetchApplication(Long applicationID) throws SQLException {
+	public JobApplication fetchJobApplication(Long applicationID) throws SQLException {
 		Connection con = getConnection();
-		JobApplication application = ApplicationTable.fetchApplication(applicationID, con);
+		JobApplication application = JobApplicationTable.fetchJobApplication(applicationID, con);
 		safeClose(con);
 		return application;
 	}
@@ -280,9 +280,9 @@ public class DatabaseManager {
 	 * @return List of user's Applications
 	 * @throws SQLException
 	 */
-	public List<JobApplication> fetchUserApplications(Long userID) throws SQLException {
+	public List<JobApplication> fetchUserJobApplications(Long userID) throws SQLException {
 		Connection con = getConnection();
-		List<JobApplication> applications = ApplicationTable.fetchUserApplications(userID, con);
+		List<JobApplication> applications = JobApplicationTable.fetchUserJobApplications(userID, con);
 		safeClose(con);
 		return applications;
 		
@@ -296,9 +296,9 @@ public class DatabaseManager {
 	 * @return Map of applicationID to Rank
 	 * @throws SQLException
 	 */
-	public Map<Long, Integer> fetchUserApplicationIDSWithRankHavingStatusID(Long userID, Long statusID) throws SQLException {
+	public Map<Long, Integer> fetchUserJobApplicationIDsWithRankForJobStatusID(Long userID, Long statusID) throws SQLException {
 		Connection con = getConnection();
-		Map<Long, Integer> applicationIDToRankMap = ApplicationTable.fetchUserApplicationIDSWithRankHavingStatusID(userID, statusID, con);
+		Map<Long, Integer> applicationIDToRankMap = JobApplicationTable.fetchUserJobApplicationIDsWithRankForJobStatusID(userID, statusID, con);
 		safeClose(con);
 		return applicationIDToRankMap;
 	}
@@ -307,9 +307,9 @@ public class DatabaseManager {
 	// Application Rank Table
 	//*************************************
 	
-	public void addApplicationRank(Long applicationID, int rank) throws SQLException {
+	public void addJobApplicationRank(Long applicationID, int rank) throws SQLException {
 		Connection con = getConnection();
-		ApplicationRankTable.addApplicationRank(applicationID, rank, con);
+		JobApplicationRankTable.addJobApplicationRank(applicationID, rank, con);
 		safeClose(con);
 	}
 	
@@ -319,9 +319,9 @@ public class DatabaseManager {
 	 * @param appIDToRank
 	 * @throws SQLException
 	 */
-	public void updateUserApplicationsRanks(Map<Long, Integer> appIDToRank) throws SQLException {
+	public void updateUserJobApplicationsRanks(Map<Long, Integer> appIDToRank) throws SQLException {
 		Connection con = getConnection();
-		ApplicationRankTable.updateApplicationsRanks(appIDToRank, con);		
+		JobApplicationRankTable.updateJobApplicationsRanks(appIDToRank, con);		
 		safeClose(con);
 	}
 	
@@ -334,7 +334,7 @@ public class DatabaseManager {
 	 */
 	public int fetchUsersMaxRankForStatus(Long userID, Long statusID) throws SQLException {
 		Connection con = getConnection();
-		int maxRank = ApplicationRankTable.fetchUsersMaxRankForStatus(userID, statusID, con);		
+		int maxRank = JobApplicationRankTable.fetchUsersMaxRankForJobStatus(userID, statusID, con);		
 		safeClose(con);
 		return maxRank;
 	}

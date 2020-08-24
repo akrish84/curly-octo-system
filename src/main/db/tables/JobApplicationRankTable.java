@@ -8,7 +8,7 @@ import java.util.Map;
 
 import main.db.QueryProvider;
 
-public class ApplicationRankTable {
+public class JobApplicationRankTable {
 	
 	private static final String INSERT_APPLICATION_RANK = "main.db.tables.ApplicationRankTable.insertUserApplicationRank";
 	private static final String UPDATE_APPLICATIONS_RANKS = "main.db.tables.ApplicationRankTable.updateUserApplicationsRanks";
@@ -25,7 +25,7 @@ public class ApplicationRankTable {
 	 * @param connection
 	 * @throws SQLException
 	 */
-	public static void addApplicationRank(Long applicationID, int rank, Connection connection) throws SQLException {
+	public static void addJobApplicationRank(Long applicationID, int rank, Connection connection) throws SQLException {
 		PreparedStatement statement = null;
         try {
         	statement = connection.prepareStatement(QueryProvider.getQuery(INSERT_APPLICATION_RANK));
@@ -46,7 +46,7 @@ public class ApplicationRankTable {
 	 * @param connection
 	 * @throws SQLException
 	 */
-	public static void updateApplicationsRanks(Map<Long, Integer> appIDToRank, Connection connection) throws SQLException {        
+	public static void updateJobApplicationsRanks(Map<Long, Integer> appIDToRank, Connection connection) throws SQLException {        
         PreparedStatement statement = null;
         try {
         	statement = connection.prepareStatement(QueryProvider.getQuery(UPDATE_APPLICATIONS_RANKS));
@@ -81,7 +81,7 @@ public class ApplicationRankTable {
 	 * @return
 	 * @throws SQLException
 	 */
-	public static int fetchUsersMaxRankForStatus(Long userID, Long statusID, Connection connection) throws SQLException {
+	public static int fetchUsersMaxRankForJobStatus(Long userID, Long statusID, Connection connection) throws SQLException {
 		PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {

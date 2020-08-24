@@ -1,12 +1,11 @@
 package main.util;
 
-import java.sql.SQLException;
 import java.util.Map;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
-import main.beans.ApplicationStatus;
+import main.beans.JobApplicationStatus;
 import main.db.DatabaseManager;
 
 /**
@@ -52,11 +51,15 @@ public class Validator {
 		return false;
 	}
 	
-	public static boolean isValidStatusID(Long statusID, Long userID) throws SQLException {
-		Map<Long, ApplicationStatus> applicationStatuses = DatabaseManager.getInstance().fetchApplicationStatusesForUser(userID);
-		if(applicationStatuses.containsKey(statusID)) {
-			return true;
+	public static boolean isValidStatusID(Long statusID, Long userID) {
+		try {
+			Map<Long, JobApplicationStatus> applicationStatuses = DatabaseManager.getInstance().fetchJobApplicationStatusesForUser(userID);
+			if(!applicationStatuses.containsKey(statusID)) {
+				return false;
+			}
+		} catch (Exception e) {
+			return false;
 		}
-		return false;
+		return true;
 	}
 }

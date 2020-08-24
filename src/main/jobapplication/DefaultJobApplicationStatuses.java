@@ -1,6 +1,6 @@
-package main.application;
+package main.jobapplication;
 
-public enum DefaultApplicationStatuses {
+public enum DefaultJobApplicationStatuses {
 	
 	WISHLIST("Wishlist", 2),
 	APPLIED("Applied", 1024),
@@ -10,7 +10,7 @@ public enum DefaultApplicationStatuses {
 	private String status;
 	private int rank;
 	
-	DefaultApplicationStatuses(String status, int rank) {
+	DefaultJobApplicationStatuses(String status, int rank) {
 		this.setStatus(status);
 		this.setRank(rank);
 		

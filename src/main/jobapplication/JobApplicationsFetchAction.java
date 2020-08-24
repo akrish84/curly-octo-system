@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 
 import com.opensymphony.xwork2.Action;
 
-import main.application.JobApplicationHandler;
 import main.authentication.SessionHandler;
 import main.beans.JobApplication;
 import main.beans.JobApplicationsFetchResponse;
@@ -20,7 +19,7 @@ public class JobApplicationsFetchAction {
 	public String fetchLoggedInUserApplications() {
 		Long userID = SessionHandler.getLoggedInUserID();;
 		try {
-			List<JobApplication> jobApplications = JobApplicationHandler.fetchUserApplications(userID);
+			List<JobApplication> jobApplications = JobApplicationHandler.fetchUserJobApplications(userID);
 			response = new JobApplicationsFetchResponse();
 			response.setJobApplications(jobApplications);
 		}catch(Exception e) {

@@ -45,7 +45,6 @@ function showUserBoards() {
 			}
 			kanban.init(boards);
 			addUserApplications();
-			populateModalStatusesSelectBox();
         }
     });
 }
@@ -148,41 +147,6 @@ function showElement(id){
 	x.style.display = "block";	
 }
 
-
-function addApplicationModalPreProcessing() {
-
-	hideElement("applicationDetailsModalTitle");
-	hideElement("modalSaveBtn");
-	//hideElement("modalDeleteBtn");
-	
-	showElement("addApplicationModalTitle");
-	showElement("modalAddBtn");
-	
-	document.getElementById("modal-companyName").removeAttribute("readonly")
-	document.getElementById("modal-jobTitle").removeAttribute("readonly")
-	document.getElementById("modal-appliedDate").removeAttribute("readonly")
-	document.getElementById("modal-jobDescription").removeAttribute("readonly")
-	document.getElementById("modal-aps").removeAttribute("readonly")
-	document.getElementById("modal-appStatuses").removeAttribute("readonly")
-}
-
-function applicationDetailsModalPreProcessing(){ 
-	hideElement("addApplicationModalTitle");
-	hideElement("modalAddBtn");
-
-	showElement("applicationDetailsModalTitle")
-	showElement("modalSaveBtn")
-	//showElement("modalDeleteBtn")
-
-	document.getElementById("modal-companyName").setAttribute("readonly", "");
-	document.getElementById("modal-jobTitle").setAttribute("readonly", "");
-	document.getElementById("modal-appliedDate").setAttribute("readonly", "");
-	document.getElementById("modal-jobDescription").setAttribute("readonly", "");
-	document.getElementById("modal-aps").setAttribute("readonly", "");
-	document.getElementById("modal-appStatuses").setAttribute("readonly", "");
-	setCurrentDateAsAppliedDate();
-}
-
 function setFirstStatusAsSelectBoxValue(){
 	var statusesSelectElement = document.getElementById('modal-appStatuses');
 	for (var statusID in statusesMap){
@@ -193,8 +157,8 @@ function setFirstStatusAsSelectBoxValue(){
 		return
 	}
 }
-function populateModalStatusesSelectBox() {
-	var statusesSelectElement = document.getElementById('modal-appStatuses');
+function populateStatusesForAddAppSelectBox() {
+	var statusesSelectElement = document.getElementById('addAppStatuses');
 	selectBoxValue = ""
 	for (var statusID in statusesMap){
 		var status = statusesMap[statusID];
@@ -217,8 +181,9 @@ function setCurrentDateAsAppliedDate() {
 	var month = ("0" + (now.getMonth() + 1)).slice(-2);
 	var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
 	console.log(today)
-	document.getElementById("modal-appliedDate").value = today;
+	document.getElementById("editAppAppliedDate").value = today;
 }
+
 var kanban = {
 	init : function(boards)
 	{
@@ -281,16 +246,15 @@ var kanban = {
 		}
 
 		function buttonClick(el, boardId) {
-			$("#modal-companyName").val("");	
-			$("#modal-jobTitle").val("");
-			$("#modal-appliedDate").val("");
-			$("#modal-jobDescription").val("");
-			$("#modal-aps").val("");
-			$("#modal-aps").val("");
-			$("#modal-appStatus").val("");
-			addApplicationModalPreProcessing();
-			$("#modalButton").click();
-			addApplicationModalPreProcessing();
+			$("#addAppCompanyName").val("");	
+			$("#addAppJobTitle").val("");
+			$("#addAppAppliedDate").val("");
+			$("#addAppJobDescription").val("");
+			$("#addAppAps").val("");
+			$("#addAppStatuse").val(boardId);
+			$("#addAppAppliedDate").datepicker('setDate', new Date());
+
+			showModal("addApplicationModalButton");
 		}
 	},
 
@@ -333,31 +297,40 @@ var kanban = {
 	
 };
 
-function populateModal(appID){	
+function populateModal(appID){
+	$("#editAppCompanyName").val("");	
+	$("#editAppJobTitle").val("");
+	$("#editAppAppliedDate").val("");
+	$("#editAppJobDescription").val("");
+	$("#editAppAps").val("");
+	$("#editAppStatuses").val("");
+	//setCurrentDateAsAppliedDate();
+
 	var appData = allAppData[appID];
-	$("#modal-companyName").val(appData.companyName);	
-	$("#modal-jobTitle").val(appData.jobTitle);
-	$("#modal-appliedDate").val(appData.appliedDate);
-	$("#modal-jobDescription").val(appData.jobDescription);
-	$("#modal-aps").val(appData.aps);
-	var statusesSelectElement = document.getElementById('modal-appStatuses');
+	$("#editAppCompanyName").val(appData.companyName);	
+	$("#editAppJobTitle").val(appData.jobTitle);
+	$("#editAppAppliedDate").val(appData.appliedDate);
+	$("#editAppJobDescription").val(appData.jobDescription);
+	$("#editAppAps").val(appData.aps);
+	var statusesSelectElement = document.getElementById("editAppStatuses");
 	statusesSelectElement.value = statusesMap[appData.statusID]["status"];
-	applicationDetailsModalPreProcessing();
-	// $("#modalButton").click();
-	showModal("modalButton");
+	showModal("editApplicationModalButton");
 }
 
-$('#appModal').submit(function () {
+$('#addAppForm').submit(function () {
+	return false;
+});
+$('#editAppForm').submit(function () {
 	return false;
 });
 
-$("input.form-control").on("click", function(event) {				
-	$(this).attr("readonly", false);	
-})
-
-$("input.form-control").on("blur", function (event) {	
-	$(this).attr("readonly", true);
-})
+//$("input.form-control").on("click", function(event) {				
+//	$(this).attr("readonly", false);	
+//})
+//
+//$("input.form-control").on("blur", function (event) {	
+//	$(this).attr("readonly", true);
+//})
 
 function showModal(name) {
 	console.log(name);

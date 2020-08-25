@@ -19,3 +19,12 @@ label {
 	margin-left:10px;
 	margin-right:10px;
 }
+
+
+.dashboard-datepicker {
+	z-index: 1000 !important;
+}
+
+.input-row{
+	margin-bottom:5%;
+}

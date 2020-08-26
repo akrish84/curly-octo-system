@@ -10,9 +10,9 @@ import main.authentication.SessionHandler;
 import main.beans.JobApplication;
 import main.beans.JobApplicationsFetchResponse;
 
-public class JobApplicationsFetchAction {
+public class FetchJobApplicationsAction {
 	
-	private static Logger LOGGER = Logger.getLogger(JobApplicationsFetchAction.class.getName());
+	private static Logger LOGGER = Logger.getLogger(FetchJobApplicationsAction.class.getName());
 	
 	private JobApplicationsFetchResponse response;
 	

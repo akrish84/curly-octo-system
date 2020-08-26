@@ -4,15 +4,11 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.security.auth.login.FailedLoginException;
-
 import com.opensymphony.xwork2.Action;
 
 import main.db.DatabaseManager;
 import main.util.Utils;
 import main.util.Validator;
-import main.authentication.AuthenticationConstants;
-import main.authentication.SessionHandler;
 import main.beans.User;
 
 /**

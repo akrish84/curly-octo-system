@@ -11,9 +11,9 @@ import main.beans.JobApplicationStatus;
 import main.beans.JobApplicationStatusesFetchResponse;
 
 
-public class JobApplicationStatusesFetchAction {
+public class FetchJobApplicationStatusesAction {
 	
-	private static Logger LOGGER = Logger.getLogger(JobApplicationStatusesFetchAction.class.getName());
+	private static Logger LOGGER = Logger.getLogger(FetchJobApplicationStatusesAction.class.getName());
 	
 	private JobApplicationStatusesFetchResponse response;
 	

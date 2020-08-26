@@ -88,17 +88,17 @@
 			<result name="success" type="dispatcher">/jsp/dashboard.html</result>
 		</action>
 		
-		<action name="jobStatuses" class="main.jobapplication.JobApplicationStatusesFetchAction" method="fetchLoggedInUserJobApplicationStatuses">
+		<action name="jobStatuses" class="main.jobapplication.FetchJobApplicationStatusesAction" method="fetchLoggedInUserJobApplicationStatuses">
 			<interceptor-ref name="authStack"/>
 			<result type="json" />
 		</action>
 		
-		<action name="jobApplications" class="main.jobapplication.JobApplicationsFetchAction" method="fetchLoggedInUserApplications">
+		<action name="jobApplications" class="main.jobapplication.FetchJobApplicationsAction" method="fetchLoggedInUserApplications">
 			<interceptor-ref name="authStack"/>
 			<result type="json" />
 		</action>
 		
-		<action name="jobapplication/add" class="main.jobapplication.JobApplicationAddAction" method="addJobApplication">
+		<action name="jobapplication/add" class="main.jobapplication.AddJobApplicationAction" method="addJobApplication">
 			<interceptor-ref name="authStack"/>
 			<result type="json" />
 		</action>

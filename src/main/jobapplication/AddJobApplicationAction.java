@@ -9,9 +9,9 @@ import main.beans.AddJobApplicatinoRequest;
 import main.beans.JobApplication;
 import main.util.Validator;
 
-public class JobApplicationAddAction {
+public class AddJobApplicationAction {
 
-	private static Logger LOGGER = Logger.getLogger(JobApplicationAddAction.class.getName());
+	private static Logger LOGGER = Logger.getLogger(AddJobApplicationAction.class.getName());
 
 	private AddJobApplicatinoRequest request;
 

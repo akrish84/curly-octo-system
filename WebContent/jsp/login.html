@@ -1,100 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Log In | Company Name</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Log In | Company Name</title>
 
-    <!-- Font Icon -->
-    <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
+<!-- Font Icon -->
+<link rel="stylesheet"
+	href="fonts/material-icon/css/material-design-iconic-font.min.css">
 
-    <!-- Main css -->
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/custom.css">
+<!-- Main css -->
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/custom.css">
+<link rel="stylesheet" href="css/login.css">
 
 
-    <!-- CSS only -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<!-- CSS only -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+	integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+	crossorigin="anonymous">
 
 </head>
 <body>
-    <header class="bootstrap-iso"></header>
-    <main id="page-container">    
-        <div id="content-wrap">
-            <div class="main pt-5 container-fluid">
-        <!-- Log in  Form -->
-        <div class="row">
-            <!-- <div class="col-6"></div> -->
-            <div class="col-12">
-                <section class="sign-in">
-                    <div class="container">
-                        <div class="signin-content">
-                            <div class="signin-image">
-                                <figure><img src="images/signin-image.jpg" alt="sing up image"></figure>
-                                <div class="">
-                                    Don't have an account ? <a href="signup" class="">Sign Up here</a>
-                                </div>                                
-                            </div>
+	<header class="bootstrap-iso"></header>
+	<main id="page-container">
+		<div id="content-wrap">
+			<div class="main pt-5 container-fluid">
+				<div class="row">
+					<div class="col-12">
+						<section class="sign-in">
+							<div class="container">
+								<div class="signin-content">
+									<div class="signin-image">
+										<figure>
+											<img src="images/signin-image.jpg" alt="sing up image">
+										</figure>
+										<div class="singup-login-toggle-div"> Not a member? <a href="signup"> Sign Up now </a> </div>
+									</div>
 
-                            <div class="signin-form">
-                                <h2 class="form-title">Log In</h2>
-                                <div class="alert alert-danger" role="alert" id="errorMessage" style="display: none;"></div>
-                                <div class="alert alert-success" role="alert" id="successMessage" style="display: none;"></div>
-                                <form class="register-form" id="login-form">
-                                    <div class="form-group">
-                                        <label for="your_email"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                        <input type="text" name="your_email" id="your_email" placeholder="Email" class="form_input" required/>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
-                                        <input type="password" name="your_pass" id="your_pass" placeholder="Password" class="form_input" required/>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="checkbox" name="remember-me" id="remember-me" class="remember-me" />
-                                        <label for="remember-me" class="label-remember-me"><span><span></span></span>Remember me</label>
-                                    </div>
-                                    <div class="form-group form-button">                                        
-                                        <div class="mb-2">
-                                            <a href="#">Forgot Passowrd</a>
-                                        </div>            
-                                        <!-- <br> -->
-                                        <input type="button" name="signin" id="signin" class="form-submit customDisabled" value="Log in"/>                                        
-                                    </div>
-                                </form>
-                                <div class="social-login">
-                                    <span class="social-label">Or login with</span>
-                                    <ul class="socials">
-                                        <li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
-                                        <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
-                                        <li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </div>
-            </div>
-        </div>                
-    </main>
-    <!-- Footer -->
-    <footer class="footer page-footer font-small blue"></footer>
+									<div class="signin-form">
+										<h2 class="form-title">Log In</h2>
+										<div class="alert alert-danger" role="alert" id="errorMessage"
+											style="display: none;"></div>
+										<div class="alert alert-success" role="alert"
+											id="successMessage" style="display: none;"></div>
+										<form class="register-form" id="login-form">
+											<div class="form-group">
+												<label for="your_email">
+													<i class="zmdi zmdi-account material-icons-name"></i>
+												</label> 
+												<input type="text" name="your_email" id="your_email" placeholder="Email" class="form_input" required />
+											</div>
+											<div class="form-group">
+												<label for="your_pass">
+													<i class="zmdi zmdi-lock"></i>
+												</label>
+												<input type="password" name="your_pass" id="your_pass"
+													placeholder="Password" class="form_input" required />
+											</div>
+											<div class="form-group form-button">
+												<input type="button" name="signin" id="signin"
+													class="form-submit login-button" value="Log in" />
+											</div>
+											<div class="form-group">
+												<div class="mb-2 forgot-password-div">
+													<a href="#">Forgot Password?</a>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</section>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+	<!-- Footer -->
+	<footer class="footer page-footer font-small blue"></footer>
 
-    
 
-    <!-- JS -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/common.js"></script>
 
-    <!-- JS, Popper.js, and jQuery -->
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+	<!-- JS -->
+	<script src="vendor/jquery/jquery.min.js"></script>
+	<script src="js/main.js"></script>
+	<script src="js/common.js"></script>
 
-    <script>
+	<!-- JS, Popper.js, and jQuery -->
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+		integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+		crossorigin="anonymous"></script>
+
+	<script>
         fetch("header")
             .then(response => {
                 return response.text()

@@ -4,9 +4,9 @@ package main.usermanagement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import main.application.JobApplicationHandler;
 import main.authentication.SessionHandler;
 import main.db.DatabaseManager;
+import main.jobapplication.JobApplicationHandler;
 import main.util.PasswordManager;
 import main.beans.*;
 

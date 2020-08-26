@@ -103,20 +103,7 @@
 			<result type="json" />
 		</action>
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		<!-- SUBJECT TO CHANGE -->
 		
 		<action name="suggestions/company" class="main.application.SuggestionsAction" method="getCompanySuggestions">
 			<interceptor-ref name="authStack"/>
@@ -132,8 +119,6 @@
 			<interceptor-ref name="authStack"/>
 			<result type="json" />
 		</action>
-		
-
 		
 		<action name="application/update" class="main.application.ApplicationAction" method="updateApplication">
 			<interceptor-ref name="authStack"/>

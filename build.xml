@@ -7,7 +7,9 @@
 	<property name="war.file" value="${build.war}/ROOT.war" />
 	<property name="webcontent.dir" value="WebContent" />
 	<property name="lib.dir" value="${webcontent.dir}/WEB-INF/lib" />
-	
+	<property name="ant.build.javac.source" value="1.8"/>
+	<property name="ant.build.javac.target" value="1.8"/>
+
     <path id="compile.classpath">
         <fileset dir="WebContent/WEB-INF/lib">
             <include name="*.jar"/>
@@ -21,7 +23,7 @@
      
     <target name="compile" depends="init" >
     	<echo>Compiling ${src.tests.dir} files ...</echo>
-        <javac destdir="${build.classes}" debug="true" srcdir="src">
+        <javac destdir="${build.classes}" debug="true" srcdir="src" includeantruntime="false">
             <classpath refid="compile.classpath"/>
         </javac>
     	<echo>Java files compiled successfully </echo>

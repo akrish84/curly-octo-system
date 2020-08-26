@@ -7,17 +7,25 @@ import com.opensymphony.xwork2.Action;
 import main.authentication.SessionHandler;
 import main.beans.AddJobApplicatinoRequest;
 import main.beans.JobApplication;
+import main.util.RequestMapper;
 import main.util.Validator;
 
 public class AddJobApplicationAction {
 
 	private static Logger LOGGER = Logger.getLogger(AddJobApplicationAction.class.getName());
-
-	private AddJobApplicatinoRequest request;
+	private String params;
 
 	public String addJobApplication() {
+		AddJobApplicatinoRequest request;
+		try {
+			request = (AddJobApplicatinoRequest) RequestMapper.buildRequest(AddJobApplicatinoRequest.class, params);
+		} catch(Exception e) {
+			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, "Failed to parse request: " + params, e);
+			return Action.INPUT;
+		}
 		Long userID = SessionHandler.getLoggedInUserID();
-		if (!validateInput(userID)) {
+		if (!validateInput(request, userID)) {
 			return Action.INPUT;
 		}
 		try {
@@ -39,7 +47,7 @@ public class AddJobApplicationAction {
 		return Action.SUCCESS;
 	}
 
-	private boolean validateInput(Long userID) {
+	private boolean validateInput(AddJobApplicatinoRequest request, Long userID) {
 		if (request == null) {
 			return false;
 		} else if (Validator.isNull(request.getCompanyName(), request.getJobTitle(), request.getJobDescription(),
@@ -53,6 +61,14 @@ public class AddJobApplicationAction {
 		} else {
 			return true;
 		}
+	}
+
+	public String getParams() {
+		return params;
+	}
+
+	public void setParams(String params) {
+		this.params = params;
 	}
 
 }

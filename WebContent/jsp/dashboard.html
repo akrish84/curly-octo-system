@@ -69,11 +69,15 @@
                             </div>
                         </div>
                         <div class="input-row">
-                            <label for="aps">Application Tracking Site</label>
-                            <input type="text" class="form-control" id="addAppAps" placeholder="Workday" required>
+                            <label for="aps">Application Tracking System</label>
+                            <input type="text" class="form-control" id="addAppAts" placeholder="Workday" required>
                             <div class="invalid-tooltip">
-                                Please provide a valid APS.
+                                Please provide a valid .
                             </div>
+                        </div>
+                        <div class="input-row">
+                            <label for="aps">Notes</label>
+                            <textarea class="form-control" id="addAppNotes" placeholder="Spoke with Recruiter two days ago..." required rows="3" cols="70"></textarea>
                         </div>
                         <div class="input-row">
                             <input type="hidden" id = "addAppStatuse">
@@ -82,11 +86,11 @@
                     <div class="col-md-6">
                         <div class="input-row">
                             <label for="jobTitle">Job Title</label>
-                            <input type="text" class="form-control" id="addAppCompanyName" placeholder="Netflix" value="" required>
+                            <input type="text" class="form-control" id="addAppCompanyName" placeholder="Software Engineer" value="" required>
                         </div>
                         <div class="input-row">
                             <label for="jobDescription">Description</label>
-                            <textarea class="form-control" id="addAppJobDescription" placeholder="We are currently in search of an experienced Software Developer..." required rows="5" cols="70"></textarea>
+                            <textarea class="form-control" id="addAppJobDescription" placeholder="We are currently in search of an experienced Software Developer..." required rows="7" cols="70"></textarea>
                             <div class="invalid-tooltip">
                             </div>
                         </div>
@@ -217,59 +221,11 @@
 
     <!-- JQuery UI -->
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
-
-    <script src="js/main.js"></script>
     <script src="js/common.js"></script>
     <script src="js/dashboard.js"></script>
 	
 	<!-- Kanban JS -->
 	<script src="js/jkanban.js"></script>
 
-    <script>
-        fetch("header")
-            .then(response => {
-                return response.text()
-            })
-            .then(data => {
-                document.querySelector("header").innerHTML = data;
-        });
-        fetch("footer")
-            .then(response => {
-                return response.text()
-            })
-            .then(data => {
-                document.querySelector("#footer").innerHTML = data;
-        });
-
-        $(function() {
-
-            $("#addAppAppliedDate").datepicker();            
-  
-
-			//kanban.init();
-			showUserDashboard();
-			
-			$('#addBoard').on("click", function() {
-				kanban.addBoards(
-			            [{
-			                'id' : '_default',
-			                'title'  : 'Kanban Default',
-			                'item'  : [
-			                    {
-			                        'title':'Default Item',
-			                    },
-			                    {
-			                        'title':'Default Item 2',
-			                    },
-			                    {
-			                        'title':'Default Item 3',
-			                    }
-			                ]
-			            }], false
-					);
-				
-			})
-        });
-    </script>
 </body>
 </html>

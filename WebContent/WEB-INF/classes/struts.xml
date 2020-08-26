@@ -76,7 +76,7 @@
 		</action>
 		
 		<action name="signup" class="main.usermanagement.UserManagementAction" method="pageDispatcher">
-			<result type="dispatcher">/jsp/sign-up.html</result>
+			<result type="dispatcher">/jsp/signup.html</result>
 		</action>
 		
 		<!-- URL Configurations for Authentication [END] -->

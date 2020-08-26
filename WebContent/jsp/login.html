@@ -18,9 +18,7 @@
 
 <!-- CSS only -->
 <link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-	integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
-	crossorigin="anonymous">
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
 </head>
 <body>
@@ -82,100 +80,11 @@
 	<!-- Footer -->
 	<footer class="footer page-footer font-small blue"></footer>
 
-
-
-	<!-- JS -->
-	<script src="vendor/jquery/jquery.min.js"></script>
-	<script src="js/main.js"></script>
-	<script src="js/common.js"></script>
-
 	<!-- JS, Popper.js, and jQuery -->
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-		crossorigin="anonymous"></script>
-	<script
-		src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
-		integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
-		crossorigin="anonymous"></script>
-
-	<script>
-        fetch("header")
-            .then(response => {
-                return response.text()
-            })
-            .then(data => {
-                document.querySelector("header").innerHTML = data;
-        });
-        fetch("footer")
-            .then(response => {
-                return response.text()
-            })
-            .then(data => {
-                document.querySelector("footer").innerHTML = data;
-        });
-        
-        /* $('.form_input').on("input", function(event) {        	
-        	//console.log(event, event.keyCode);
-        	if (event.keyCode === 13) { 
-                $("#signin").click();
-            }
-        	else{
-        		buttonActivator();
-        	}
-        }); */
-        
-        $(".form_input").on("keyup",(function(event) { 
-            if (event.keyCode === 13) { 
-                $("#signin").click(); 
-            }
-            else{
-        		buttonActivator();
-        	}
-        }));
-        
-        function buttonActivator()        
-        {    	
-            $('#errorMessage')[0].style.display = 'none';
-            if($("#your_email").val().length && $("#your_pass").val().length && ValidateEmail($("#your_email").val()))
-            {                
-                $('#signin')[0].classList.remove('customDisabled');
-            }
-
-        }
-        $('#signin').on('click', function () {
-            var login_variables = {};
-            login_variables['email'] = $("#your_email").val();
-            login_variables['password'] = $("#your_pass").val();            
-            // login_variables['agree'] = $("#remember-me").val();            
-            
-            // Make an AJAX Call
-            if (ValidateEmail(login_variables['email']))
-            {
-                // Make an AJAX
-                var url = makeURL("loginAction", login_variables);                
-                sendAjaxRequest(url, function(resp){                                
-                    if (resp['responseMessage'].includes('Error'))
-                    {
-                        // Error                        
-                        $('#errorMessage')[0].style.display = 'block';
-                        $('#errorMessage')[0].innerHTML = resp['responseMessage'];
-                    }
-                    else
-                    {
-                        // Successfull Login
-                        $('#successMessage')[0].style.display = 'block';
-                        $('#successMessage')[0].innerHTML = resp['responseMessage'];
-                        setTimeout(function(){ window.location.href = "dashboard"; }, 500);                       
-                    }
-                });
-            }
-        });
-        $(document).ready(function () {            
-            // Ready, then Focus on Input
-            $("#your_email").focus();
-        });
-    </script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+	<script src="js/common.js"></script>
+	<script src="js/login.js"></script>
 </body>
 </html>

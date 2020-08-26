@@ -9,14 +9,18 @@ var allAppData = {};
 var statusesMap = {}
 var statusIDSelectedToAddApplication=-1
 
+$(function() {
+    $("#addAppAppliedDate").datepicker();            
+    init();
+});
+
+function init() {
+	
+}
 
 function init() {
 	$appCardTempalte = $('.app-card-template').clone();
 	$('.templates').remove();
-}
-
-function showUserDashboard() {
-	init()
 	showUserBoards();
 }
 

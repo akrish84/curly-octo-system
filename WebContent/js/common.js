@@ -83,3 +83,34 @@ function makeLoginURL(url, params){
 	}
 	return paramsAsURL;
 }
+
+function showElementById(id){
+	$("#" + id).show();
+}
+
+function hideElementById(id) {
+	$("#" + id).hide();
+}
+
+function showModalById(id) {
+	$("#" + id ).modal().show();
+}
+
+function hideModalById(id) {
+	$("#" + id ).modal().hide();
+	$('.modal-backdrop').hide();
+}
+
+
+
+function showStatusMessage(msg) {
+	document.getElementById("statusMessageDiv").className="alert alert-dismissible";
+	$('#statusMessage').html(msg);
+	$("#statusMessageDiv").css("display", "inline-block");
+	hideFunction = setTimeout(function(){ $("#statusMessageDiv").fadeOut(1000);}, 10000);
+}
+
+function closeStatusMsg(status)
+{
+	document.getElementById(status).style.display = "none";
+}

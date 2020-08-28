@@ -236,7 +236,8 @@ var dragula = require("dragula");
           var boardWidth = 100 - boards.length * 2;
         }
       } else {
-        var boardWidth = self.options.widthBoard;
+        // var boardWidth = self.options.widthBoard;
+        var boardWidth = (100 / boards.length)-1;
       }
       var addButton = self.options.addItemButton;
       var buttonContent = self.options.buttonContent;
@@ -251,16 +252,16 @@ var dragula = require("dragula");
 
         if (!self.options.responsivePercentage) {
           //add width to container
-          if (self.container.style.width === "") {
-            self.container.style.width =
-              parseInt(boardWidth) + parseInt(self.options.gutter) * 2 + "px";
-          } else {
-            self.container.style.width =
-              parseInt(self.container.style.width) +
-              parseInt(boardWidth) +
-              parseInt(self.options.gutter) * 2 +
-              "px";
-          }
+          // if (self.container.style.width === "") {
+          //   self.container.style.width =
+          //     parseInt(boardWidth) + parseInt(self.options.gutter) * 2 + "px";
+          // } else {
+          //   self.container.style.width =
+          //     parseInt(self.container.style.width) +
+          //     parseInt(boardWidth) +
+          //     parseInt(self.options.gutter) * 2 +
+          //     "px";
+          // }
         }
         //create node
         var boardNode = document.createElement("div");
@@ -271,40 +272,55 @@ var dragula = require("dragula");
         if (self.options.responsivePercentage) {
           boardNode.style.width = boardWidth + "%";
         } else {
-          boardNode.style.width = boardWidth;
+          boardNode.setAttribute("style", "width: " + boardWidth + "vw; min-width:" + self.options.widthBoard + "; min-height: 70vh");
         }
-        boardNode.style.marginLeft = self.options.gutter;
-        boardNode.style.marginRight = self.options.gutter;
+//        boardNode.style.marginLeft = self.options.gutter;
+//        boardNode.style.marginRight = self.options.gutter;
+        boardNode.style.marginLeft = "5px";
+        boardNode.style.marginRight = "5px";
         // header board
         var headerBoard = document.createElement("header");
         if (board.class !== "" && board.class !== undefined)
           var allClasses = board.class.split(",");
         else allClasses = [];
-        headerBoard.classList.add("kanban-board-header");    
+        headerBoard.classList.add("kanban-board-header");
         allClasses.map(function(value) {
           headerBoard.classList.add(value);
         });
+        headerBoard.style.textAlign = "center";
         var headerBoardRow = document.createElement("div");
-        headerBoardRow.classList.add("row");
+//        headerBoardRow.classList.add("row");
+        headerBoardRow.style.textAlign = "center";
+        
         headerBoard.appendChild(headerBoardRow);
         headerBoardRow.innerHTML =
           '<div class="kanban-title-board col-10">' + board.title + "</div>";
         // if add button is true, add button to the board
         if (addButton) {
-          var btn = document.createElement("BUTTON");
+//          var btn = document.createElement("BUTTON");
+          var btn = document.createElement("i");
           var t = document.createTextNode(buttonContent);
-          btn.setAttribute(
-            "class",
-            "kanban-title-button btn btn-default btn-xs col-2"
-          );
-          btn.style.paddingTop = '0px';
-          btn.style.paddingBottom = '0px';
-          btn.appendChild(t);
+//          btn.setAttribute(
+//            "class",
+//            "kanban-title-button btn btn-default btn-xs col-2"
+//          );
+            btn.setAttribute("class", "fas fa-ellipsis-v");
+            btn.setAttribute("style", "font-size: 12px;");
+            btn.appendChild(t);
           //var buttonHtml = '<button class="kanban-title-button btn btn-default btn-xs">'+buttonContent+'</button>'
           headerBoardRow.appendChild(btn);
          //console.log(headerBoardRow);          
-          __onButtonClickHandler(btn, board.id);
+//          __onButtonClickHandler(btn, board.id);
         }
+        
+        
+        var addJobAppButton = document.createElement("div");
+        addJobAppButton.setAttribute("style" , "background-color: white; border-radius:15px; margin-top:15px; font-size:12px; color: #8c8c8c; padding: 3%");
+        addJobAppButton.innerHTML = '<i class="fas fa-plus"></i>'
+        __onButtonClickHandler(addJobAppButton, board.id);
+        headerBoard.appendChild(addJobAppButton);
+        
+        
         //content board
         var contentBoard = document.createElement("main");
         contentBoard.classList.add("kanban-drag");

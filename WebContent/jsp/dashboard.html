@@ -33,79 +33,86 @@
 </head>
 <body>
 
-
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary modalButton" id="addApplicationModalButton" data-toggle="modal" data-target="#addApplicationModal" alt="modalButton"></button>
-    <button type="button" class="btn btn-primary modalButton" id="editApplicationModalButton" data-toggle="modal" data-target="#editApplicationModal" alt="modalButton"></button>
+	<header class="bootstrap-iso"></header>
+    <main id="page-container">    
+        <div id="content-wrap">
+            <div class="main pt-5 container-fluid">
+	            <div class="loading display-none" id="kanban-loading">
+					<div class="bar"></div>
+				</div>
+            	<div class='boards' id='boards'>
+            		<div class="kdiv" id="kdiv">
+                        
+                    </div>
+            	</div>                       	
+            </div>
+        </div>                
+    </main>
 
     <!-- Modal -->
-    <div class="modal fade" id="addApplicationModal" tabindex="-1" role="dialog" aria-labelledby="ApplicationModalTitle" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="addApplicationModalTitle" >Add Job Application</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <form class="needs-validation" id="addAppForm" novalidate>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="input-row">
-                            <label for="companyName"><b>Company Name</b></label>
-                            <input type="text" class="form-control" id="addAppCompanyName" placeholder="Netflix" value="" required>
-                        </div>
-                        <div class="input-row">
-                            <label for="appliedDate"><b>Applied Date</b></label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="appliedDatePrepend"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-                                </div>
-                                <input type="text" class="form-control" style="z-index: 10000 !important" id="addAppAppliedDate" aria-describedby="appliedDatePrepend" required>
-                                <div class="invalid-tooltip">
-                                    Please choose a unique and valid Applied Data.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="input-row">
-                            <label for="aps">Application Tracking System</label>
-                            <input type="text" class="form-control" id="addAppAts" placeholder="Workday" required>
-                            <div class="invalid-tooltip">
-                                Please provide a valid .
-                            </div>
-                        </div>
-                        <div class="input-row">
-                            <label for="aps">Notes</label>
-                            <textarea class="form-control" id="addAppNotes" placeholder="Spoke with Recruiter two days ago..." required rows="3" cols="70"></textarea>
-                        </div>
-                        <div class="input-row">
-                            <input type="hidden" id = "addAppStatuse">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="input-row">
-                            <label for="jobTitle">Job Title</label>
-                            <input type="text" class="form-control" id="addAppCompanyName" placeholder="Software Engineer" value="" required>
-                        </div>
-                        <div class="input-row">
-                            <label for="jobDescription">Description</label>
-                            <textarea class="form-control" id="addAppJobDescription" placeholder="We are currently in search of an experienced Software Developer..." required rows="9" cols="70"></textarea>
-                            <div class="invalid-tooltip">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--<button class="btn btn-primary">Submit form</button>-->
-            </form>
-        </div>
-        <div class="modal-footer">
-            <!--<button type="button" id = "modalDeleteBtn" class="btn btn-danger">Delete Application</button>-->
-            <button type="button" class="btn btn-secondary modal-btn" data-dismiss="modal">Close</button>
-            <button type="button" id="addAppBtn" class="btn btn-primary modal-btn">Add</button>
-        </div>
-        </div>
-    </div>
+    <div class="modal fade" id="addJobApplicationModal" tabindex="-1" role="dialog" aria-labelledby="JobApplicationModalTitle" aria-hidden="true">
+	    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+	        <div class="modal-content">
+		        <div class="modal-header">
+		            <h5 class="modal-title" id="addApplicationModalTitle" >Add Job Application</h5>
+		            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		            <span aria-hidden="true">&times;</span>
+		            </button>
+		        </div>
+		        <div class="modal-body">
+		            <form class="needs-validation" id="addAppForm" onsubmit="addJobApplication()">
+		                <div class="row">
+		                    <div class="col-md-6">		
+			                    <div class="input-row">
+		                            <label for="companyName"><strong>Company Name</strong></label>
+		                            <input type="text" class="form-control" id="addAppCompanyName" placeholder="Netflix" value="" required>
+		                        </div>                        
+		                        <div class="input-row">
+		                            <label for="appliedDate"><strong>Applied Date</strong></label>
+		                            <div class="input-group">
+		                                <div class="input-group-prepend">
+		                                    <span class="input-group-text" id="appliedDatePrepend"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+		                                </div>
+		                                <input type="text" class="form-control" style="z-index: 10000 !important" id="addAppAppliedDate" aria-describedby="appliedDatePrepend" required>
+		                                <div class="invalid-tooltip">
+		                                    Please choose a unique and valid Applied Data.
+		                                </div>
+		                            </div>
+		                        </div>
+		                        <div class="input-row">
+		                            <label for="aps">Application Tracking System</label>
+		                            <input type="text" class="form-control" id="addAppAts" placeholder="Workday">
+		                            <div class="invalid-tooltip">
+		                                Please provide a valid .
+		                            </div>
+		                        </div>
+		                        <div class="input-row">
+		                            <label for="aps">Notes</label>
+		                            <textarea class="form-control" id="addAppNotes" placeholder="Spoke with Recruiter two days ago..." rows="3" cols="70"></textarea>
+		                        </div>
+		                        <div class="input-row">
+		                            <input type="hidden" id = "addAppJobStatus">
+		                        </div>
+		                    </div>
+		                    <div class="col-md-6">
+		                        <div class="input-row">
+		                            <label for="jobTitle">Job Title</label>
+		                            <input type="text" class="form-control" id="addAppJobTitle" placeholder="Software Engineer" value="">
+		                        </div>
+		                        <div class="input-row">
+		                            <label for="jobDescription">Description</label>
+		                            <textarea class="form-control" id="addAppJobDescription" placeholder="We are currently in search of an experienced Software Developer..." rows="9" cols="70"> </textarea>
+		                        </div>
+		                    </div>
+		                </div>
+		                <div class="modal-footer">
+				            <button type="button" class="btn btn-secondary modal-btn" data-dismiss="modal">Close</button>
+				            <button type="submit" id="addAppBtn" class="btn btn-primary modal-btn">Add</button>
+				        </div>
+		            </form>
+		        </div>
+	        </div>
+	    </div>
     </div>
     
     <div class="modal fade" id="editApplicationModal" tabindex="-1" role="dialog" aria-labelledby="ApplicationModalTitle" aria-hidden="true">
@@ -178,22 +185,6 @@
     </div>
     </div>
     
-    
-    
-    
-
-    <header class="bootstrap-iso"></header>
-    <main id="page-container">    
-        <div id="content-wrap">
-            <div class="main pt-5 container-fluid">
-            	<div class='boards' id='boards'>
-            		<div class="kdiv" id="kdiv">
-                        
-                    </div>
-            	</div>                       	
-            </div>
-        </div>                
-    </main>
     <div class="templates display-none">
         <!-- <div class="app-card-template">
             <h2 id="companyName"></h2>
@@ -201,7 +192,7 @@
             <h4 id="appliedDate"></h4>
         </div> -->
 
-        <div class="app-card-template card bg-light mb-3" style="max-width: 18rem;">
+        <div class="job-app-card-template card bg-light mb-3" style="max-width: 18rem;">
             <div class="card-header company-name"></div>
             <div class="card-body">
               <p class="card-text job-title"></p>
@@ -211,7 +202,7 @@
     </div>
     
     <!-- Footer -->
-    <footer class="footer page-footer font-small blue" id='footer'></footer>        
+    <footer id='footer'></footer>        
     
 	
     <!-- JS, Popper.js, and jQuery -->

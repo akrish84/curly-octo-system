@@ -115,3 +115,56 @@ label.valid {
  .textalign-center {
  	text-align: center;
  }
+ 
+ 
+ /* LOADING DIV */
+@keyframes loader-animation {
+	 0% {
+	     width: 0%;
+	 }
+	 49% {
+	     width: 100%;
+	     left: 0%
+	 }
+	 50% {
+	     left: 100%;
+	     width: 0;
+	 }
+	 100% {
+	     left: 0%;
+	     width: 100%
+	 }
+}
+ .loading {
+     height: 5px;
+     width: 100%;
+     text-align: center;
+ }
+ .loading .bar {
+    width:80%;
+    position: relative;
+    height: 5px;
+    background-color: dodgerblue;
+    animation-name: loader-animation;
+    animation-duration: 5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+ }
+ 
+ 
+.alert-success {
+	color: #449345; 
+	background-color: 
+	#d1e3ca; border-color: 
+	#d0e2c0; 
+	z-index:9;
+}
+
+.alert {
+	background-color: #f9edbe; 
+	border: 1px solid #f0c36d; 
+	-webkit-border-radius:3px; 
+	-moz-border-radius:3px; 
+	border-radius:3px; 
+	font-size:14px;
+}

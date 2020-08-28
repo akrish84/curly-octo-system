@@ -1,13 +1,13 @@
 var kanbanObj;
 var boardsMap;
-var statusIDPrefix = "status-id-";
-var applicationIDPrefix = "application-id-";
-var dataEIDAttribute = "data-eid";
-var dataIDAttribute = "data-id";
-var $appCardTempalte;
+var statusIdPrefix = "status-id-";
+var jobApplicationIdPrefix = "application-id-";
+var dataEIdAttribute = "data-eid";
+var dataIdAttribute = "data-id";
+var $jobAppCardTempalte;
 var allAppData = {};
 var statusesMap = {}
-var statusIDSelectedToAddApplication=-1
+var statusIdSelectedToAddApplication=-1
 
 $(function() {
     $("#addAppAppliedDate").datepicker();            
@@ -15,13 +15,11 @@ $(function() {
 });
 
 function init() {
-	
-}
-
-function init() {
-	$appCardTempalte = $('.app-card-template').clone();
+	showKanbanLoading();
+	$jobAppCardTempalte = $('.job-app-card-template').clone();
 	$('.templates').remove();
 	showUserBoards();
+	hideKanbanLoading();
 }
 
 function refreshUserBoards() {
@@ -40,20 +38,20 @@ function showUserBoards() {
         {
 			statusesMap = resp.response['jobStatusesMap'];
 			var boards = [];
-			for (var statusID in statusesMap){
-				var status = statusesMap[statusID];
+			for (var statusId in statusesMap){
+				var status = statusesMap[statusId];
 				var item = {};
-				item['id'] = statusIDPrefix+statusID;
+				item['id'] = statusIdPrefix+statusId;
 				item['title'] = status.status;
 				boards.push(item);
 			}
 			kanban.init(boards);
-			addUserApplications();
+			addUserJobApplications();
         }
     });
 }
 
-function addUserApplications(){
+function addUserJobApplications(){
 	var url = "jobApplications";                
     sendAjaxRequest(url, function(resp){                                
         if (resp['responseMessage'] != null && resp['responseMessage'].includes('Error'))
@@ -71,35 +69,43 @@ function addUserApplications(){
     });
 }
 
-function getAppIDFromDataEID(dataEid) {
-	return dataEid.replace(applicationIDPrefix, "");
+function showKanbanLoading() {
+	showElementById("kanban-loading");
 }
 
-function getStatusIDFromDataID(dataId){
-	return dataId.replace(statusIDPrefix, "");
+function hideKanbanLoading() {
+	hideElementById("kanban-loading");
 }
 
-function getDataID(element) {
+function getAppIdFromDataEId(dataEid) {
+	return dataEid.replace(jobApplicationIdPrefix, "");
+}
+
+function getStatusIdFromDataId(dataId){
+	return dataId.replace(statusIdPrefix, "");
+}
+
+function getDataId(element) {
 	if(element != null ) {
-		return element.getAttribute(dataIDAttribute)
+		return element.getAttribute(dataIdAttribute)
 	}
 	return "";
 }
 
-function getDataEID(element) {
+function getDataEId(element) {
 	if(element != null ) {
-		return element.getAttribute(dataEIDAttribute)
+		return element.getAttribute(dataEIdAttribute)
 	}
 	return "";
 }
 
-function updateApplication(applicationID, oldStatusID, newStatusID, applicationIDs) {
+function updateApplication(applicationId, oldStatusId, newStatusId, applicationIds) {
 	var params = {}
-	params['applicationID'] = applicationID;
-	params['newStatusID'] = newStatusID;
+	params['applicationId'] = applicationId;
+	params['newStatusId'] = newStatusId;
 	var url = makeURL("application/update", params);
-	for(var i = 0 ; i < applicationIDs.length; i++) {
-		url += '&applicationIDs=' + applicationIDs[i];
+	for(var i = 0 ; i < applicationIds.length; i++) {
+		url += '&applicationIds=' + applicationIds[i];
 	}
 	sendAjaxRequest(url, function(resp){                                
         if (resp['responseMessage'] != null && resp['responseMessage'].includes('Error'))
@@ -113,32 +119,23 @@ function updateApplication(applicationID, oldStatusID, newStatusID, applicationI
 	
 }
 
-function addApplication() {
-	companyName = $("#modal-companyName").val();
-	jobTitle = $("#modal-jobTitle").val();
-	appliedDate = $("#modal-appliedDate").val();
-	jobDescription = $("#modal-jobDescription").val();
-	aps = $("#modal-aps").val();
-}
+function handleJobApplicationDragEnd(application, source, target) {
+	var applicationDataEId = getDataEId(application);
+	var sourceDataId = getDataId(source.parentNode);
+	var targetDataId = getDataId(target.parentNode);
 
-
-function handleApplicationDragEnd(application, source, target) {
-	var applicationDataEID = getDataEID(application);
-	var sourceDataID = getDataID(source.parentNode);
-	var targetDataID = getDataID(target.parentNode);
-
-	var items = kanbanObj.getBoardElements(targetDataID);
-	var applicationIDs = [];
+	var items = kanbanObj.getBoardElements(targetDataId);
+	var applicationIds = [];
 	for(var i = 0 ; i < items.length; i++) {
 		item = items[i];
-		applicationIDs.push(getAppIDFromDataEID(getDataEID(item)));
+		applicationIds.push(getAppIdFromDataEId(getDataEId(item)));
 	}
-	applicationID = getAppIDFromDataEID(applicationDataEID);
+	applicationId = getAppIdFromDataEId(applicationDataEId);
 	// For now not needed. In future need to do front end validation before sending request to backend.
-	sourceStatusID = getStatusIDFromDataID(sourceDataID); 
-	targetStatusID = getStatusIDFromDataID(targetDataID);
+	sourceStatusId = getStatusIdFromDataId(sourceDataId); 
+	targetStatusId = getStatusIdFromDataId(targetDataId);
 
-	updateApplication(applicationID, sourceStatusID, targetStatusID, applicationIDs);
+	updateApplication(applicationId, sourceStatusId, targetStatusId, applicationIds);
 }
 
 function hideElement(id) {
@@ -153,25 +150,25 @@ function showElement(id){
 
 function setFirstStatusAsSelectBoxValue(){
 	var statusesSelectElement = document.getElementById('modal-appStatuses');
-	for (var statusID in statusesMap){
-		var status = statusesMap[statusID];
-		var statusID = status["id"]
+	for (var statusId in statusesMap){
+		var status = statusesMap[statusId];
+		var statusId = status["id"]
 		var statusValue = status["status"]
 		statusesSelectElement.value = statusValue;
 		return
 	}
 }
 function populateStatusesForAddAppSelectBox() {
-	var statusesSelectElement = document.getElementById('addAppStatuses');
-	selectBoxValue = ""
-	for (var statusID in statusesMap){
-		var status = statusesMap[statusID];
-		var statusID = status["id"]
+	var statusesSelectElement = document.getElementById('addAppJobStatus');
+	var selectBoxValue = ""
+	for (var statusId in statusesMap){
+		var status = statusesMap[statusId];
+		var statusId = status["id"]
 		var statusValue = status["status"]
 		var opt = document.createElement('option');
 		opt.text = statusValue;
 		opt.value = statusValue;
-		opt.setAttribute("id", statusID);
+		opt.setAttribute("id", statusId);
 		statusesSelectElement.appendChild(opt);
 		if(selectBoxValue == "") {
 			selectBoxValue = statusValue;
@@ -188,6 +185,67 @@ function setCurrentDateAsAppliedDate() {
 	document.getElementById("editAppAppliedDate").value = today;
 }
 
+
+function addJobApplication() {
+	var jobApplication = createApplicationObject($("#addAppCompanyName").val(), $("#addAppAppliedDate").val(), $("#addAppJobStatus").val(), $("#addAppJobTitle").val(), $("#addAppJobDescription").val(), $("#addAppAts").val(), $("#addAppNotes").val());
+	var params = {};
+    params['request'] = JSON.stringify(jobApplication);
+    var url = makeURL("jobapplication/add", params);
+    console.log(url);
+    showElementById("addjobapplication-loading");
+    successCallbackFn = function(resp) {
+    	console.log(resp);
+    	hideElementById("addjobapplication-loading");
+    }
+    
+    errorCallbackFn = function(resp) {
+    	console.log(resp);
+    	hideElementById("addjobapplication-loading");
+    }
+    
+    sendAjaxRequest(url, successCallbackFn, errorCallbackFn);
+    
+}
+
+
+function createApplicationObject(companyName, appliedDate, jobStatus, jobTitle, jobDescription, ats, notes) {
+	var jobApplication = new Object();
+	jobApplication.companyName = companyName;
+	jobApplication.appliedDate = appliedDate;
+	jobApplication.jobStatus = jobStatus;
+	jobApplication.jobTitle = jobTitle;
+	jobApplication.jobDescription = jobDescription;
+	jobApplication.ats = ats;
+	jobApplication.nodes = notes;
+	return jobApplication;
+}
+
+function populateJobApplicationModal(jobAppId){
+	$("#editAppCompanyName").val("");	
+	$("#editAppJobTitle").val("");
+	$("#editAppAppliedDate").val("");
+	$("#editAppJobDescription").val("");
+	$("#editAppAps").val("");
+	$("#editAppStatuses").val("");
+
+	var appData = allAppData[jobAppId];
+	$("#editAppCompanyName").val(appData.companyName);	
+	$("#editAppJobTitle").val(appData.jobTitle);
+	$("#editAppAppliedDate").val(appData.appliedDate);
+	$("#editAppJobDescription").val(appData.jobDescription);
+	$("#editAppAps").val(appData.aps);
+	var statusesSelectElement = document.getElementById("editAppStatuses");
+	statusesSelectElement.value = statusesMap[appData.statusId]["status"];
+	showModalById("editJobApplicationModal");
+}
+
+$('#addAppForm').submit(function () {
+	return false;
+});
+$('#editAppForm').submit(function () {
+	return false;
+});
+
 var kanban = {
 	init : function(boards)
 	{
@@ -199,14 +257,14 @@ var kanban = {
 		    dragItems        : true,                                         // if false, all items are not draggable
 		    boards           : boards,                      					  // json of boards
 		    dragBoards       : true,                                        // the boards are draggable, if false only item can be dragged
-		    addItemButton    : true,                                         // add a button to board for easy item creation
-		    buttonContent    : '+',                                          // text or html content of the board button
+		    addItemButton    : false,                                         // add a button to board for easy item creation
+		    buttonContent    : '',                                          // text or html content of the board button
 		    itemHandleOptions: {
 		        enabled             : false,                                 // if board item handle is enabled or not
-		        handleClass         : "item_handle",                         // css class for your custom item handle
-		        customCssHandler    : "drag_handler",                        // when customHandler is undefined, jKanban will use this property to set main handler class
-		        customCssIconHandler: "drag_handler_icon",                   // when customHandler is undefined, jKanban will use this property to set main icon handler class. If you want, you can use font icon libraries here
-		        customHandler       : "<span class='item_handle'>+</span> %s"// your entirely customized handler. Use %s to position item title
+//		        handleClass         : "item_handle",                         // css class for your custom item handle
+//		        customCssHandler    : "drag_handler",                        // when customHandler is undefined, jKanban will use this property to set main handler class
+//		        customCssIconHandler: "drag_handler_icon",                   // when customHandler is undefined, jKanban will use this property to set main icon handler class. If you want, you can use font icon libraries here
+		        customHandler       : '<i class="fas fa-ellipsis-v"></i>'// your entirely customized handler. Use %s to position item title
 		    },
 		    click            : function (el) {click(el)},                             // callback when any board's item are clicked
 		    dragEl           : function (el, source) {},                     // callback when any board's item are dragged
@@ -223,23 +281,8 @@ var kanban = {
         function dropEl(el, target, source, sibling){
 
 			// console.log('Element: ',el);
-			handleApplicationDragEnd(el, source, target)
-			//console.log('Source: statusID ' + getIDFromSourceElement(source));
-			// console.log('Target: statusID ' + getIDFromSourceElement(target));
-        	// console.log('Target: ',target);
-			// console.log('Sibling: ',sibling);
-			// console.log("ElementID is " + el.getAttribute("data-eid"))
-			// console.log("SourceID is " + source.getAttribute("-eid"))
-			// console.log("TargetID is " + source.getAttribute("data-eid"))        	
-        	// if (source != target){
-        	// 	/* Update Database */
-        		
-        	// }
-        	// else{
-        	// 	/* Do Nothing */	
-        	// }    		
-        	
-		}
+        	handleJobApplicationDragEnd(el, source, target)
+        }
 		
 		function dragBoard(el) {
 			//console.log('Dragging: ',el);
@@ -255,36 +298,36 @@ var kanban = {
 			$("#addAppAppliedDate").val("");
 			$("#addAppJobDescription").val("");
 			$("#addAppAps").val("");
-			$("#addAppStatuse").val(boardId);
+			$("#addAppJobStatus").val(boardId);
 			$("#addAppAppliedDate").datepicker('setDate', new Date());
 
-			showModal("addApplicationModalButton");
+			showModalById("addJobApplicationModal");
 		}
 	},
 
-	buildAppCard : function(application) {
-		var companyName = application.companyName;
-		var id = application.id;
-		var jobDescription = application.jobDescription;
-		var jobTitle = application.jobDescription;
-		var statusID = application.statusID;
-		var aps = application.aps;
-		var appliedDate = application.appliedDate;
+	buildAppCard : function(jobApplication) {
+		var companyName = jobApplication.companyName;
+		var id = jobApplication.id;
+		var jobDescription = jobApplication.jobDescription;
+		var jobTitle = jobApplication.jobDescription;
+		var statusId = jobApplication.statusID;
+		var aps = jobApplication.aps;
+		var appliedDate = jobApplication.appliedDate;
 
-		$appCard = $appCardTempalte.clone();
+		$appCard = $jobAppCardTempalte.clone();
 		$appCard.find(".company-name").text(companyName);
 		$appCard.find(".job-title").text(jobTitle);
 		$appCard.find(".applied-date").text(appliedDate);
 
 		var appItem = {}
-		appItem['id'] = applicationIDPrefix + id;
+		appItem['id'] = jobApplicationIdPrefix + id;
 		var appValues = {}
 
 		appValues.companyName = companyName;
 		appValues.id = id;
 		appValues.jobDescription = jobDescription;
 		appValues.jobTitle = jobTitle;
-		appValues.statusID = statusID;
+		appValues.statusId = statusId;
 		appValues.aps = aps;
 		appValues.appliedDate = appliedDate;
 
@@ -292,51 +335,11 @@ var kanban = {
 			return "populateModal("+id+")";
 		})		
 		
-		appItem['id'] = applicationIDPrefix + id;		
+		appItem['id'] = jobApplicationIdPrefix + id;		
 		appItem['title'] = $appCard.wrap("<div />").parent().html()
 
-		kanbanObj.addElement(statusIDPrefix+statusID, appItem);
+		kanbanObj.addElement(statusIdPrefix+statusId, appItem);
 		allAppData[id] = appValues;		
 	}
 	
 };
-
-function populateModal(appID){
-	$("#editAppCompanyName").val("");	
-	$("#editAppJobTitle").val("");
-	$("#editAppAppliedDate").val("");
-	$("#editAppJobDescription").val("");
-	$("#editAppAps").val("");
-	$("#editAppStatuses").val("");
-	//setCurrentDateAsAppliedDate();
-
-	var appData = allAppData[appID];
-	$("#editAppCompanyName").val(appData.companyName);	
-	$("#editAppJobTitle").val(appData.jobTitle);
-	$("#editAppAppliedDate").val(appData.appliedDate);
-	$("#editAppJobDescription").val(appData.jobDescription);
-	$("#editAppAps").val(appData.aps);
-	var statusesSelectElement = document.getElementById("editAppStatuses");
-	statusesSelectElement.value = statusesMap[appData.statusID]["status"];
-	showModal("editApplicationModalButton");
-}
-
-$('#addAppForm').submit(function () {
-	return false;
-});
-$('#editAppForm').submit(function () {
-	return false;
-});
-
-//$("input.form-control").on("click", function(event) {				
-//	$(this).attr("readonly", false);	
-//})
-//
-//$("input.form-control").on("blur", function (event) {	
-//	$(this).attr("readonly", true);
-//})
-
-function showModal(name) {
-	console.log(name);
-	$("#" + name ).click();
-}
